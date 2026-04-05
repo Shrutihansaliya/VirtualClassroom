@@ -1,0 +1,66 @@
+﻿body {
+    margin: 0;
+    font-family: 'Segoe UI';
+}
+
+/* Sidebar */
+.sidebar {
+    width: 70px;
+    height: 100vh;
+    position: fixed;
+    background: #f1f3f4;
+    transition: 0.3s;
+    overflow: hidden;
+}
+
+    .sidebar:hover {
+        width: 220px;
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
+
+        .sidebar ul li {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+            .sidebar ul li:hover {
+                background: #e0e0e0;
+            }
+
+            .sidebar ul li span {
+                display: none;
+            }
+
+    .sidebar:hover span {
+        display: inline;
+    }
+
+.main-content {
+    margin-left: 70px;
+    transition: 0.3s;
+}
+
+.sidebar:hover ~ .main-content {
+    margin-left: 220px;
+}
+
+.content-area {
+    padding: 20px;
+}
+
+.profile-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: purple;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
