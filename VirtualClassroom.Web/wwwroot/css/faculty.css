@@ -1,0 +1,131 @@
+﻿/* RESET */
+body {
+    margin: 0;
+    font-family: 'Segoe UI';
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 70px;
+    height: 100vh;
+    position: fixed;
+    background: #0f172a;
+    transition: 0.3s;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+    .sidebar:hover {
+        width: 220px;
+    }
+
+    /* SIDEBAR ITEMS */
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .sidebar ul li {
+            padding: 15px;
+        }
+
+            .sidebar ul li a {
+                display: flex;
+                align-items: center;
+                color: white;
+                text-decoration: none;
+            }
+
+            .sidebar ul li i {
+                font-size: 20px;
+                min-width: 40px;
+            }
+
+            .sidebar ul li span {
+                opacity: 0;
+                transition: 0.3s;
+            }
+
+    .sidebar:hover span {
+        opacity: 1;
+    }
+
+/* MAIN AREA */
+.main {
+    margin-left: 70px;
+    transition: 0.3s;
+}
+
+/* EXPAND MAIN WHEN SIDEBAR HOVER */
+.sidebar:hover ~ .main {
+    margin-left: 220px;
+}
+
+/* NAVBAR */
+.navbar {
+    height: 60px;
+    background: white;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* CONTENT */
+.content {
+    padding: 20px;
+}
+
+/* CARDS */
+.class-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.class-card {
+    width: 300px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #1e293b;
+    color: white;
+    transition: 0.3s;
+}
+
+    .class-card:hover {
+        transform: translateY(-5px);
+    }
+
+/* CARD HEADER */
+.card-header {
+    padding: 15px;
+}
+
+    .card-header.dark {
+        background: #0f172a;
+    }
+
+    .card-header.gray {
+        background: #6b7280;
+    }
+
+/* BODY */
+.card-body {
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* IMAGE */
+.class-img {
+    width: 40px;
+}
+
+/* FOOTER */
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
