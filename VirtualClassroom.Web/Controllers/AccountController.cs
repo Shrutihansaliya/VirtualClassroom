@@ -1,14 +1,7 @@
-﻿//namespace VirtualClassroom.Web.Controllers
-//{
-//    public class AccountController
-//    {
-//    }
-//}
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using VirtualClassroom.Infrastructure;
 using VirtualClassroom.Core;
-using System.Linq;
+using BCrypt.Net;
 
 namespace VirtualClassroom.Web.Controllers
 {
@@ -21,30 +14,28 @@ namespace VirtualClassroom.Web.Controllers
             _context = context;
         }
 
-        // LOGIN PAGE
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
-        // LOGIN POST
+        // 🔹 POST LOGIN (PUT YOUR CODE HERE)
         [HttpPost]
         public IActionResult Login(string email, string password)
         {
             var user = _context.TblUsers
-                .FirstOrDefault(u => u.Email == email && u.PasswordHash == password);
+                .FirstOrDefault(u => u.Email == email);
 
-            if (user != null)
+            if (user != null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
             {
                 if (user.Role == UserRole.Student)
                     return RedirectToAction("Dashboard", "Student");
-
                 else
                     return RedirectToAction("Dashboard", "Faculty");
             }
 
-            ViewBag.Error = "Invalid Login";
+            ViewBag.Error = "Invalid Email or Password";
             return View();
         }
 
@@ -59,17 +50,20 @@ namespace VirtualClassroom.Web.Controllers
         [HttpPost]
         public IActionResult Register(TblUsers user)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                user.CreatedAt = DateTime.Now;
-
-                _context.TblUsers.Add(user);
-                _context.SaveChanges();
-
-                return RedirectToAction("Login");
+                return View(user);
             }
 
-            return View(user);
+            // 🔐 HASH PASSWORD
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
+
+            user.CreatedAt = DateTime.Now;
+
+            _context.TblUsers.Add(user);
+            _context.SaveChanges();
+
+            return RedirectToAction("Login");
         }
     }
 }

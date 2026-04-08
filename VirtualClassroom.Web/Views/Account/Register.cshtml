@@ -1,4 +1,45 @@
-﻿@model VirtualClassroom.Core.TblUsers
+﻿@* @model VirtualClassroom.Core.TblUsers *@
+
+@* @{ *@
+@*     Layout = null; *@
+@* } *@
+
+@* <link rel="stylesheet" href="~/css/login.css" /> *@
+
+@* <div class="login-container"> *@
+@*     <h2>Create Account</h2> *@
+
+@*     <form method="post"> *@
+
+@*         <input asp-for="FullName" placeholder="Full Name" required /> *@
+
+@*         <input asp-for="Email" placeholder="Email Address" required /> *@
+
+@*         <input asp-for="PasswordHash" type="password" placeholder="Password" required /> *@
+
+@*         <select asp-for="Role"> *@
+@*             <option value="">Select Role</option> *@
+@*             <option value="1">Faculty</option> *@
+@*             <option value="2">Student</option> *@
+@*         </select> *@
+
+@*         <button type="submit">Register</button> *@
+
+@*         <p class="or">or</p> *@
+@*         <button type="button" class="google-btn"> *@
+@*             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" class="google-icon" /> *@
+@*             Sign in with Google *@
+@*         </button> *@
+@*         <p> *@
+@*             Already have account? *@
+@*             <a href="/Account/Login">Login</a> *@
+@*         </p> *@
+@*     </form> *@
+@* </div> *@
+
+
+
+@model VirtualClassroom.Core.TblUsers
 
 @{
     Layout = null;
@@ -9,27 +50,22 @@
 <div class="login-container">
     <h2>Create Account</h2>
 
-    <form method="post">
+    <form asp-action="Register" method="post">
 
         <input asp-for="FullName" placeholder="Full Name" required />
 
-        <input asp-for="Email" placeholder="Email Address" required />
+        <input asp-for="Email" type="email" placeholder="Email Address" required />
 
+        <!-- IMPORTANT: use PasswordHash field -->
         <input asp-for="PasswordHash" type="password" placeholder="Password" required />
 
-        <select asp-for="Role">
-            <option value="">Select Role</option>
+        <select asp-for="Role" required>
             <option value="1">Faculty</option>
             <option value="2">Student</option>
         </select>
 
         <button type="submit">Register</button>
 
-        <p class="or">or</p>
-        <button type="button" class="google-btn">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" class="google-icon" />
-            Sign in with Google
-        </button>
         <p>
             Already have account?
             <a href="/Account/Login">Login</a>
