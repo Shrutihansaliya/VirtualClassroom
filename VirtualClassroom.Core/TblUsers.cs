@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 public enum UserRole
 {
@@ -18,25 +13,29 @@ namespace VirtualClassroom.Core
         [Key]
         public int UserId { get; set; }
 
-            public string FullName { get; set; }
+        [Required]
+        public string? FullName { get; set; }
+
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-        [Required]
-        public string PasswordHash { get; set; }
 
-            public string AuthProvider { get; set; }
-            public string ProviderUserId { get; set; }
+        // Nullable for Google users
+        [MinLength(6, ErrorMessage = "Password must be at least 6 characters")]
+        public string? PasswordHash { get; set; }
 
-            public string ProfilePicture { get; set; }
+        public string? AuthProvider { get; set; }
+
+        public string? ProviderUserId { get; set; }
+
+        public string? ProfilePicture { get; set; }
+
         [Required]
         public UserRole Role { get; set; }
 
-            public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
-            // Navigation
-            public ICollection<TblClassroom> CreatedClassrooms { get; set; }
-            public ICollection<TblClassroomMembers> ClassroomMembers { get; set; }
-        
+        public ICollection<TblClassroom>? CreatedClassrooms { get; set; }
+        public ICollection<TblClassroomMembers>? ClassroomMembers { get; set; }
     }
 }
