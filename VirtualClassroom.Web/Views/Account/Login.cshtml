@@ -21,9 +21,11 @@
         @*     Sign in with Google *@
         @* </button> *@
 
-        <button type="button" class="google-btn">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" class="google-icon" />
-            Sign in with Google
+        <button type="button" class="google-btn"
+                onclick="location.href='@Url.Action("GoogleLogin","Account")'">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
+                 class="google-icon" />
+            Continue with Google
         </button>
 
         <p class="register-link">
