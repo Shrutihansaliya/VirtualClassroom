@@ -1,23 +1,43 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@* @{ *@
+@*     ViewData["Title"] = "Home Page"; *@
+@* } *@
+
+@* <div class="text-center"> *@
+@*     <h1 class="display-4">Welcome</h1> *@
+@*     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p> *@
+@* </div> *@
+@* <div class="home-container text-center"> *@
+
+@*     <h1>Welcome to Virtual Classroom</h1> *@
+@*     <p>Learn, manage and collaborate easily</p> *@
+
+@*     <div class="mt-4"> *@
+@*         <a href="/Student/Dashboard" class="btn btn-primary btn-lg me-3"> *@
+@*             Student Dashboard *@
+@*         </a> *@
+
+@*         <a href="/Faculty/Dashboard" class="btn btn-success btn-lg"> *@
+@*             Faculty Dashboard *@
+@*         </a> *@
+@*     </div> *@
+
+@* </div> *@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
 <div class="home-container text-center">
 
     <h1>Welcome to Virtual Classroom</h1>
-    <p>Learn, manage and collaborate easily</p>
+    <p>Select your role</p>
 
     <div class="mt-4">
-        <a href="/Student/Dashboard" class="btn btn-primary btn-lg me-3">
-            Student Dashboard
+        <a asp-controller="Faculty" asp-action="Dashboard" class="btn btn-dark me-3">
+            Faculty Dashboard
         </a>
 
-        <a href="#" class="btn btn-success btn-lg">
-            Faculty Dashboard
+        <a asp-controller="Student" asp-action="Dashboard" class="btn btn-primary">
+            Student Dashboard
         </a>
     </div>
 

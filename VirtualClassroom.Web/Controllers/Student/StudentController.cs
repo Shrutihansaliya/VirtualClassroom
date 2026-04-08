@@ -1,14 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace VirtualClassroom.Web.Controllers
+namespace VirtualClassroom.Web.Controllers.Student
 {
     public class StudentController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         public IActionResult Dashboard()
         {
             return View();
