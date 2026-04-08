@@ -9,6 +9,23 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = "Cookies";
+    options.DefaultChallengeScheme = "Google";
+})
+.AddCookie("Cookies")
+.AddGoogle("Google", options =>
+{
+    var googleAuth = builder.Configuration.GetSection("Authentication:Google");
+    options.ClientId = googleAuth["ClientId"];
+    options.ClientSecret = googleAuth["ClientSecret"];
+
+    options.CallbackPath = "/signin-google";
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,11 +41,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
-    //pattern: "{controller=Account}/{action=Login}/{id?}";
-
 app.Run();
