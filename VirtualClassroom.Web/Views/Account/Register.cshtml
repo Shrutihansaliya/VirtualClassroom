@@ -1,0 +1,33 @@
+﻿@model VirtualClassroom.Core.TblUsers
+
+@{
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/css/login.css" />
+
+<div class="login-container">
+    <h2>Create Account</h2>
+
+    <form method="post">
+
+        <input asp-for="FullName" placeholder="Full Name" required />
+
+        <input asp-for="Email" placeholder="Email Address" required />
+
+        <input asp-for="PasswordHash" type="password" placeholder="Password" required />
+
+        <select asp-for="Role">
+            <option value="">Select Role</option>
+            <option value="1">Faculty</option>
+            <option value="2">Student</option>
+        </select>
+
+        <button type="submit">Register</button>
+
+        <p>
+            Already have account?
+            <a href="/Account/Login">Login</a>
+        </p>
+    </form>
+</div>
