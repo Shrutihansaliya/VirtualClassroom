@@ -473,7 +473,7 @@ namespace VirtualClassroom.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(TblUsers user)
+        public async IActionResult Register(TblUsers user)
         {
             if (!ModelState.IsValid)
                 return View(user);
@@ -489,9 +489,29 @@ namespace VirtualClassroom.Web.Controllers
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
 
             _context.TblUsers.Add(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
+            var invites = _context.TblClassroomInvites
+        .Where(x => x.Email == user.Email)
+        .ToList();
+
+            foreach (var invite in invites)
+            {
+                _context.TblClassroomMembers.Add(new TblClassroomMembers
+                {
+                    ClassroomId = invite.ClassroomId,
+                    UserId = user.UserId,
+                    JoinedAt = DateTime.Now
+                });
+
+                invite.IsAccepted = true;
+            }
+
+            await _context.SaveChangesAsync();
 
             return RedirectToAction("Login");
         }
+
+
     }
 }

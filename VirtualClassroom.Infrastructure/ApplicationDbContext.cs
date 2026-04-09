@@ -27,8 +27,9 @@ namespace VirtualClassroom.Infrastructure
         // DbSets
         public DbSet<TblUsers> TblUsers { get; set; }
         public DbSet<TblUserLogins> TblUserLogins { get; set; }
-        public DbSet<TblClassroom> TblClassroom { get; set; }
+        public DbSet<TblClassroom> TblClassrooms { get; set; }
         public DbSet<TblClassroomMembers> TblClassroomMembers { get; set; }
+        public DbSet<TblClassroomInvites> TblClassroomInvites { get; set; }
         public DbSet<TblLectures> TblLectures { get; set; }
         public DbSet<TblAssignments> TblAssignments { get; set; }
         public DbSet<TblSubmissions> TblSubmissions { get; set; }
