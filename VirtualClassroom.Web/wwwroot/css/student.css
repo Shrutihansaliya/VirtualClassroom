@@ -242,7 +242,34 @@ body {
     .std-sidebar li:active {
         background: rgba(255, 255, 255, 0.2);
     }
+/* DROPDOWN */
+.dropdown {
+    position: relative;
+}
 
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background: #1e293b;
+    padding: 10px;
+    border-radius: 10px;
+    width: 200px;
+    color: white;
+}
+
+    .dropdown-menu a {
+        display: block;
+        padding: 8px;
+        color: white;
+        text-decoration: none;
+    }
+
+        .dropdown-menu a:hover {
+            background: #334155;
+            border-radius: 5px;
+        }
 /* ================= MAIN ================= */
 .std-main {
     margin-left: 80px;

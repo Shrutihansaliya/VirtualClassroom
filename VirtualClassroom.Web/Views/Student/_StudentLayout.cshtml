@@ -33,7 +33,21 @@
             <div class="right">
                 <i class="bi bi-plus-lg"></i>
                 <i class="bi bi-grid-3x3-gap"></i>
-                <div class="profile-circle">S</div>
+
+                <!-- PROFILE DROPDOWN -->
+                <div class="dropdown">
+                    <div class="profile-circle" onclick="toggleDropdown()">
+                        @Context.Session.GetString("UserName")?.Substring(0, 1)
+                    </div>
+
+                    <div id="profileMenu" class="dropdown-menu">
+                        <p>@Context.Session.GetString("UserName")</p>
+                        <p>@Context.Session.GetString("UserEmail")</p>
+
+                        <a href="/Account/Profile">My Profile</a>
+                        <a href="/Account/Logout">Logout</a>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -45,4 +59,19 @@
     </div>
 
 </body>
+
 </html>
+<script>
+    function toggleDropdown() {
+        var menu = document.getElementById("profileMenu");
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+
+    // Close when clicking outside
+    window.onclick = function (e) {
+        if (!e.target.matches('.profile-circle')) {
+            var dropdown = document.getElementById("profileMenu");
+            if (dropdown) dropdown.style.display = "none";
+        }
+    }
+</script>
