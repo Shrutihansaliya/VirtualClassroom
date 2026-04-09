@@ -14,7 +14,9 @@ namespace VirtualClassroom.Core
             public int ClassroomId { get; set; }
             public int UserId { get; set; }
 
-            public DateTime JoinedAt { get; set; }
+        public string Email { get; set; } // ✅ ADD THIS
+
+        public DateTime JoinedAt { get; set; }
 
             // Navigation
             public TblClassroom Classroom { get; set; }
