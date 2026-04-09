@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Session;
 using Microsoft.EntityFrameworkCore;
 using VirtualClassroom.Infrastructure;
 
@@ -8,8 +9,14 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-
+//session
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // session timeout
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+//google authentication
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "Cookies";
@@ -40,7 +47,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseSession();                    //  enable session first
+app.UseMiddleware<SessionMiddleware>(); //  then custom middleware
 app.UseAuthentication();
 app.UseAuthorization();
 

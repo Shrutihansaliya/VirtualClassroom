@@ -201,6 +201,12 @@ namespace VirtualClassroom.Web.Controllers
                 // 🔐 Verify password
                 if (BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
                 {
+                    // ✅ ADD THIS
+                    HttpContext.Session.SetInt32("UserId", user.UserId);
+                    HttpContext.Session.SetString("UserName", user.FullName);
+                    HttpContext.Session.SetString("UserEmail", user.Email);
+                    HttpContext.Session.SetString("UserRole", user.Role.ToString());
+
                     return RedirectToRoleDashboard(user.Role);
                 }
             }
@@ -233,6 +239,12 @@ namespace VirtualClassroom.Web.Controllers
 
             if (user != null)
             {
+                // ✅ ADD SESSION
+                HttpContext.Session.SetInt32("UserId", user.UserId);
+                HttpContext.Session.SetString("UserName", user.FullName);
+                HttpContext.Session.SetString("UserEmail", user.Email);
+                HttpContext.Session.SetString("UserRole", user.Role.ToString());
+
                 return RedirectToRoleDashboard(user.Role);
             }
 
@@ -280,7 +292,11 @@ namespace VirtualClassroom.Web.Controllers
 
             _context.TblUsers.Add(user);
             _context.SaveChanges();
-
+            // ✅ ADD SESSION
+            HttpContext.Session.SetInt32("UserId", user.UserId);
+            HttpContext.Session.SetString("UserName", user.FullName);
+            HttpContext.Session.SetString("UserEmail", user.Email);
+            HttpContext.Session.SetString("UserRole", user.Role.ToString());
             return RedirectToRoleDashboard(user.Role);
         }
 
@@ -320,6 +336,12 @@ namespace VirtualClassroom.Web.Controllers
             _context.TblUsers.Add(user);
             _context.SaveChanges();
 
+            return RedirectToAction("Login");
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
             return RedirectToAction("Login");
         }
     }
