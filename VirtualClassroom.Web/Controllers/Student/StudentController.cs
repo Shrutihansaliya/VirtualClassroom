@@ -6,7 +6,7 @@ using VirtualClassroom.Web.Filters;
 namespace VirtualClassroom.Web.Controllers.Student
 {
     [RoleAuthorize("Student")]
-    public class StudentController : Controller
+    public class StudentController : BaseController
     {
         private readonly ApplicationDbContext _context;
 

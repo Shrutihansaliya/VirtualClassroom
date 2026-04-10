@@ -1,21 +1,136 @@
 ﻿
+@* @{ *@
+@*     ViewData["Title"] = "Invite Members"; *@
+@* } *@
+
+@* <h3>Invite Members</h3> *@
+
+@* <form asp-action="InviteMembers" method="post" enctype="multipart/form-data"> *@
+
+@*     <input type="hidden" name="classroomId" value="@ViewBag.ClassroomId" /> *@
+
+@*     <div class="mb-3"> *@
+@*         <label>Upload Email File (.csv or .txt)</label> *@
+@*         <input type="file" name="file" class="form-control" required /> *@
+@*     </div> *@
+
+@*     <button type="submit" class="btn btn-primary"> *@
+@*         Send Invites *@
+@*     </button> *@
+
+@* </form> *@
+
+<a href="@Url.Action("Dashboard", "Faculty")" class="btn-back">
+    ← Back to Dashboard
+</a>
+
 @{
     ViewData["Title"] = "Invite Members";
 }
 
-<h3>Invite Members</h3>
+<style>
+    body {
+        background: #f4f8ff;
+        font-family: 'Segoe UI', sans-serif;
+    }
 
-<form asp-action="InviteMembers" method="post" enctype="multipart/form-data">
+    .btn-back {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 8px 14px;
+        border: 1px solid #bcd3ff;
+        background: #f4f8ff;
+        color: #1f3b73;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 14px;
+    }
 
-    <input type="hidden" name="classroomId" value="@ViewBag.ClassroomId" />
+        .btn-back:hover {
+            background: #e6f0ff;
+        }
 
-    <div class="mb-3">
-        <label>Upload Email File (.csv or .txt)</label>
-        <input type="file" name="file" class="form-control" required />
-    </div>
+    .invite-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 25px;
+        background: #ffffff;
+        border: 1px solid #d6e4ff;
+        border-radius: 8px;
+    }
 
-    <button type="submit" class="btn btn-primary">
-        Send Invites
-    </button>
+    .page-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #1f3b73;
+    }
 
-</form>
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 500;
+        color: #2c4a7a;
+    }
+
+    input[type="file"] {
+        width: 95%;
+        border: 1px solid #bcd3ff;
+        padding: 10px;
+        background: #f9fbff;
+        border-radius: 5px;
+    }
+
+        input[type="file"]:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 5px rgba(74,144,226,0.3);
+        }
+
+    .btn-submit {
+        padding: 10px 18px;
+        border: none;
+        background: #4a90e2;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 5px;
+        font-weight: 500;
+        transition: 0.2s;
+    }
+
+        .btn-submit:hover {
+            background: #3b7fd6;
+        }
+
+    .note {
+        font-size: 12px;
+        color: #6b86b3;
+        margin-top: 8px;
+    }
+</style>
+
+<div class="invite-container">
+
+    <div class="page-title">Invite Members</div>
+
+    <form asp-action="InviteMembers" method="post" enctype="multipart/form-data">
+
+        <input type="hidden" name="classroomId" value="@ViewBag.ClassroomId" />
+
+        <div class="form-group">
+            <label>Upload Email File (.csv or .txt)</label>
+            <input type="file" name="file" required />
+            <div class="note">Only .csv or .txt files allowed</div>
+        </div>
+
+        <button type="submit" class="btn-submit">
+            Send Invites
+        </button>
+
+    </form>
+
+</div>

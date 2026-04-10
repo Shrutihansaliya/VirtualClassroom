@@ -1,39 +1,178 @@
-﻿@model List<VirtualClassroom.Core.TblClassroomInvites>
+﻿@* @model List<VirtualClassroom.Core.TblClassroomInvites> *@
+
+@* @{ *@
+@*     ViewData["Title"] = "View Members"; *@
+@* } *@
+
+@* <h2>Classroom Members</h2> *@
+
+@* <table class="table table-bordered"> *@
+@*     <thead> *@
+@*         <tr> *@
+@*             <th>Email</th> *@
+@*             <th>Status</th> *@
+@*             <th>Sent At</th> *@
+@*         </tr> *@
+@*     </thead> *@
+
+@*     <tbody> *@
+@*         @foreach (var item in Model) *@
+@*         { *@
+@*             <tr> *@
+@*                 <td>@item.Email</td> *@
+
+@*                 <td> *@
+@*                     @if (item.IsAccepted) *@
+@*                     { *@
+@*                         <span class="badge bg-success">Joined</span> *@
+@*                     } *@
+@*                     else *@
+@*                     { *@
+@*                         <span class="badge bg-warning">Invited</span> *@
+@*                     } *@
+@*                 </td> *@
+
+@*                 <td>@item.SentAt</td> *@
+@*             </tr> *@
+@*         } *@
+@*     </tbody> *@
+@* </table> *@
+
+
+@model List<VirtualClassroom.Core.TblClassroomInvites>
+
+<a href="@Url.Action("Dashboard", "Faculty")" class="btn-back">
+    ← Back to Dashboard
+</a>
 
 @{
     ViewData["Title"] = "View Members";
 }
 
-<h2>Classroom Members</h2>
+<style>
+    body {
+        background: #f4f8ff;
+        font-family: 'Segoe UI', sans-serif;
+    }
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Email</th>
-            <th>Status</th>
-            <th>Sent At</th>
-        </tr>
-    </thead>
+    .btn-back {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding: 8px 14px;
+        border: 1px solid #bcd3ff;
+        background: #f4f8ff;
+        color: #1f3b73;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 14px;
+    }
 
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Email</td>
-
-                <td>
-                    @if (item.IsAccepted)
-                    {
-                        <span class="badge bg-success">Joined</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-warning">Invited</span>
-                    }
-                </td>
-
-                <td>@item.SentAt</td>
-            </tr>
+        .btn-back:hover {
+            background: #e6f0ff;
         }
-    </tbody>
-</table>
+
+    .container-box {
+        max-width: 900px;
+        margin: 40px auto;
+        background: #fff;
+        border: 1px solid #d6e4ff;
+        border-radius: 8px;
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 22px;
+        font-weight: 600;
+        color: #1f3b73;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        background: #eaf2ff;
+        color: #1f3b73;
+        text-align: left;
+        padding: 12px;
+        font-weight: 600;
+        border-bottom: 1px solid #cfe0ff;
+    }
+
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #e3ecff;
+        color: #2c4a7a;
+    }
+
+    tr:hover {
+        background: #f3f7ff;
+    }
+
+    .badge {
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .badge-joined {
+        background: #e6f0ff;
+        color: #1f5fd1;
+        border: 1px solid #bcd3ff;
+    }
+
+    .badge-invited {
+        background: #f0f5ff;
+        color: #4a6fb3;
+        border: 1px solid #d6e4ff;
+    }
+
+    .date-text {
+        color: #6b86b3;
+        font-size: 13px;
+    }
+</style>
+
+<div class="container-box">
+
+    <div class="title">Classroom Members</div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Sent At</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Email</td>
+
+                    <td>
+                        @if (item.IsAccepted)
+                        {
+                            <span class="badge badge-joined">Joined</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-invited">Invited</span>
+                        }
+                    </td>
+
+                    <td class="date-text">
+                        @item.SentAt
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

@@ -1,9 +1,4 @@
-﻿
-
-
-/*for new design*/
-
-/* RESET */
+﻿/* RESET */
 * {
     margin: 0;
     padding: 0;
@@ -11,19 +6,23 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
+/* BACKGROUND */
+body {
+    background: linear-gradient(135deg, #eef5ff, #dfe9f3);
+}
+
 /* MAIN LAYOUT */
 .main-container {
     display: flex;
     height: 100vh;
-    background: linear-gradient(135deg, #eef5ff, #dfe9f3);
 }
 
-/* LEFT PANEL (Reduced + Better Color) */
+/* LEFT PANEL */
 .left-panel {
-    flex: 0.8; /* decreased width */
-    background: linear-gradient(135deg, #1e3c72, #2a5298); /* premium dark blue */
+    flex: 0.9;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
     color: white;
-    padding: 50px;
+    padding: 60px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -31,25 +30,23 @@
 
 /* BRAND */
 .brand h1 {
-    font-size: 48px; /* increased */
+    font-size: 48px;
     font-weight: bold;
-    letter-spacing: 1px;
 }
 
 .brand p {
-    font-size: 20px;
-    margin-top: 12px;
-    opacity: 0.9;
+    font-size: 18px;
+    margin-top: 10px;
 }
 
 /* FEATURES */
 .features {
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
     .features h3 {
         font-size: 22px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
 
     .features ul {
@@ -57,92 +54,105 @@
     }
 
         .features ul li {
-            margin: 14px 0;
-            font-size: 18px; /* increased */
-            opacity: 0.95;
+            margin: 10px 0;
+            font-size: 16px;
         }
 
 /* RIGHT PANEL */
 .right-panel {
-    flex: 1.2; /* increased space */
+    flex: 1.1;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* LOGIN BOX */
+/* REGISTER CARD */
 .login-container {
-    width: 380px;
+    width: 420px;
     background: #ffffff;
-    padding: 45px;
+    padding: 35px;
     border-radius: 20px;
-    box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.1);
     text-align: center;
+    overflow: hidden; /* removed scroll */
 }
 
-    /* HEADINGS */
+    /* TITLE */
     .login-container h2 {
-        font-size: 28px; /* increased */
-        margin-bottom: 8px;
+        font-size: 28px;
+        margin-bottom: 5px;
     }
 
 .subtitle {
+    font-size: 14px;
     color: gray;
-    margin-bottom: 25px;
-    font-size: 15px;
+    margin-bottom: 18px;
 }
 
-/* INPUT */
-.login-container input {
+/* INPUTS */
+.login-container input,
+.login-container select {
     width: 100%;
-    padding: 14px;
-    margin: 12px 0;
+    padding: 12px;
+    margin: 8px 0;
     border: 1px solid #ddd;
-    border-radius: 12px;
-    font-size: 15px;
+    border-radius: 10px;
+    font-size: 14px;
     transition: 0.3s;
 }
 
-    .login-container input:focus {
+    /* FOCUS */
+    .login-container input:focus,
+    .login-container select:focus {
         border-color: #2a5298;
         outline: none;
-        box-shadow: 0 0 6px rgba(42, 82, 152, 0.4);
+        box-shadow: 0 0 5px rgba(42, 82, 152, 0.4);
     }
 
-/* LOGIN BUTTON */
+/* DROPDOWN */
+.login-container select {
+    appearance: none;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%232a5298' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+    cursor: pointer;
+}
+
+/* BUTTON */
 .login-btn {
     width: 100%;
-    padding: 14px;
+    padding: 13px;
     margin-top: 12px;
     background: linear-gradient(135deg, #1e3c72, #2a5298);
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     color: white;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
     transition: 0.3s;
 }
 
     .login-btn:hover {
-        transform: scale(1.04);
+        transform: scale(1.03);
     }
 
 /* GOOGLE BUTTON */
 .google-btn {
     width: 100%;
     padding: 12px;
-    margin-top: 12px;
+    margin-top: 10px;
     background: #f5f7fa;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     font-size: 14px;
     cursor: pointer;
-    transition: 0.3s;
 }
 
     .google-btn:hover {
@@ -153,16 +163,14 @@
     width: 20px;
 }
 
-/* OR TEXT */
+/* TEXT */
 .or {
-    margin: 18px 0;
+    margin: 12px 0;
     color: gray;
-    font-size: 14px;
 }
 
-/* REGISTER */
 .register-link {
-    margin-top: 18px;
+    margin-top: 12px;
     font-size: 14px;
 }
 
@@ -173,9 +181,12 @@
     }
 
 /* ERROR */
+.text-danger,
 .error {
     color: red;
-    margin-top: 12px;
+    font-size: 13px;
+    text-align: left;
+    margin-bottom: 5px;
 }
 
 /* RESPONSIVE */
@@ -187,6 +198,8 @@
     .left-panel {
         display: none;
     }
+
+    .login-container {
+        width: 90%;
+    }
 }
-
-

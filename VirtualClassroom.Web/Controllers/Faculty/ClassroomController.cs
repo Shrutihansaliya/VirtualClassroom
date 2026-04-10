@@ -112,24 +112,44 @@ public class ClassroomController : Controller
             }
         }
 
+        //foreach (var email in emails)
+        //{
+        //    // 1. Save to DB
+        //    var invite = new TblClassroomInvites
+        //    {
+        //        ClassroomId = classroomId,
+        //        Email = email,
+        //        IsAccepted = false,
+        //        SentAt = DateTime.Now
+        //    };
+
+        //    _context.TblClassroomInvites.Add(invite);
+
+        //    // 2. Send Email
+        //    await SendInviteEmail(email, classroomId);
+        //}
+        var invites = new List<TblClassroomInvites>();
+
         foreach (var email in emails)
         {
-            // 1. Save to DB
-            var invite = new TblClassroomInvites
+            invites.Add(new TblClassroomInvites
             {
                 ClassroomId = classroomId,
                 Email = email,
                 IsAccepted = false,
                 SentAt = DateTime.Now
-            };
-
-            _context.TblClassroomInvites.Add(invite);
-
-            // 2. Send Email
-            await SendInviteEmail(email, classroomId);
+            });
         }
 
+        _context.TblClassroomInvites.AddRange(invites);
+        //await _context.SaveChangesAsync();
+
         await _context.SaveChangesAsync();
+
+        foreach (var email in emails)
+        {
+            await SendInviteEmail(email, classroomId);
+        }
 
         TempData["Success"] = "Invitations sent successfully!";
         //return RedirectToAction("Index");
@@ -168,7 +188,10 @@ public class ClassroomController : Controller
 
         var from = new EmailAddress("jaillymaniya07@gmail.com", "ScheduleX");
 
-        var classroomLink = $"https://localhost:7038/Student/Classroom/Join/{classroomId}";
+        //var classroomLink = $"https://localhost:7038/Student/Classroom/Join/{classroomId}";
+        var request = HttpContext.Request;
+        var baseUrl = $"{request.Scheme}://{request.Host}";
+        var classroomLink = $"{baseUrl}/Student/Classroom/Join/{classroomId}";
 
         var msg = MailHelper.CreateSingleEmail(
             from,
