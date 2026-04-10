@@ -118,6 +118,7 @@ namespace VirtualClassroom.Web.Controllers
             if (email == null)
                 return RedirectToAction("Login");
 
+            // Prevent duplicate user
             if (_context.TblUsers.Any(x => x.Email == email))
             {
                 var existingUser = _context.TblUsers.First(x => x.Email == email);
@@ -163,7 +164,6 @@ namespace VirtualClassroom.Web.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Register(TblUsers user)
         {
             if (!ModelState.IsValid)
                 return View(user);
@@ -193,28 +193,10 @@ namespace VirtualClassroom.Web.Controllers
             user.CreatedAt = DateTime.Now;
             user.AuthProvider = "Local";
 
+            // 🔐 Hash password
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
 
             _context.TblUsers.Add(user);
-            await _context.SaveChangesAsync();
-
-            var invites = await _context.TblClassroomInvites
-        .Where(x => x.Email == user.Email)
-        .ToListAsync();
-
-            foreach (var invite in invites)
-            {
-                _context.TblClassroomMembers.Add(new TblClassroomMembers
-                {
-                    ClassroomId = invite.ClassroomId,
-                    UserId = user.UserId,
-                    JoinedAt = DateTime.Now
-                });
-
-                invite.IsAccepted = true;
-            }
-
-            await _context.SaveChangesAsync();
 
             // ✅ AUTO LOGIN (SESSION SET)
             HttpContext.Session.SetInt32("UserId", user.UserId);
