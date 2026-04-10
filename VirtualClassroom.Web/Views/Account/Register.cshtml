@@ -89,11 +89,14 @@
         <!-- Email -->
         <input asp-for="Email" placeholder="Email Address" />
         <span asp-validation-for="Email" class="text-danger"></span>
+        <input asp-for="Email" type="email" placeholder="Email Address" required />
 
         <!-- Password -->
 
         <input name="PasswordHash" type="password" placeholder="Password" />
         <span asp-validation-for="PasswordHash" class="text-danger"></span>
+        <!-- IMPORTANT: use PasswordHash field -->
+        <input asp-for="PasswordHash" type="password" placeholder="Password" required />
 
         <!-- Role -->
         <select asp-for="Role">
