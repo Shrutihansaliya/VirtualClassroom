@@ -4,7 +4,6 @@ using VirtualClassroom.Core;
 using VirtualClassroom.Infrastructure;
 using VirtualClassroom.Web.Filters;
 using System.Text.RegularExpressions;
-using Microsoft.EntityFrameworkCore;
 namespace VirtualClassroom.Web.Controllers.Faculty
 {
     [RoleAuthorize("Faculty")]
