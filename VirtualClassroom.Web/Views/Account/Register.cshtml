@@ -1,4 +1,72 @@
-﻿@model VirtualClassroom.Core.TblUsers
+﻿@* @model VirtualClassroom.Core.TblUsers *@
+
+@* @{ *@
+@*     Layout = null; *@
+@* } *@
+
+@* <link rel="stylesheet" href="~/css/login.css" /> *@
+
+@* <div class="login-container"> *@
+@*     <h2>Create Account</h2> *@
+
+@*     <form asp-action="Register" method="post"> *@
+
+@*         <!-- Validation Summary --> *@
+@*         <div asp-validation-summary="All" class="text-danger"></div> *@
+
+@*         <!-- Full Name --> *@
+@*         <input asp-for="FullName" placeholder="Full Name" /> *@
+@*         <span asp-validation-for="FullName" class="text-danger"></span> *@
+
+@*         <!-- Email --> *@
+@*         <input asp-for="Email" placeholder="Email Address" /> *@
+@*         <span asp-validation-for="Email" class="text-danger"></span> *@
+
+@*         <!-- Password --> *@
+@*         <input asp-for="PasswordHash" type="password" placeholder="Password" /> *@
+@*         <span asp-validation-for="PasswordHash" class="text-danger"></span> *@
+
+@*         <!-- Role --> *@
+@*         <select asp-for="Role"> *@
+@*             <option value="">Select Role</option> *@
+@*             <option value="1">Faculty</option> *@
+@*             <option value="2">Student</option> *@
+@*         </select> *@
+@*         <span asp-validation-for="Role" class="text-danger"></span> *@
+
+@*         <!-- Error --> *@
+@*         @if (ViewBag.Error != null) *@
+@*         { *@
+@*             <p style="color:red">@ViewBag.Error</p> *@
+@*         } *@
+
+@*         <button type="submit">Register</button> *@
+
+@*         <p class="or">or</p> *@
+
+@*         <!-- ✅ Google Button FIXED --> *@
+@*         <button type="button" class="google-btn" *@
+@*                 onclick="location.href='@Url.Action("GoogleLogin","Account")'"> *@
+@*             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" *@
+@*                  class="google-icon" /> *@
+@*             Continue with Google *@
+@*         </button> *@
+
+@*         <p> *@
+@*             Already have account? *@
+@*             <a href="/Account/Login">Login</a> *@
+@*         </p> *@
+@*     </form> *@
+@* </div> *@
+
+@* <!-- ✅ IMPORTANT: Validation Scripts --> *@
+@* @section Scripts { *@
+@*     <partial name="_ValidationScriptsPartial" /> *@
+@* } *@
+
+
+
+@model VirtualClassroom.Core.TblUsers
 
 @{
     Layout = null;
@@ -21,11 +89,14 @@
         <!-- Email -->
         <input asp-for="Email" placeholder="Email Address" />
         <span asp-validation-for="Email" class="text-danger"></span>
+        <input asp-for="Email" type="email" placeholder="Email Address" required />
 
         <!-- Password -->
-         
+
         <input name="PasswordHash" type="password" placeholder="Password" />
         <span asp-validation-for="PasswordHash" class="text-danger"></span>
+        <!-- IMPORTANT: use PasswordHash field -->
+        <input asp-for="PasswordHash" type="password" placeholder="Password" required />
 
         <!-- Role -->
         <select asp-for="Role">
