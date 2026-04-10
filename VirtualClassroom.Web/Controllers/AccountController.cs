@@ -8,7 +8,6 @@ using System.Security.Claims;
 using BCrypt.Net;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
 
 namespace VirtualClassroom.Web.Controllers
 {
