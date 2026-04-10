@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-public enum UserRole
-{
-    Faculty = 1,
-    Student = 2
-}
+    public enum UserRole
+    {
+        Faculty = 1,
+        Student = 2
+    }
 
 namespace VirtualClassroom.Core
 {
