@@ -215,6 +215,7 @@ namespace VirtualClassroom.Web.Controllers
             return View();
         }
 
+        // 🔹 POST LOGIN (PUT YOUR CODE HERE)
 
 
 
@@ -275,7 +276,7 @@ namespace VirtualClassroom.Web.Controllers
 
             var user = _context.TblUsers.FirstOrDefault(x => x.Email == email);
 
-            if (user != null)
+            if (user != null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
             {
                 // ✅ ADD SESSION
                 HttpContext.Session.SetInt32("UserId", user.UserId);
@@ -292,6 +293,11 @@ namespace VirtualClassroom.Web.Controllers
 
             return RedirectToAction("SelectRole");
         }
+                if (user.Role == UserRole.Student)
+                    return RedirectToAction("Dashboard", "Student");
+                else
+                    return RedirectToAction("Dashboard", "Faculty");
+            }
 
         // ================= ROLE SELECTION =================
         [HttpGet]
