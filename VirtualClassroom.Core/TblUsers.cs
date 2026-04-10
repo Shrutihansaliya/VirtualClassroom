@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+namespace VirtualClassroom .Core
 
     public enum UserRole
     {
@@ -6,8 +7,7 @@
         Student = 2
     }
 
-namespace VirtualClassroom.Core
-{
+
     public class TblUsers
     {
         [Key]
