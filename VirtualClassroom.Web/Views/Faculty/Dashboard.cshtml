@@ -1,29 +1,36 @@
-﻿@{
+﻿@model List<VirtualClassroom.Core.TblClassroom>
+
+@{
     Layout = "~/Views/Faculty/_FacultyLayout.cshtml";
     ViewData["Title"] = "Faculty Dashboard";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="toast show align-items-center text-bg-success">
+        <div class="d-flex">
+            <div class="toast-body">
+                @TempData["Success"]
+            </div>
+        </div>
+    </div>
 }
 
 <h2>Classroom</h2>
 
 <div class="class-grid">
 
-    <!-- CARD 1 -->
-    <div class="class-card">
-        <div class="card-header dark">
-            <h5>Machine Learning - Sem 8</h5>
-            <p>Rakesh Savant</p>
-        </div>
+    @foreach (var item in Model)
+    {
+        <div class="class-card">
 
-        <div class="card-body">
-            <img src="~/images/class.png" class="class-img" />
-        </div>
+            <div class="card-header dark">
+            </div>
 
-        <div class="card-footer">
-            <i class="bi bi-folder"></i>
-            <i class="bi bi-three-dots-vertical"></i>
-        </div>
-    </div>
 
+            <div class="card-footer">
+                <i class="bi bi-folder"></i>
+               
     <!-- CARD 2 -->
     <div class="class-card">
         <div class="card-header gray">
@@ -34,11 +41,13 @@
         <div class="card-body">
             <img src="~/images/class.png" class="class-img" />
         </div>
-
+                
         <div class="card-footer">
             <i class="bi bi-folder"></i>
-            <i class="bi bi-three-dots-vertical"></i>
+                <i class="bi bi-three-dots-vertical"></i>
+            </div>
+
         </div>
-    </div>
+    }
 
 </div>

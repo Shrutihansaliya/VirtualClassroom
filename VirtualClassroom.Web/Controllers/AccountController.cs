@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using BCrypt.Net;
 using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace VirtualClassroom.Web.Controllers
 {
@@ -100,7 +102,7 @@ namespace VirtualClassroom.Web.Controllers
             return RedirectToAction("SelectRole");
         }
 
-        // ================= ROLE SELECTION =================
+        // ================= ROLE =================
         [HttpGet]
         public IActionResult SelectRole()
         {
@@ -163,7 +165,6 @@ namespace VirtualClassroom.Web.Controllers
 
 
         [HttpPost]
-        public IActionResult Register(TblUsers user)
         {
             if (!ModelState.IsValid)
                 return View(user);
@@ -197,7 +198,6 @@ namespace VirtualClassroom.Web.Controllers
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
 
             _context.TblUsers.Add(user);
-            _context.SaveChanges();
 
             // ✅ AUTO LOGIN (SESSION SET)
             HttpContext.Session.SetInt32("UserId", user.UserId);
