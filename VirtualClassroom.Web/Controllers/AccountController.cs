@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using VirtualClassroom.Infrastructure;
 using VirtualClassroom.Core;
 using Microsoft.AspNetCore.Authentication;
@@ -46,7 +45,7 @@ namespace VirtualClassroom.Web.Controllers
                     BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
                 {
                     // ✅ SESSION
-                     HttpContext.Session.SetInt32("UserId", user.UserId);
+                    HttpContext.Session.SetInt32("UserId", user.UserId);
                     HttpContext.Session.SetString("UserName", user.FullName);
                     HttpContext.Session.SetString("UserEmail", user.Email);
                     HttpContext.Session.SetString("UserRole", user.Role.ToString());
@@ -100,11 +99,6 @@ namespace VirtualClassroom.Web.Controllers
 
             return RedirectToAction("SelectRole");
         }
-                if (user.Role == UserRole.Student)
-                    return RedirectToAction("Dashboard", "Student");
-                else
-                    return RedirectToAction("Dashboard", "Faculty");
-            }
 
         // ================= ROLE SELECTION =================
         [HttpGet]
@@ -174,6 +168,14 @@ namespace VirtualClassroom.Web.Controllers
             if (!ModelState.IsValid)
                 return View(user);
 
+            var passwordPattern = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$");
+
+            if (!passwordPattern.IsMatch(user.PasswordHash))
+            {
+                ViewBag.Error = "Password must be at least 6 characters and include uppercase, lowercase, number, and special character.";
+                return View(user);
+            }
+
             // 🚫 Duplicate email check
             if (_context.TblUsers.Any(x => x.Email == user.Email))
             {
@@ -221,9 +223,12 @@ namespace VirtualClassroom.Web.Controllers
             // 🔥 Redirect to Google logout
             return Redirect("https://accounts.google.com/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost:5001/Account/Login");
         }
+
     }
 
 
 
 
 }
+
+   
