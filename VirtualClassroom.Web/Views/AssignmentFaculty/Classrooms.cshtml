@@ -1,0 +1,25 @@
+﻿@model List<VirtualClassroom.Core.TblClassroom>
+@{
+    ViewData["Title"] = "Assignment Classrooms";
+    Layout = "~/Views/Faculty/_FacultyLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/assignment.css" />
+
+<div class="container">
+    <h2>My Classrooms</h2>
+
+    <div class="grid">
+        @foreach (var item in Model)
+        {
+            <div class="card">
+                <h3>@item.ClassName</h3>
+                <p>@item.Description</p>
+
+                <a asp-action="Index" asp-route-classroomId="@item.ClassroomId" class="btn">
+                    View Assignments
+                </a>
+            </div>
+        }
+    </div>
+</div>

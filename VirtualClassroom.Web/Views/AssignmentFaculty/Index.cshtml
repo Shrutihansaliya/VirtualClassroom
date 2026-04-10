@@ -1,0 +1,37 @@
+﻿@model List<VirtualClassroom.Core.TblAssignments>
+@{
+    ViewData["Title"] = "Assignments";
+    Layout = "~/Views/Faculty/_FacultyLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/assignment.css" />
+
+<div class="container">
+    <div class="header">
+        <h2>Assignments</h2>
+        <a asp-action="Create" asp-route-classroomId="@ViewBag.ClassroomId" class="btn">
+            + Add Assignment
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <p>No assignments found.</p>
+    }
+
+    <div class="grid">
+        @foreach (var item in Model)
+        {
+            <div class="card">
+                <h3>@item.Title</h3>
+                <p>@item.Description</p>
+                <p><b>Due:</b> @item.DueDate.ToString("dd MMM yyyy")</p>
+
+                <div class="card-footer">
+                    <a asp-action="Details" asp-route-id="@item.AssignmentId">View</a>
+                    <a asp-action="Delete" asp-route-id="@item.AssignmentId" onclick="return confirm('Delete?')">Delete</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

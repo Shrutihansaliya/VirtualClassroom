@@ -1,0 +1,87 @@
+﻿@* Assignment creation with real-time validation *@
+@model VirtualClassroom.Core.TblAssignments
+@{
+    ViewData["Title"] = "Create Assignment";
+    Layout = "~/Views/Faculty/_FacultyLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/assignment.css" />
+
+<div class="container">
+    <h2>Create Assignment</h2>
+
+    <form asp-action="Create" method="post" enctype="multipart/form-data" id="form">
+        <input type="hidden" asp-for="ClassroomId" value="@ViewBag.ClassroomId" />
+
+        <label>Title</label>
+        <input asp-for="Title" id="title" />
+        <span class="error" id="titleError"></span>
+
+        <label>Description</label>
+        <textarea asp-for="Description" id="desc"></textarea>
+        <span class="error" id="descError"></span>
+
+        <label>Due Date</label>
+        <input asp-for="DueDate" type="datetime-local" id="date" />
+        <span class="error" id="dateError"></span>
+
+        <label>Upload File</label>
+        <input type="file" name="file" id="fileInput" />
+        <span class="error" id="fileError"></span>
+
+        <button type="submit">Create</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("form").addEventListener("submit", function (e) {
+
+            let valid = true;
+
+            const title = document.getElementById("title");
+            const desc = document.getElementById("desc");
+            const date = document.getElementById("date");
+            const file = document.getElementById("fileInput").files[0];
+
+            // Title
+            if (title.value.trim() === "") {
+                document.getElementById("titleError").innerText = "Title required";
+                valid = false;
+            }
+
+            // Description
+            if (desc.value.trim() === "") {
+                document.getElementById("descError").innerText = "Description required";
+                valid = false;
+            }
+
+            // Date
+            if (!date.value) {
+                document.getElementById("dateError").innerText = "Select date";
+                valid = false;
+            }
+
+            // File validation
+            if (!file) {
+                document.getElementById("fileError").innerText = "File required";
+                valid = false;
+            } else {
+                if (file.size > 1048576) {
+                    document.getElementById("fileError").innerText = "Max 1MB allowed";
+                    valid = false;
+                }
+
+                const ext = file.name.split('.').pop().toLowerCase();
+                const allowed = ["pdf", "doc", "docx", "jpg", "jpeg"];
+
+                if (!allowed.includes(ext)) {
+                    document.getElementById("fileError").innerText = "Invalid file type";
+                    valid = false;
+                }
+            }
+
+            if (!valid) e.preventDefault();
+        });
+    </script>
+}

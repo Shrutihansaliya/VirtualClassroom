@@ -11,13 +11,16 @@ namespace VirtualClassroom.Core
     {
         [Key]
         public int AssignmentId { get; set; }
-
-            public int ClassroomId { get; set; }
-            public string Title { get; set; }
-            public string Description { get; set; }
-
-            public DateTime DueDate { get; set; }
-            public int CreatedBy { get; set; }
+        [Required]
+        public int ClassroomId { get; set; }
+        [Required(ErrorMessage = "Title is required")]
+        public string Title { get; set; }
+        [Required(ErrorMessage = "Description is required")]
+        public string Description { get; set; }
+        [Required(ErrorMessage = "Due Date is required")]
+        public DateTime DueDate { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public int CreatedBy { get; set; }
 
         // ✅ NEW FIELDS (for file upload)
         public string FilePath { get; set; }     // path of file (PDF/Image)

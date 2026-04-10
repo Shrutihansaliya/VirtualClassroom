@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Session;
 using Microsoft.EntityFrameworkCore;
 using VirtualClassroom.Infrastructure;
+using VirtualClassroom.Web.Services.Blob;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +50,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+//blob storage 
+builder.Services.AddScoped<BlobService>();
 
 var app = builder.Build();
 
