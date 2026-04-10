@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using BCrypt.Net;
 using System.Text.RegularExpressions;
-using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
 
 namespace VirtualClassroom.Web.Controllers
 {
@@ -102,7 +100,7 @@ namespace VirtualClassroom.Web.Controllers
             return RedirectToAction("SelectRole");
         }
 
-        // ================= ROLE =================
+        // ================= ROLE SELECTION =================
         [HttpGet]
         public IActionResult SelectRole()
         {
@@ -165,6 +163,7 @@ namespace VirtualClassroom.Web.Controllers
 
 
         [HttpPost]
+        public IActionResult Register(TblUsers user)
         {
             if (!ModelState.IsValid)
                 return View(user);
@@ -198,6 +197,7 @@ namespace VirtualClassroom.Web.Controllers
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
 
             _context.TblUsers.Add(user);
+            _context.SaveChanges();
 
             // ✅ AUTO LOGIN (SESSION SET)
             HttpContext.Session.SetInt32("UserId", user.UserId);
@@ -209,20 +209,20 @@ namespace VirtualClassroom.Web.Controllers
             return RedirectToRoleDashboard(user.Role);
         }
 
-        //public IActionResult Logout()
-        //{
-        //    HttpContext.Session.Clear();
-        //    return RedirectToAction("Login");
-        //}
-
         public IActionResult Logout()
         {
-            // Clear your app session
             HttpContext.Session.Clear();
-
-            // 🔥 Redirect to Google logout
-            return Redirect("https://accounts.google.com/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost:5001/Account/Login");
+            return RedirectToAction("Login");
         }
+
+        //public IActionResult Logout()
+        //{
+        //    // Clear your app session
+        //    HttpContext.Session.Clear();
+
+        //    // 🔥 Redirect to Google logout
+        //    return Redirect("https://accounts.google.com/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost:5001/Account/Login");
+        //}
 
     }
 
@@ -230,5 +230,3 @@ namespace VirtualClassroom.Web.Controllers
 
 
 }
-
-   

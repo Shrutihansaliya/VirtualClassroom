@@ -20,34 +20,58 @@
 
 <div class="class-grid">
 
-    @foreach (var item in Model)
+    @if (Model != null && Model.Count > 0)
     {
-        <div class="class-card">
+        foreach (var item in Model)
+        {
+            <div class="class-card">
 
-            <div class="card-header dark">
+                <!-- HEADER -->
+                <div class="card-header dark">
+                    <h5>@item.ClassName</h5>
+                    <p>@item.Description</p>
+                </div>
+
+                <!-- BODY (optional image) -->
+                @* 
+                <div class="card-body">
+                    <img src="~/images/class.png" class="class-img" />
+                </div>
+                *@
+
+                <!-- FOOTER -->
+                <div class="card-footer">
+
+                    <i class="bi bi-folder"></i>
+
+                    @* <table> *@
+                    @*     <tr> *@
+                    @*         <td> *@
+                                <a href="/Classroom/InviteMembers?classroomId=@item.ClassroomId">
+                                    <i class="bi bi-person-plus"></i> Add Members
+                                </a>
+                        @*     </td> *@
+                        @* </tr> *@
+
+                        @* <tr> *@
+                        @*     <td> *@
+                                <a href="/Classroom/Members?classroomId=@item.ClassroomId">
+                                    <i class="bi bi-people"></i> View Members
+                                </a>
+                    @*         </td> *@
+                    @*     </tr> *@
+                    @* </table> *@
+
+                    <i class="bi bi-three-dots-vertical"></i>
+
+                </div>
+
             </div>
-
-
-            <div class="card-footer">
-                <i class="bi bi-folder"></i>
-               
-    <!-- CARD 2 -->
-    <div class="class-card">
-        <div class="card-header gray">
-            <h5>IT5013 - Introduction</h5>
-            <p>Rakesh Savant</p>
-        </div>
-
-        <div class="card-body">
-            <img src="~/images/class.png" class="class-img" />
-        </div>
-                
-        <div class="card-footer">
-            <i class="bi bi-folder"></i>
-                <i class="bi bi-three-dots-vertical"></i>
-            </div>
-
-        </div>
+        }
+    }
+    else
+    {
+        <p>No classrooms available</p>
     }
 
 </div>
