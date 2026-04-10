@@ -19,7 +19,19 @@ namespace VirtualClassroom.Web.Controllers.Faculty
 
         public IActionResult Dashboard()
         {
-            return View();
+            //return View();
+            var facultyId = HttpContext.Session.GetInt32("UserId");
+
+            if (facultyId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var classrooms = _context.TblClassrooms
+                .Where(c => c.CreatedBy == facultyId.Value)
+                .ToList();
+
+            return View(classrooms);
         }
         public IActionResult CreateClassroom()
         {

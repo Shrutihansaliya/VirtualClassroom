@@ -1,0 +1,39 @@
+﻿@model List<VirtualClassroom.Core.TblClassroomInvites>
+
+@{
+    ViewData["Title"] = "View Members";
+}
+
+<h2>Classroom Members</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Sent At</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Email</td>
+
+                <td>
+                    @if (item.IsAccepted)
+                    {
+                        <span class="badge bg-success">Joined</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning">Invited</span>
+                    }
+                </td>
+
+                <td>@item.SentAt</td>
+            </tr>
+        }
+    </tbody>
+</table>

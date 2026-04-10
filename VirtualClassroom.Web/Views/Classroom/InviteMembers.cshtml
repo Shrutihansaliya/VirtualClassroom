@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "Invite Members";
+}
+
+<h3>Invite Members</h3>
+
+<form asp-action="InviteMembers" method="post" enctype="multipart/form-data">
+
+    <input type="hidden" name="classroomId" value="@ViewBag.ClassroomId" />
+
+    <div class="mb-3">
+        <label>Upload Email File (.csv or .txt)</label>
+        <input type="file" name="file" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Send Invites
+    </button>
+
+</form>
