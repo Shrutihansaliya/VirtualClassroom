@@ -1,15 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+namespace VirtualClassroom .Core;
 
-namespace VirtualClassroom.Core
-{
     public enum UserRole
     {
         Faculty = 1,
         Student = 2
     }
 
-   
+
     public class TblUsers
     {
         [Key]
@@ -40,4 +38,3 @@ namespace VirtualClassroom.Core
         public ICollection<TblClassroom>? CreatedClassrooms { get; set; }
         public ICollection<TblClassroomMembers>? ClassroomMembers { get; set; }
     }
-}
