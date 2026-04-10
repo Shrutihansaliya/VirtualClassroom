@@ -1,19 +1,13 @@
-﻿////namespace VirtualClassroom.Web.Controllers
-////{
-////    public class AccountController
-////    {
-////    }
-////}
-
+﻿
 //using Microsoft.AspNetCore.Mvc;
 //using VirtualClassroom.Infrastructure;
 //using VirtualClassroom.Core;
-//using System.Linq;
 //using Microsoft.AspNetCore.Authentication;
-//using System.Security.Claims;
 //using Microsoft.AspNetCore.Authentication.Google;
 //using Microsoft.AspNetCore.Authentication.Cookies;
 //using System.Security.Claims;
+//using BCrypt.Net;
+
 //namespace VirtualClassroom.Web.Controllers
 //{
 //    public class AccountController : Controller
@@ -25,35 +19,45 @@
 //            _context = context;
 //        }
 
-//        // LOGIN PAGE
+//        // ================= LOGIN =================
 //        [HttpGet]
 //        public IActionResult Login()
 //        {
 //            return View();
 //        }
 
-//        // LOGIN POST
 //        [HttpPost]
 //        public IActionResult Login(string email, string password)
 //        {
-//            var user = _context.TblUsers
-//                .FirstOrDefault(u => u.Email == email && u.PasswordHash == password);
+//            var user = _context.TblUsers.FirstOrDefault(u => u.Email == email);
 
 //            if (user != null)
 //            {
-//                if (user.Role == UserRole.Student)
-//                    return RedirectToAction("Dashboard", "Student");
+//                // 🚫 Google users must use Google login
+//                if (user.AuthProvider == "Google")
+//                {
+//                    ViewBag.Error = "Please login using Google";
+//                    return View();
+//                }
 
-//                else
-//                    return RedirectToAction("Dashboard", "Faculty");
+//                // 🔐 Verify password
+//                if (BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+//                {
+//                    // ✅ ADD THIS
+//                    HttpContext.Session.SetInt32("UserId", user.UserId);
+//                    HttpContext.Session.SetString("UserName", user.FullName);
+//                    HttpContext.Session.SetString("UserEmail", user.Email);
+//                    HttpContext.Session.SetString("UserRole", user.Role.ToString());
+
+//                    return RedirectToRoleDashboard(user.Role);
+//                }
 //            }
 
-//            ViewBag.Error = "Invalid Login";
+//            ViewBag.Error = "Invalid email or password";
 //            return View();
 //        }
 
-
-//        // 🔹 GOOGLE LOGIN BUTTON ACTION
+//        // ================= GOOGLE LOGIN =================
 //        public IActionResult GoogleLogin()
 //        {
 //            var redirectUrl = Url.Action("GoogleResponse", "Account");
@@ -73,16 +77,19 @@
 //            var name = result.Principal.FindFirst(ClaimTypes.Name)?.Value;
 //            var googleId = result.Principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-//            // 🔍 Check DB
 //            var user = _context.TblUsers.FirstOrDefault(x => x.Email == email);
 
 //            if (user != null)
 //            {
-//                // ✅ Existing user → login
+//                // ✅ ADD SESSION
+//                HttpContext.Session.SetInt32("UserId", user.UserId);
+//                HttpContext.Session.SetString("UserName", user.FullName);
+//                HttpContext.Session.SetString("UserEmail", user.Email);
+//                HttpContext.Session.SetString("UserRole", user.Role.ToString());
+
 //                return RedirectToRoleDashboard(user.Role);
 //            }
 
-//            // ❌ New user → store temp data
 //            TempData["Email"] = email;
 //            TempData["Name"] = name;
 //            TempData["GoogleId"] = googleId;
@@ -90,6 +97,7 @@
 //            return RedirectToAction("SelectRole");
 //        }
 
+//        // ================= ROLE SELECTION =================
 //        [HttpGet]
 //        public IActionResult SelectRole()
 //        {
@@ -106,20 +114,31 @@
 //            if (email == null)
 //                return RedirectToAction("Login");
 
+//            // Prevent duplicate user
+//            if (_context.TblUsers.Any(x => x.Email == email))
+//            {
+//                var existingUser = _context.TblUsers.First(x => x.Email == email);
+//                return RedirectToRoleDashboard(existingUser.Role);
+//            }
+
 //            var user = new TblUsers
 //            {
 //                Email = email,
-//                FullName = name,
+//                FullName = name ?? "User",
 //                AuthProvider = "Google",
 //                ProviderUserId = googleId,
 //                Role = (UserRole)role,
 //                CreatedAt = DateTime.Now,
-//                PasswordHash = "" // not needed
+//                PasswordHash = null
 //            };
 
 //            _context.TblUsers.Add(user);
 //            _context.SaveChanges();
-
+//            // ✅ ADD SESSION
+//            HttpContext.Session.SetInt32("UserId", user.UserId);
+//            HttpContext.Session.SetString("UserName", user.FullName);
+//            HttpContext.Session.SetString("UserEmail", user.Email);
+//            HttpContext.Session.SetString("UserRole", user.Role.ToString());
 //            return RedirectToRoleDashboard(user.Role);
 //        }
 
@@ -131,29 +150,41 @@
 //            return RedirectToAction("Dashboard", "Faculty");
 //        }
 
-
-//        // REGISTER PAGE
+//        // ================= REGISTER =================
 //        [HttpGet]
 //        public IActionResult Register()
 //        {
 //            return View();
 //        }
 
-//        // REGISTER POST
 //        [HttpPost]
 //        public IActionResult Register(TblUsers user)
 //        {
-//            if (ModelState.IsValid)
+//            if (!ModelState.IsValid)
+//                return View(user);
+
+//            // ❗ Duplicate email check
+//            if (_context.TblUsers.Any(x => x.Email == user.Email))
 //            {
-//                user.CreatedAt = DateTime.Now;
-
-//                _context.TblUsers.Add(user);
-//                _context.SaveChanges();
-
-//                return RedirectToAction("Login");
+//                ViewBag.Error = "Email already exists";
+//                return View(user);
 //            }
 
-//            return View(user);
+//            user.CreatedAt = DateTime.Now;
+
+//            // 🔐 Hash password
+//            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
+
+//            _context.TblUsers.Add(user);
+//            _context.SaveChanges();
+
+//            return RedirectToAction("Login");
+//        }
+
+//        public IActionResult Logout()
+//        {
+//            HttpContext.Session.Clear();
+//            return RedirectToAction("Login");
 //        }
 //    }
 //}
@@ -184,6 +215,10 @@ namespace VirtualClassroom.Web.Controllers
             return View();
         }
 
+
+
+
+        //my new login
         [HttpPost]
         public IActionResult Login(string email, string password)
         {
@@ -191,7 +226,7 @@ namespace VirtualClassroom.Web.Controllers
 
             if (user != null)
             {
-                // 🚫 Google users must use Google login
+                // 🚫 Google users restriction
                 if (user.AuthProvider == "Google")
                 {
                     ViewBag.Error = "Please login using Google";
@@ -199,9 +234,10 @@ namespace VirtualClassroom.Web.Controllers
                 }
 
                 // 🔐 Verify password
-                if (BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+                if (!string.IsNullOrEmpty(user.PasswordHash) &&
+                    BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
                 {
-                    // ✅ ADD THIS
+                    // ✅ SESSION
                     HttpContext.Session.SetInt32("UserId", user.UserId);
                     HttpContext.Session.SetString("UserName", user.FullName);
                     HttpContext.Session.SetString("UserEmail", user.Email);
@@ -214,6 +250,8 @@ namespace VirtualClassroom.Web.Controllers
             ViewBag.Error = "Invalid email or password";
             return View();
         }
+
+
 
         // ================= GOOGLE LOGIN =================
         public IActionResult GoogleLogin()
@@ -300,6 +338,10 @@ namespace VirtualClassroom.Web.Controllers
             return RedirectToRoleDashboard(user.Role);
         }
 
+
+
+        //my new
+
         private IActionResult RedirectToRoleDashboard(UserRole role)
         {
             if (role == UserRole.Student)
@@ -308,12 +350,17 @@ namespace VirtualClassroom.Web.Controllers
             return RedirectToAction("Dashboard", "Faculty");
         }
 
-        // ================= REGISTER =================
+
+
+
+        //my new code
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
+
+
 
         [HttpPost]
         public IActionResult Register(TblUsers user)
@@ -321,7 +368,7 @@ namespace VirtualClassroom.Web.Controllers
             if (!ModelState.IsValid)
                 return View(user);
 
-            // ❗ Duplicate email check
+            // 🚫 Duplicate email check
             if (_context.TblUsers.Any(x => x.Email == user.Email))
             {
                 ViewBag.Error = "Email already exists";
@@ -329,6 +376,7 @@ namespace VirtualClassroom.Web.Controllers
             }
 
             user.CreatedAt = DateTime.Now;
+            user.AuthProvider = "Local";
 
             // 🔐 Hash password
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
@@ -336,7 +384,14 @@ namespace VirtualClassroom.Web.Controllers
             _context.TblUsers.Add(user);
             _context.SaveChanges();
 
-            return RedirectToAction("Login");
+            // ✅ AUTO LOGIN (SESSION SET)
+            HttpContext.Session.SetInt32("UserId", user.UserId);
+            HttpContext.Session.SetString("UserName", user.FullName);
+            HttpContext.Session.SetString("UserEmail", user.Email);
+            HttpContext.Session.SetString("UserRole", user.Role.ToString());
+
+            // ✅ REDIRECT BASED ON ROLE
+            return RedirectToRoleDashboard(user.Role);
         }
 
         public IActionResult Logout()
@@ -345,4 +400,8 @@ namespace VirtualClassroom.Web.Controllers
             return RedirectToAction("Login");
         }
     }
+
+
+
+
 }
