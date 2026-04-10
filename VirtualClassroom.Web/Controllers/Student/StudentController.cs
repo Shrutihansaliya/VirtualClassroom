@@ -4,7 +4,7 @@ using VirtualClassroom.Web.Filters;
 namespace VirtualClassroom.Web.Controllers.Student
 {
     [RoleAuthorize("Student")]
-    public class StudentController : Controller
+    public class StudentController : BaseController
     {
         
         public IActionResult Dashboard()

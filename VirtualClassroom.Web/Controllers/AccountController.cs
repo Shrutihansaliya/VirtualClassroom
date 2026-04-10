@@ -276,7 +276,7 @@ namespace VirtualClassroom.Web.Controllers
 
             var user = _context.TblUsers.FirstOrDefault(x => x.Email == email);
 
-            if (user != null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+            if (user != null)
             {
                 // ✅ ADD SESSION
                 HttpContext.Session.SetInt32("UserId", user.UserId);
@@ -293,11 +293,8 @@ namespace VirtualClassroom.Web.Controllers
 
             return RedirectToAction("SelectRole");
         }
-                if (user.Role == UserRole.Student)
-                    return RedirectToAction("Dashboard", "Student");
-                else
-                    return RedirectToAction("Dashboard", "Faculty");
-            }
+
+
 
         // ================= ROLE SELECTION =================
         [HttpGet]
@@ -400,10 +397,19 @@ namespace VirtualClassroom.Web.Controllers
             return RedirectToRoleDashboard(user.Role);
         }
 
+        //public IActionResult Logout()
+        //{
+        //    HttpContext.Session.Clear();
+        //    return RedirectToAction("Login");
+        //}
+
         public IActionResult Logout()
         {
+            // Clear your app session
             HttpContext.Session.Clear();
-            return RedirectToAction("Login");
+
+            // 🔥 Redirect to Google logout
+            return Redirect("https://accounts.google.com/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost:5001/Account/Login");
         }
     }
 
