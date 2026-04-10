@@ -1,174 +1,4 @@
-﻿////namespace VirtualClassroom.Web.Controllers
-////{
-////    public class AccountController
-////    {
-////    }
-////}
-
-//using Microsoft.AspNetCore.Mvc;
-//using VirtualClassroom.Infrastructure;
-//using VirtualClassroom.Core;
-//using System.Linq;
-//using Microsoft.AspNetCore.Authentication;
-//using System.Security.Claims;
-//using Microsoft.AspNetCore.Authentication.Google;
-//using Microsoft.AspNetCore.Authentication.Cookies;
-//using System.Security.Claims;
-//namespace VirtualClassroom.Web.Controllers
-//{
-//    public class AccountController : Controller
-//    {
-//        private readonly ApplicationDbContext _context;
-
-//        public AccountController(ApplicationDbContext context)
-//        {
-//            _context = context;
-//        }
-
-//        // LOGIN PAGE
-//        [HttpGet]
-//        public IActionResult Login()
-//        {
-//            return View();
-//        }
-
-//        // LOGIN POST
-//        [HttpPost]
-//        public IActionResult Login(string email, string password)
-//        {
-//            var user = _context.TblUsers
-//                .FirstOrDefault(u => u.Email == email && u.PasswordHash == password);
-
-//            if (user != null)
-//            {
-//                if (user.Role == UserRole.Student)
-//                    return RedirectToAction("Dashboard", "Student");
-
-//                else
-//                    return RedirectToAction("Dashboard", "Faculty");
-//            }
-
-//            ViewBag.Error = "Invalid Login";
-//            return View();
-//        }
-
-
-//        // 🔹 GOOGLE LOGIN BUTTON ACTION
-//        public IActionResult GoogleLogin()
-//        {
-//            var redirectUrl = Url.Action("GoogleResponse", "Account");
-//            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
-
-//            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
-//        }
-
-//        public async Task<IActionResult> GoogleResponse()
-//        {
-//            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-//            if (!result.Succeeded)
-//                return RedirectToAction("Login");
-
-//            var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
-//            var name = result.Principal.FindFirst(ClaimTypes.Name)?.Value;
-//            var googleId = result.Principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-//            // 🔍 Check DB
-//            var user = _context.TblUsers.FirstOrDefault(x => x.Email == email);
-
-//            if (user != null)
-//            {
-//                // ✅ Existing user → login
-//                return RedirectToRoleDashboard(user.Role);
-//            }
-
-//            // ❌ New user → store temp data
-//            TempData["Email"] = email;
-//            TempData["Name"] = name;
-//            TempData["GoogleId"] = googleId;
-
-//            return RedirectToAction("SelectRole");
-//        }
-
-//        [HttpGet]
-//        public IActionResult SelectRole()
-//        {
-//            return View();
-//        }
-
-//        [HttpPost]
-//        public IActionResult SelectRole(int role)
-//        {
-//            var email = TempData["Email"]?.ToString();
-//            var name = TempData["Name"]?.ToString();
-//            var googleId = TempData["GoogleId"]?.ToString();
-
-//            if (email == null)
-//                return RedirectToAction("Login");
-
-//            var user = new TblUsers
-//            {
-//                Email = email,
-//                FullName = name,
-//                AuthProvider = "Google",
-//                ProviderUserId = googleId,
-//                Role = (UserRole)role,
-//                CreatedAt = DateTime.Now,
-//                PasswordHash = "" // not needed
-//            };
-
-//            _context.TblUsers.Add(user);
-//            _context.SaveChanges();
-
-//            return RedirectToRoleDashboard(user.Role);
-//        }
-
-//        private IActionResult RedirectToRoleDashboard(UserRole role)
-//        {
-//            if (role == UserRole.Student)
-//                return RedirectToAction("Dashboard", "Student");
-
-//            return RedirectToAction("Dashboard", "Faculty");
-//        }
-
-//        // ================= REGISTER =================
-//        [HttpGet]
-//        public IActionResult Register()
-//        {
-//            return View();
-//        }
-
-//        [HttpPost]
-//        public IActionResult Register(TblUsers user)
-//        {
-//            if (!ModelState.IsValid)
-//                return View(user);
-
-//            // ❗ Duplicate email check
-//            if (_context.TblUsers.Any(x => x.Email == user.Email))
-//            {
-//                ViewBag.Error = "Email already exists";
-//                return View(user);
-//            }
-
-//            user.CreatedAt = DateTime.Now;
-
-//            // 🔐 Hash password
-//            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
-
-//            _context.TblUsers.Add(user);
-//            _context.SaveChanges();
-
-//            return RedirectToAction("Login");
-//        }
-
-//        public IActionResult Logout()
-//        {
-//            HttpContext.Session.Clear();
-//            return RedirectToAction("Login");
-//        }
-//    }
-//}
+﻿
 using Microsoft.AspNetCore.Mvc;
 using VirtualClassroom.Infrastructure;
 using VirtualClassroom.Core;
@@ -177,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using BCrypt.Net;
+using System.Text.RegularExpressions;
 
 namespace VirtualClassroom.Web.Controllers
 {
@@ -215,7 +46,7 @@ namespace VirtualClassroom.Web.Controllers
                     BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
                 {
                     // ✅ SESSION
-                    HttpContext.Session.SetInt32("UserId", user.UserId);
+                     HttpContext.Session.SetInt32("UserId", user.UserId);
                     HttpContext.Session.SetString("UserName", user.FullName);
                     HttpContext.Session.SetString("UserEmail", user.Email);
                     HttpContext.Session.SetString("UserRole", user.Role.ToString());
@@ -252,7 +83,7 @@ namespace VirtualClassroom.Web.Controllers
 
             var user = _context.TblUsers.FirstOrDefault(x => x.Email == email);
 
-            if (user != null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+            if (user != null)
             {
                 // ✅ ADD SESSION
                 HttpContext.Session.SetInt32("UserId", user.UserId);
@@ -269,11 +100,6 @@ namespace VirtualClassroom.Web.Controllers
 
             return RedirectToAction("SelectRole");
         }
-                if (user.Role == UserRole.Student)
-                    return RedirectToAction("Dashboard", "Student");
-                else
-                    return RedirectToAction("Dashboard", "Faculty");
-            }
 
         // ================= ROLE SELECTION =================
         [HttpGet]
@@ -343,12 +169,27 @@ namespace VirtualClassroom.Web.Controllers
             if (!ModelState.IsValid)
                 return View(user);
 
+            var passwordPattern = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$");
+
+            if (!passwordPattern.IsMatch(user.PasswordHash))
+            {
+                ViewBag.Error = "Password must be at least 6 characters and include uppercase, lowercase, number, and special character.";
+                return View(user);
+            }
+
             // 🚫 Duplicate email check
             if (_context.TblUsers.Any(x => x.Email == user.Email))
             {
                 ViewBag.Error = "Email already exists";
                 return View(user);
             }
+
+            if (_context.TblUsers.Any(x => x.FullName == user.FullName))
+            {
+                ViewBag.Error = " Username already exists";
+                return View(user);
+            }
+
 
             user.CreatedAt = DateTime.Now;
             user.AuthProvider = "Local";
