@@ -12,7 +12,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //session
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // session timeout
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
@@ -23,6 +23,15 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = "Google";
 })
 .AddCookie("Cookies")
+//.AddGoogle("Google", options =>
+//{
+//    var googleAuth = builder.Configuration.GetSection("Authentication:Google");
+//    options.ClientId = googleAuth["ClientId"];
+//    options.ClientSecret = googleAuth["ClientSecret"];
+
+//    options.CallbackPath = "/signin-google";
+//});
+
 .AddGoogle("Google", options =>
 {
     var googleAuth = builder.Configuration.GetSection("Authentication:Google");
@@ -30,6 +39,14 @@ builder.Services.AddAuthentication(options =>
     options.ClientSecret = googleAuth["ClientSecret"];
 
     options.CallbackPath = "/signin-google";
+
+    //  HANDLE CANCEL / FAILURE
+    options.Events.OnRemoteFailure = context =>
+    {
+        context.Response.Redirect("/Account/Login?error=Google login cancelled");
+        context.HandleResponse(); // VERY IMPORTANT
+        return Task.CompletedTask;
+    };
 });
 
 
@@ -47,6 +64,16 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.Use(async (context, next) =>
+{
+    context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+    context.Response.Headers["Pragma"] = "no-cache";
+    context.Response.Headers["Expires"] = "0";
+
+    await next();
+});
+
 app.UseSession();                    //  enable session first
 app.UseMiddleware<SessionMiddleware>(); //  then custom middleware
 app.UseAuthentication();
