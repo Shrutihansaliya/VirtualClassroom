@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace VirtualClassroom .Core
+namespace VirtualClassroom .Core;
 
     public enum UserRole
     {
@@ -38,4 +38,3 @@ namespace VirtualClassroom .Core
         public ICollection<TblClassroom>? CreatedClassrooms { get; set; }
         public ICollection<TblClassroomMembers>? ClassroomMembers { get; set; }
     }
-}
