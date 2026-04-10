@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using VirtualClassroom.Core;
 using VirtualClassroom.Infrastructure;
+using VirtualClassroom.Web.Filters;
 
 namespace VirtualClassroom.Web.Controllers.Faculty
 {
+    [RoleAuthorize("Faculty")]
     public class FacultyController : Controller
     {
 

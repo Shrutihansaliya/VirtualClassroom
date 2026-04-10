@@ -9,7 +9,7 @@ namespace VirtualClassroom.Core
         Student = 2
     }
 
-    [Table("TblUsers")] // map to your Azure table
+   
     public class TblUsers
     {
         [Key]

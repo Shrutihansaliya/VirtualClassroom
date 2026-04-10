@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VirtualClassroom.Infrastructure;
+using VirtualClassroom.Web.Filters;
 
 namespace VirtualClassroom.Web.Controllers.Student
 {
+    [RoleAuthorize("Student")]
     public class StudentController : Controller
     {
         private readonly ApplicationDbContext _context;
