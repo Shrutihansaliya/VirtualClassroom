@@ -341,6 +341,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using BCrypt.Net;
+using Microsoft.EntityFrameworkCore;
 
 namespace VirtualClassroom.Web.Controllers
 {
@@ -473,7 +474,7 @@ namespace VirtualClassroom.Web.Controllers
         }
 
         [HttpPost]
-        public async IActionResult Register(TblUsers user)
+        public async Task<IActionResult> Register(TblUsers user)
         {
             if (!ModelState.IsValid)
                 return View(user);
@@ -491,9 +492,9 @@ namespace VirtualClassroom.Web.Controllers
             _context.TblUsers.Add(user);
             await _context.SaveChangesAsync();
 
-            var invites = _context.TblClassroomInvites
+            var invites = await _context.TblClassroomInvites
         .Where(x => x.Email == user.Email)
-        .ToList();
+        .ToListAsync();
 
             foreach (var invite in invites)
             {
