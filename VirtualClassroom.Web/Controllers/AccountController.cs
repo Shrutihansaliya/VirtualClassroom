@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using BCrypt.Net;
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 
@@ -240,6 +241,7 @@ namespace VirtualClassroom.Web.Controllers
             // 🔥 Redirect to Google logout
             return Redirect("https://accounts.google.com/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost:5001/Account/Login");
         }
+
     }
 
 
