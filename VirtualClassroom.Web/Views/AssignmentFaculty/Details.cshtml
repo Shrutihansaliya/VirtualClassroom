@@ -1,0 +1,38 @@
+﻿@* Show student submission status *@
+@model List<VirtualClassroom.Core.TblSubmissions>
+@{
+    ViewData["Title"] = "Submissions";
+    Layout = "~/Views/Faculty/_FacultyLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/assignment.css" />
+
+<div class="container">
+    <h2>Student Submissions</h2>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>File</th>
+            <th>Date</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Student.FullName</td>
+                <td class="@(item.Status == "Submitted" ? "green" : "red")">
+                    @item.Status
+                </td>
+                <td>
+                    @if (item.FilePath != null)
+                    {
+                        <a href="@item.FilePath" target="_blank">View</a>
+                    }
+                </td>
+                <td>@item.SubmittedAt</td>
+            </tr>
+        }
+    </table>
+</div>
