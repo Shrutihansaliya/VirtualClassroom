@@ -17,6 +17,7 @@ namespace VirtualClassroom.Web.Controllers.Faculty
         }
         public IActionResult Dashboard()
         {
+            ViewData["Title"] = "Dashboard";
             //return View();
             var facultyId = HttpContext.Session.GetInt32("UserId");
 
@@ -33,6 +34,7 @@ namespace VirtualClassroom.Web.Controllers.Faculty
         }
         public IActionResult CreateClassroom()
         {
+            ViewData["Title"] = "Create Classroom";
             return View();
         }
 

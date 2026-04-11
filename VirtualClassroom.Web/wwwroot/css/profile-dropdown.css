@@ -1,0 +1,86 @@
+﻿/* ================= GLOBAL WRAPPER ================= */
+.pd-wrapper {
+    position: relative;
+    z-index: 1000;
+}
+
+/* ================= MENU ================= */
+.pd-menu {
+    position: relative;
+}
+
+/* ================= AVATAR ================= */
+.pd-avatar {
+    width: 40px;
+    height: 40px;
+    background: #0f172a;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* ================= DROPDOWN ================= */
+.pd-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 12px;
+    width: 220px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    z-index: 9999;
+    animation: pdFade 0.3s ease;
+}
+
+    /* SHOW */
+    .pd-dropdown.show {
+        display: block;
+    }
+
+/* ================= TEXT ================= */
+.pd-name {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.pd-email {
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* ================= LINKS ================= */
+.pd-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    text-decoration: none;
+    color: #0f172a;
+    border-radius: 6px;
+    transition: 0.3s;
+    font-size: 14px;
+}
+
+    .pd-dropdown a:hover {
+        background: #f1f5f9;
+        color: #2563eb;
+    }
+
+/* ================= ANIMATION ================= */
+@keyframes pdFade {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

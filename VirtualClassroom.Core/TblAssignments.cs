@@ -14,11 +14,16 @@ namespace VirtualClassroom.Core
         [Required]
         public int ClassroomId { get; set; }
         [Required(ErrorMessage = "Title is required")]
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "Title must be 3–100 characters")]
         public string Title { get; set; }
         [Required(ErrorMessage = "Description is required")]
+        [StringLength(500, ErrorMessage = "Max 500 characters allowed")]
         public string Description { get; set; }
+
         [Required(ErrorMessage = "Due Date is required")]
+        [DataType(DataType.DateTime)]
         public DateTime DueDate { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public int CreatedBy { get; set; }
 
