@@ -1,0 +1,26 @@
+﻿
+
+
+@{
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/css/auth.css" />
+
+<div class="auth-container">
+    <div class="auth-box">
+
+        <h2>Enter OTP</h2>
+        <p class="subtitle">Check your email and enter OTP</p>
+
+        <form method="post">
+            <input type="text" name="otp" placeholder="Enter OTP" required />
+            <button type="submit">Verify</button>
+        </form>
+
+        <p class="message">@ViewBag.Error</p>
+
+        <a href="/Account/Login" class="back-link">← Back to Login</a>
+
+    </div>
+</div>
