@@ -249,13 +249,11 @@ namespace VirtualClassroom.Web.Controllers.Faculty
 
                 // 🔥 SEND EMAIL
                 var students = _context.TblClassroomMembers
-    .Include(x => x.User)
-    .Where(x => x.ClassroomId == model.ClassroomId)
-    .Select(x => x.User)
-    .AsEnumerable() // 🔥 move to memory
-    .Where(u => u.Role.ToString() == "Student")
-    .ToList();
-
+      .Include(x => x.User)
+      .Where(x => x.ClassroomId == model.ClassroomId)
+      .Select(x => x.User)
+      .ToList();
+                Console.WriteLine("Students count: " + students.Count);
                 foreach (var student in students)
                 {
                     if (!string.IsNullOrEmpty(student.Email))
@@ -390,7 +388,7 @@ namespace VirtualClassroom.Web.Controllers.Faculty
             Console.WriteLine("To: " + email);
 
             var apiKey = _config["SendGrid:ApiKey"];
-
+            Console.WriteLine("API KEY: " + apiKey); // 🔥 ADD THIS
             if (string.IsNullOrEmpty(apiKey))
             {
                 Console.WriteLine("❌ SendGrid API Key missing");
@@ -412,6 +410,15 @@ namespace VirtualClassroom.Web.Controllers.Faculty
             var response = await client.SendEmailAsync(msg);
 
             Console.WriteLine("Email Status: " + response.StatusCode);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("❌ Email failed");
+            }
+            else
+            {
+                Console.WriteLine("✅ Email sent");
+            }
         }
     }
 }

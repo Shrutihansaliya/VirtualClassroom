@@ -67,6 +67,8 @@ namespace VirtualClassroom.Web.Controllers
         {
             var redirectUrl = Url.Action("GoogleResponse", "Account");
             var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            // 🔥 FORCE GOOGLE ACCOUNT SELECTION
+            properties.Items["prompt"] = "select_account";
 
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
