@@ -42,9 +42,16 @@
                         <!-- Footer -->
                         <div class="card-footer bg-white border-0 d-flex justify-content-between">
 
-                            <button class="btn btn-outline-primary btn-sm px-3">
+                            @* <button class="btn btn-outline-primary btn-sm px-3"> *@
+                            @*     📂 Open *@
+                            @* </button> *@
+
+                            <a asp-controller="Assignment"
+                               asp-action="ByClass"
+                               asp-route-classId="@item.ClassroomId"
+                               class="btn btn-outline-primary btn-sm px-3">
                                 📂 Open
-                            </button>
+                            </a>
 
                             <button class="btn btn-outline-secondary btn-sm px-3">
                                 ⋮
