@@ -79,6 +79,7 @@ namespace VirtualClassroom.Infrastructure
                 .HasForeignKey(cm => cm.ClassroomId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+          
             // TblLectures
             modelBuilder.Entity<TblLectures>()
                 .HasOne(l => l.Classroom)
@@ -92,10 +93,16 @@ namespace VirtualClassroom.Infrastructure
                 .HasForeignKey(a => a.ClassroomId);
 
             // TblSubmissions
+            //modelBuilder.Entity<TblSubmissions>()
+            //    .HasOne(s => s.Assignment)
+            //    .WithMany(a => a.Submissions)
+            //    .HasForeignKey(s => s.AssignmentId);
+                
             modelBuilder.Entity<TblSubmissions>()
                 .HasOne(s => s.Assignment)
                 .WithMany(a => a.Submissions)
-                .HasForeignKey(s => s.AssignmentId);
+                .HasForeignKey(s => s.AssignmentId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // TblMaterials
             modelBuilder.Entity<TblMaterials>()
@@ -134,6 +141,7 @@ namespace VirtualClassroom.Infrastructure
     .WithMany()
     .HasForeignKey(s => s.StudentId)
     .OnDelete(DeleteBehavior.Restrict);
+
 
             modelBuilder.Entity<TblMaterials>()
     .HasOne(m => m.Faculty)

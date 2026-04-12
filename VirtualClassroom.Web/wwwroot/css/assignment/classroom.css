@@ -1,0 +1,162 @@
+﻿/* =========================================================
+   🎯 CLASSROOM PAGE (FULL OVERRIDE CLEAN UI)
+   ========================================================= */
+
+.classroom-page {
+    background: #f1f5f9; /* remove blue tone */
+    min-height: 100vh;
+    padding: 20px;
+}
+
+    /* Remove any inherited dark backgrounds */
+    .classroom-page * {
+        box-sizing: border-box;
+    }
+
+    /* Heading */
+    .classroom-page h2 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 25px;
+        position: relative;
+    }
+
+        .classroom-page h2::after {
+            content: "";
+            width: 60px;
+            height: 4px;
+            background: #2563eb;
+            display: block;
+            margin-top: 8px;
+            border-radius: 10px;
+        }
+
+    /* Grid */
+    .classroom-page .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 25px;
+    }
+
+    /* Card */
+    .classroom-page .card {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 18px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        transition: 0.3s;
+        position: relative;
+    }
+
+        /* Top accent */
+        .classroom-page .card::before {
+            content: "";
+            height: 4px;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #3b82f6;
+            border-top-left-radius: 18px;
+            border-top-right-radius: 18px;
+        }
+
+        /* Hover */
+        .classroom-page .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Title */
+        .classroom-page .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        /* Description */
+        .classroom-page .card p {
+            font-size: 14px;
+            color: #64748b;
+            margin: 8px 0;
+        }
+
+    /* ================= BUTTON FIX ================= */
+
+    /* REMOVE dark box completely */
+    .classroom-page .card-footer {
+        margin-top: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background: transparent !important; /* 🔥 force remove */
+        padding: 0 !important;
+    }
+
+        /* Buttons */
+        .classroom-page .card-footer .btn {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 10px;
+            font-weight: 500;
+            text-align: center;
+            transition: 0.25s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            border: none;
+        }
+
+            /* Green button */
+            .classroom-page .card-footer .btn:first-child {
+                background: #22c55e;
+                color: white;
+            }
+
+                .classroom-page .card-footer .btn:first-child:hover {
+                    background: #16a34a;
+                }
+
+            /* Yellow button */
+            .classroom-page .card-footer .btn:last-child {
+                background: #fde047;
+                color: #1e293b;
+            }
+
+                .classroom-page .card-footer .btn:last-child:hover {
+                    background: #facc15;
+                }
+
+    /* Click */
+    .classroom-page .btn:active {
+        transform: scale(0.96);
+    }
+
+    /* ================= EMPTY ================= */
+
+    .classroom-page .empty-state {
+        text-align: center;
+        margin-top: 60px;
+    }
+
+        .classroom-page .empty-state h3 {
+            font-size: 22px;
+            color: #0f172a;
+        }
+
+        .classroom-page .empty-state p {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 500px) {
+    .classroom-page .grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -108,8 +108,8 @@
     <title>@ViewData["Title"]</title>
 
     <link rel="stylesheet" href="~/css/faculty.css" />
-    <link rel="stylesheet" href="~/css/profile.css" />
-
+   
+    <link href="~/css/profile-dropdown.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -118,6 +118,10 @@
 
     <!-- SIDEBAR -->
     <div class="sidebar">
+        <div class="logo">
+            <img src="~/images/vclass.png" alt="vClass Logo" />
+        </div>
+
         <ul>
             <li><a asp-controller="Faculty" asp-action="Dashboard"><i class="bi bi-house"></i><span>Dashboard</span></a></li>
             @* <li><i class="bi bi-plus-circle"></i><span>Create Class</span></li> *@
@@ -130,7 +134,13 @@
             </li>
             <li><i class="bi bi-journal"></i><span>My Classes</span></li>
             <li><i class="bi bi-person-plus"></i><span>Invite Students</span></li>
-            <li><i class="bi bi-file-text"></i><span>Assignments</span></li>
+            @* <li><i class="bi bi-file-text"></i><span>Assignments</span></li> *@
+            <li>
+                <a asp-controller="AssignmentFaculty" asp-action="Classrooms">
+                    <i class="bi bi-file-text"></i>
+                    <span>Assignments</span>
+                </a>
+            </li>
             <li><i class="bi bi-camera-video"></i><span>Sessions</span></li>
         </ul>
     </div>
@@ -140,24 +150,19 @@
 
         <!-- NAVBAR -->
         <div class="navbar">
-            <h4>Faculty Classroom</h4>
 
-            <div class="profile-menu">
-                <div class="avatar" onclick="toggleDropdown()">
-                    @Context.Session.GetString("UserName")?.Substring(0, 1).ToUpper()
-                </div>
-
-                <div class="dropdown" id="profileDropdown">
-                    <p><strong>@Context.Session.GetString("UserName")</strong></p>
-                    <p>@Context.Session.GetString("Email")</p>
-
-                    <hr />
-
-                    @* <a asp-controller="Faculty" asp-action="Profile">Profile</a> *@
-                    @* <a asp-controller="Faculty" asp-action="ChangePassword">Change Password</a> *@
-                    @* <a asp-controller="Account" asp-action="Logout">Logout</a> *@
-                </div>
+            <!-- LEFT -->
+            <div class="nav-left">
+                <h4 class="page-title">
+                    <span>Faculty Panel</span> – @(ViewData["Title"] ?? "Dashboard")
+                </h4>
             </div>
+
+            <!-- RIGHT -->
+            <div class="nav-right">
+                @await Html.PartialAsync("_ProfileDropdown")
+            </div>
+
         </div>
 
         <!-- CONTENT -->
@@ -176,8 +181,22 @@
                 position: 'top-end',
                 icon: 'success',
                 title: '@TempData["success"]',
-                showConfirmButton: false,
-                timer: 3000
+                timer: 3000,
+                showConfirmButton: false
+            });
+        </script>
+    }
+
+    @if (TempData["success2"] != null)
+    {
+        <script>
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'info',
+                title: '@TempData["success2"]',
+                timer: 3000,
+                showConfirmButton: false
             });
         </script>
     }
@@ -194,33 +213,48 @@
     }
 
     <!-- DROPDOWN JS -->
+  
+
     <script>
-        function toggleDropdown() {
-            document.getElementById("profileDropdown").classList.toggle("show");
+        function pd_toggleDropdown() {
+            document.getElementById("pdDropdown").classList.toggle("show");
         }
 
-        window.onclick = function (e) {
-            if (!e.target.matches('.avatar')) {
-                var dropdown = document.getElementById("profileDropdown");
-                if (dropdown.classList.contains('show')) {
-                    dropdown.classList.remove('show');
+        window.addEventListener("click", function (e) {
+            if (!e.target.closest('.pd-avatar')) {
+                let dd = document.getElementById("pdDropdown");
+                if (dd && dd.classList.contains("show")) {
+                    dd.classList.remove("show");
                 }
             }
-        }
+        });
 
-        function togglePassword(id, icon) {
-            var input = document.getElementById(id);
-            if (input.type === "password") {
-                input.type = "text";
-                icon.classList.replace("bi-eye", "bi-eye-slash");
-            } else {
-                input.type = "password";
-                icon.classList.replace("bi-eye-slash", "bi-eye");
-            }
+        function pd_confirmLogout() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You will be logged out!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#2563eb',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Logout'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/Account/Logout';
+                }
+            });
         }
     </script>
+    <!-- ✅ ADD THESE SCRIPTS HERE -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 
     @RenderSection("Scripts", required: false)
+  
 
 </body>
 </html>

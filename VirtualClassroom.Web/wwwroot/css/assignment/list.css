@@ -1,0 +1,227 @@
+﻿/* =========================================================
+   🎯 ASSIGNMENT LIST PAGE - FULL CLEAN UI
+   ========================================================= */
+
+.assignment-page {
+    background: #f1f5f9;
+    min-height: 100vh;
+    padding: 30px 40px;
+}
+
+    /* ================= HEADER ================= */
+
+    .assignment-page .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .assignment-page h2 {
+        font-size: 26px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    /* Add Assignment button */
+    .assignment-page .header .btn {
+        background: #2563eb;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: 0.25s;
+    }
+
+        .assignment-page .header .btn:hover {
+            background: #1d4ed8;
+        }
+
+    /* ================= GLOBAL COUNTDOWN ================= */
+
+    .assignment-page .global-countdown {
+        background: #fff7ed;
+        border: 1px solid #fed7aa;
+        color: #c2410c;
+        padding: 12px 16px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-weight: 600;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    /* ================= GRID ================= */
+
+    .assignment-page .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 25px;
+    }
+
+    /* ================= CARD ================= */
+
+    .assignment-page .card {
+        background: white;
+        padding: 18px;
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        transition: 0.3s;
+        position: relative;
+    }
+
+        /* Top accent */
+        .assignment-page .card::before {
+            content: "";
+            height: 4px;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #2563eb;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+        }
+
+        /* Hover effect */
+        .assignment-page .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+        }
+
+        /* Title */
+        .assignment-page .card h3 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #0f172a;
+        }
+
+        /* Description */
+        .assignment-page .card p {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+            /* Due text */
+            .assignment-page .card p b {
+                color: #0f172a;
+            }
+/* ================= TOP BAR ================= */
+
+.top-bar {
+    margin-bottom: 25px;
+}
+
+.back-btn {
+    display: inline-block;
+    background: white;
+    border: 1px solid #e2e8f0;
+    color: #1e293b;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+    .back-btn:hover {
+        background: #2563eb;
+        color: white;
+        transform: translateX(-3px);
+    }
+
+    /* ================= FILE PREVIEW ================= */
+
+    .assignment-page .file-preview {
+        margin-top: 10px;
+        font-size: 13px;
+        background: #f1f5f9;
+        padding: 6px 10px;
+        border-radius: 8px;
+        display: inline-block;
+        color: #2563eb;
+        border: 1px solid #e2e8f0;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .assignment-page .file-preview:hover {
+            background: #e0f2fe;
+        }
+
+    /* ================= FOOTER ================= */
+
+    /* Remove dark background */
+    .assignment-page .card-footer {
+        margin-top: 12px;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        background: transparent !important;
+        padding: 0 !important;
+    }
+
+        /* Buttons */
+        .assignment-page .card-footer .btn,
+        .assignment-page .card-footer button {
+            flex: 1;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 13px;
+            border: none;
+            text-align: center;
+            transition: 0.25s;
+        }
+
+        /* View button */
+        .assignment-page .card-footer .btn {
+            background: #22c55e;
+            color: white;
+        }
+
+            .assignment-page .card-footer .btn:hover {
+                background: #16a34a;
+            }
+
+        /* Delete button */
+        .assignment-page .card-footer button {
+            background: #ef4444;
+            color: white;
+        }
+
+            .assignment-page .card-footer button:hover {
+                background: #dc2626;
+            }
+/*============================*/
+
+    /* ================= EMPTY STATE ================= */
+
+    .assignment-page .empty {
+        text-align: center;
+        color: #64748b;
+        margin-top: 40px;
+        font-size: 14px;
+    }
+    /* ================= PER CARD COUNTDOWN ================= */
+
+    .assignment-page .countdown {
+        font-size: 13px;
+        font-weight: 600;
+        margin-top: 6px;
+    }
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 600px) {
+    .assignment-page {
+        padding: 20px;
+    }
+
+        .assignment-page .header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+}

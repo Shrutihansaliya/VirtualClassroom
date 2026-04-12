@@ -1,0 +1,29 @@
+﻿<div class="pd-wrapper">
+    @{
+        var name = Context.Session.GetString("UserName");
+        var email = Context.Session.GetString("UserEmail");
+    }
+
+    <div class="pd-menu">
+        <div class="pd-avatar" onclick="pd_toggleDropdown()">
+            @name?.Substring(0, 1).ToUpper()
+        </div>
+
+        <div class="pd-dropdown" id="pdDropdown">
+            <p class="pd-name">@name</p>
+            <p class="pd-email">@email</p>
+
+            <hr />
+
+            <a asp-controller="Account" asp-action="ChangePassword">
+                <i class="bi bi-lock"></i> Change Password
+            </a>
+            <a asp-controller="Account" asp-action="Profile">
+                <i class="bi bi-person"></i> My Profile
+            </a>
+            <a href="#" onclick="pd_confirmLogout()">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+        </div>
+    </div>
+</div>

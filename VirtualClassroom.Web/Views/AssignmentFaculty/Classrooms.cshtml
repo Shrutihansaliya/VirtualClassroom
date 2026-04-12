@@ -1,0 +1,47 @@
+﻿@model List<VirtualClassroom.Core.TblClassroom>
+@{
+    ViewData["Title"] = "Assignment Classrooms";
+    Layout = "~/Views/Faculty/_FacultyLayout.cshtml";
+}
+
+@* <link rel="stylesheet" href="~/css/assignment.css" /> *@
+<link rel="stylesheet" href="~/css/assignment/classroom.css" />
+<div class="classroom-page">
+<div class="container">
+    <h2>My Classrooms</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <h3>No Classrooms Found 📭</h3>
+            <p>Create a classroom to start adding assignments.</p>
+        </div>
+    }
+    else
+    {
+        <div class="grid">
+            @foreach (var item in Model)
+            {
+                <div class="card">
+                    <h3>@item.ClassName</h3>
+                    <p>@item.Description</p>
+
+                    <div class="card-footer">
+                        <a asp-action="Create"
+                           asp-route-classroomId="@item.ClassroomId"
+                           class="btn">
+                            ➕ Create Assignment
+                        </a>
+
+                        <a asp-action="Index"
+                           asp-route-classroomId="@item.ClassroomId"
+                           class="btn">
+                            📄 View Assignments
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+</div>

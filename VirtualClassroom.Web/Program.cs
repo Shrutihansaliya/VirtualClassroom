@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Session;
 using Microsoft.EntityFrameworkCore;
 using VirtualClassroom.Infrastructure;
+using VirtualClassroom.Web.Services.Blob;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDataProtection();
+builder.Services.AddScoped<EmailService>();
+
 //session
 builder.Services.AddSession(options =>
 {
@@ -49,6 +54,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+//blob storage 
+builder.Services.AddScoped<BlobService>();
 
 var app = builder.Build();
 
