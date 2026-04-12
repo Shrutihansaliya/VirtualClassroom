@@ -5,21 +5,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirtualClassroom.Core
+//namespace VirtualClassroom.Core
+//{
+//    public class TblClassroomMembers
+//    {
+
+//        public int Id { get; set; }
+
+//            public int ClassroomId { get; set; }
+//            public int UserId { get; set; }
+
+//        public DateTime JoinedAt { get; set; }
+
+//            // Navigation
+//            public TblClassroom Classroom { get; set; }
+//            public TblUsers User { get; set; }
+
+//    }
+//}
+
+
+
+using VirtualClassroom.Core;
+
+public class TblClassroomMembers
 {
-    public class TblClassroomMembers
-    {
+    public int Id { get; set; }
+    public int ClassroomId { get; set; }
+    public int UserId { get; set; }
 
-        public int Id { get; set; }
+    public string Role { get; set; } // 🔥 REQUIRED
 
-            public int ClassroomId { get; set; }
-            public int UserId { get; set; }
+    public DateTime JoinedAt { get; set; }
 
-        public DateTime JoinedAt { get; set; }
-
-            // Navigation
-            public TblClassroom Classroom { get; set; }
-            public TblUsers User { get; set; }
-        
-    }
+    public TblClassroom Classroom { get; set; }
+    public TblUsers User { get; set; }
 }

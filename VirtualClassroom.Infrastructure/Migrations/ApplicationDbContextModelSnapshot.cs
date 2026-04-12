@@ -61,7 +61,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.ToTable("TblAssignments");
+                    b.ToTable("TblAssignments", (string)null);
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblClassroom", b =>
@@ -90,7 +90,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.ToTable("TblClassrooms");
+                    b.ToTable("TblClassrooms", (string)null);
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblClassroomInvites", b =>
@@ -118,7 +118,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("ClassroomId");
 
-                    b.ToTable("TblClassroomInvites");
+                    b.ToTable("TblClassroomInvites", (string)null);
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblClassroomMembers", b =>
@@ -145,7 +145,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
                     b.HasIndex("ClassroomId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("TblClassroomMembers");
+                    b.ToTable("TblClassroomMembers", (string)null);
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblLectures", b =>
@@ -201,7 +201,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.ToTable("TblLectures");
+                    b.ToTable("TblLectures", (string)null);
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblMaterials", b =>
@@ -246,7 +246,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("UploadedBy");
 
-                    b.ToTable("TblMaterials");
+                    b.ToTable("TblMaterials", (string)null);
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblNotifications", b =>
@@ -278,7 +278,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TblNotifications");
+                    b.ToTable("TblNotifications", (string)null);
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblSubmissions", b =>
@@ -311,7 +311,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("TblSubmissions");
+                    b.ToTable("TblSubmissions", (string)null);
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblUserLogins", b =>
@@ -337,7 +337,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TblUserLogins");
+                    b.ToTable("TblUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblUsers", b =>
@@ -382,7 +382,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("TblUsers");
+                    b.ToTable("TblUsers", (string)null);
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblAssignments", b =>

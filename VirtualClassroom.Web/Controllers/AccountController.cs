@@ -266,11 +266,16 @@ namespace VirtualClassroom.Web.Controllers
             HttpContext.Session.SetString("OTP", otp);
 
             await _emailService.SendEmailAsync(
-     email,
-     "OTP Code",
-     $"Your OTP for password reset is: {otp}. It will expire in 2 minutes."
- );
-
+        email,
+        "Virtual Classroom - OTP Verification",
+        $@"
+    <div style='font-family:Arial;padding:20px'>
+        <h2 style='color:#2a5298'>Virtual Classroom</h2>
+        <p>Your OTP is:</p>
+        <h1 style='background:#f2f2f2;padding:10px'>{otp}</h1>
+        <p>This OTP is valid for 2 minutes.</p>
+    </div>"
+    );
             return RedirectToAction("VerifyOtp");
         }
 
