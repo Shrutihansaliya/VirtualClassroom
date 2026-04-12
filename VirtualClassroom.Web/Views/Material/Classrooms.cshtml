@@ -1,0 +1,67 @@
+﻿@* @{ *@
+@*     Layout = "~/Views/Faculty/_FacultyLayout.cshtml"; *@
+@*     ViewData["Title"] = "Material Classrooms"; *@
+@* } *@
+@* @model List<VirtualClassroom.Core.TblClassroom> *@
+
+@* <h2>Material Classrooms</h2> *@
+
+@* <div class="class-grid"> *@
+@*     @foreach (var item in Model) *@
+@*     { *@
+@*         <div class="class-card"> *@
+
+@*             <h4>@item.ClassName</h4> *@
+@*             <p>@item.Description</p> *@
+
+@*             <a class="btn btn-primary" *@
+@*                href="/Material/Add?classroomId=@item.ClassroomId"> *@
+@*                 + Add Material *@
+@*             </a> *@
+
+@*             <a class="btn btn-secondary" *@
+@*                href="/Material/List?classroomId=@item.ClassroomId"> *@
+@*                 View Materials *@
+@*             </a> *@
+
+@*         </div> *@
+@*     } *@
+@* </div> *@
+
+@{ 
+   Layout = "~/Views/Faculty/_FacultyLayout.cshtml"; 
+   ViewData["Title"] = "Material Classrooms"; 
+} 
+<h2 class="page-title">📂 Material Classrooms</h2>
+<link rel="stylesheet" href="~/css/classroom.css" />
+<div class="classroom-grid">
+
+    @foreach (var item in Model)
+    {
+        <div class="classroom-card">
+
+            <!-- HEADER -->
+            <div class="card-header">
+                <h4>@item.ClassName</h4>
+                <p>@item.Description</p>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="card-footer">
+
+                <a class="btn btn-primary"
+                   href="/Material/Add?classroomId=@item.ClassroomId">
+                    <i class="bi bi-upload"></i> Add
+                </a>
+
+                <a class="btn btn-outline"
+                   href="/Material/List?classroomId=@item.ClassroomId">
+                    <i class="bi bi-folder"></i> View
+                </a>
+
+            </div>
+
+        </div>
+    }
+
+</div>

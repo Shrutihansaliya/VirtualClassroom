@@ -1,85 +1,36 @@
-﻿@model VirtualClassroom.Core.TblAssignments
+﻿@* Assignment creation with real-time validation *@
+@model VirtualClassroom.Core.TblAssignments
 @{
     ViewData["Title"] = "Create Assignment";
     Layout = "~/Views/Faculty/_FacultyLayout.cshtml";
 }
 
-@* <link rel="stylesheet" href="~/css/assignment.css" /> *@
-<link rel="stylesheet" href="~/css/assignment/create.css" />
 
-<div class="create-page">
-    <!-- ✅ GLOBAL WRAPPER -->
-    <!-- 🔙 BACK BUTTON -->
-    <div class="top-bar">
-        <a asp-controller="AssignmentFaculty" asp-action="Classrooms" class="back-btn">
-        
-            ← Back to Classrooms
-        </a>
-    </div>
+    <h2>Create Assignment</h2>
 
-    <div class="assignment-container">
-        <div class="assignment-card">
-            <h2>Create Assignment</h2>
+    <form asp-action="Create" method="post" enctype="multipart/form-data" id="form">
+        <input type="hidden" asp-for="ClassroomId" value="@ViewBag.ClassroomId" />
 
-            <form asp-action="Create" method="post" enctype="multipart/form-data" id="form">
-
-                <div style="color:red;">
-                    @Html.ValidationSummary(true)
-                </div>
-
-                @if (TempData["error"] != null)
-                {
-                    <div style="color:red; margin-bottom:10px;">
-                        @TempData["error"]
-                    </div>
-                }
-
-                @Html.AntiForgeryToken()
-
-                <input asp-for="ClassroomId" type="hidden" />
-
-                <!-- TITLE -->
-                <div class="form-group">
-                    <label>Assignment Title</label>
-                    <input asp-for="Title" id="title" class="form-control" placeholder="Enter assignment title" />
-                    <span asp-validation-for="Title" class="error"></span>
-                    <span class="error" id="titleError"></span>
+        <span class="error" id="titleError"></span>
                 </div>
 
                 <!-- DESCRIPTION -->
                 <div class="form-group">
-                    <label>Description</label>
-                    <textarea asp-for="Description" id="desc" class="form-control" rows="4" placeholder="Write instructions..."></textarea>
-                    <span asp-validation-for="Description" class="error"></span>
-                    <span class="error" id="descError"></span>
+        <label>Description</label>
+        <span class="error" id="descError"></span>
                 </div>
 
                 <!-- DATE -->
                 <div class="form-group">
-                    <label>Due Date</label>
-                    <input asp-for="DueDate"
-                           type="datetime-local"
-                           id="DueDate"
-                           class="form-control" />
-                    <span asp-validation-for="DueDate" class="error"></span>
-                    <span class="error" id="dateError"></span>
+        <label>Due Date</label>
+        <span class="error" id="dateError"></span>
                 </div>
 
-                <!-- FILE -->
-                <div class="form-group">
-                    <label>Upload Assignment File</label>
-                    <input type="file" name="file" id="fileInput" class="form-control file-input" />
-                    <small class="hint">Allowed: PDF, Word, JPG (Max 1MB)</small>
-                    <span class="error" id="fileError"></span>
+        <span class="error" id="fileError"></span>
                 </div>
 
-                <!-- BUTTON -->
-                <button type="submit" id="submitBtn" class="assignment-btn" disabled>
-                    Create Assignment
-                </button>
-
-            </form>
-        </div>
+    </form>
+</div>
     </div>
 
 </div>
@@ -88,144 +39,40 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
 
-            console.log("✅ script loaded");
 
             const form = document.getElementById("form");
             const title = document.getElementById("title");
             const desc = document.getElementById("desc");
-            const date = document.getElementById("DueDate");
-            const fileInput = document.getElementById("fileInput");
-            const submitBtn = document.getElementById("submitBtn");
 
-            // ✅ Prevent past date
-            if (date) {
-                const now = new Date();
-                now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-                date.min = now.toISOString().slice(0, 16);
+                valid = false;
             }
 
-            function clearErrors() {
-                document.getElementById("titleError").innerText = "";
-                document.getElementById("descError").innerText = "";
-                document.getElementById("dateError").innerText = "";
-                document.getElementById("fileError").innerText = "";
+            // Description
+            if (desc.value.trim() === "") {
+                document.getElementById("descError").innerText = "Description required";
+                valid = false;
             }
 
-            // 🔥 CHECK VALIDITY
-            function checkFormValidity() {
-
-                let valid = true;
-                const file = fileInput.files[0];
-
-                if (title.value.trim().length < 3) valid = false;
-                if (desc.value.trim() === "") valid = false;
-
-                if (date && date.value) {
-                    const selectedDate = new Date(date.value);
-                    const nowDate = new Date();
-                    nowDate.setSeconds(0, 0);
-
-                    if (selectedDate <= nowDate) valid = false;
-                } else {
-                    valid = false;
-                }
-
-                if (!file) valid = false;
-
-                submitBtn.disabled = !valid;
-
-                console.log("🔍 Button disabled:", submitBtn.disabled);
+                document.getElementById("dateError").innerText = "Select date";
+                valid = false;
             }
 
-            // 🔥 INITIAL CALL
-            checkFormValidity();
-
-            // 🔥 EVENTS
-            title.addEventListener("input", checkFormValidity);
-            desc.addEventListener("input", checkFormValidity);
-            if (date) date.addEventListener("change", checkFormValidity);
-            fileInput.addEventListener("change", checkFormValidity);
-
-            // 🔥 FILE VALIDATION
-            fileInput.addEventListener("change", function () {
-
-                const file = this.files[0];
-
-                if (!file) return;
-
+            // File validation
+            if (!file) {
+                document.getElementById("fileError").innerText = "File required";
+                valid = false;
+            } else {
                 if (file.size > 1048576) {
                     document.getElementById("fileError").innerText = "Max 1MB allowed";
-                    this.value = "";
-                    submitBtn.disabled = true;
-                    return;
+                    valid = false;
                 }
 
-                const allowed = ["pdf", "doc", "docx", "jpg", "jpeg"];
-                const ext = file.name.split('.').pop().toLowerCase();
 
-                if (!allowed.includes(ext)) {
-                    document.getElementById("fileError").innerText = "Invalid file type";
-                    this.value = "";
-                    submitBtn.disabled = true;
-                    return;
-                }
-
-                document.getElementById("fileError").innerText = "";
+            }
             });
 
-            // 🔥 FINAL SUBMIT
-            form.addEventListener("submit", function (e) {
-
-                console.log("🔥 SUBMIT CLICKED");
-
-                clearErrors();
-
-                let valid = true;
-                const file = fileInput.files[0];
-
-                if (title.value.trim().length < 3) {
-                    document.getElementById("titleError").innerText = "Min 3 characters required";
-                    valid = false;
-                }
-
-                if (desc.value.trim() === "") {
-                    document.getElementById("descError").innerText = "Description required";
-                    valid = false;
-                }
-
-                if (date && date.value) {
-                    const selectedDate = new Date(date.value);
-                    const nowDate = new Date();
-                    nowDate.setSeconds(0, 0);
-
-                    if (selectedDate <= nowDate) {
-                        document.getElementById("dateError").innerText = "Select future date";
-                        valid = false;
-                    }
-                } else {
-                    document.getElementById("dateError").innerText = "Select date";
-                    valid = false;
-                }
-
-                if (!file) {
-                    document.getElementById("fileError").innerText = "File required";
-                    valid = false;
-                }
-
-                console.log("VALID =", valid);
-
-                // 🚨 ONLY BLOCK IF INVALID
-                if (!valid) {
-                    console.log("❌ BLOCKED");
-                    e.preventDefault();
-                } else {
-                    console.log("✅ SUBMITTING FORM");
-                    // DO NOT prevent default
-                }
-            });
-
+            if (!valid) e.preventDefault();
         });
     </script>
 }

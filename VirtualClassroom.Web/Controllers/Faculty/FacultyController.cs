@@ -39,18 +39,54 @@ namespace VirtualClassroom.Web.Controllers.Faculty
         }
 
         // Save Classroom + Emails
+        //[HttpPost]
+        //public async Task<IActionResult> CreateClassroom(TblClassroom model, string studentEmails)
+        //{
+        //    int facultyId = 1; // replace with session later
+
+        //    model.CreatedBy = facultyId;
+        //    model.CreatedAt = DateTime.Now;
+
+        //    _context.TblClassrooms.Add(model);
+        //    await _context.SaveChangesAsync();
+
+        //    // Split emails
+        //    var emails = studentEmails.Split(',');
+
+        //    foreach (var email in emails)
+        //    {
+        //        _context.TblClassroomInvites.Add(new TblClassroomInvites
+        //        {
+        //            ClassroomId = model.ClassroomId,
+        //            Email = email.Trim()
+        //        });
+
+        //        // EMAIL SENDING (SKIP FOR NOW)
+        //    }
+
+        //    await _context.SaveChangesAsync();
+
+        //    return RedirectToAction("CreateClassroom");
+        //}
+
+
         [HttpPost]
         public async Task<IActionResult> CreateClassroom(TblClassroom model, string studentEmails)
         {
-            int facultyId = 1; // replace with session later
+            var facultyId = HttpContext.Session.GetInt32("UserId");
 
-            model.CreatedBy = facultyId;
+            if (facultyId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            model.CreatedBy = facultyId.Value;
             model.CreatedAt = DateTime.Now;
 
             _context.TblClassrooms.Add(model);
             await _context.SaveChangesAsync();
 
-            // Split emails
+            // 🔥 Split emails
             var emails = studentEmails.Split(',');
 
             foreach (var email in emails)
@@ -58,15 +94,15 @@ namespace VirtualClassroom.Web.Controllers.Faculty
                 _context.TblClassroomInvites.Add(new TblClassroomInvites
                 {
                     ClassroomId = model.ClassroomId,
-                    Email = email.Trim()
+                    Email = email.Trim(),
+                    IsAccepted = false,
+                    SentAt = DateTime.Now
                 });
-
-                // EMAIL SENDING (SKIP FOR NOW)
             }
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("CreateClassroom");
+            return RedirectToAction("Dashboard");
         }
     }
 }

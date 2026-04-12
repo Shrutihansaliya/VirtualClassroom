@@ -1,0 +1,117 @@
+﻿/* PAGE CONTAINER */
+.material-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+}
+
+/* BACK BUTTON */
+.back-btn {
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 15px;
+}
+
+/* CARD */
+.material-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 16px;
+    width: 500px;
+    max-width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border: 1px solid #f1f5f9;
+}
+
+/* TITLE */
+.form-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #111827;
+}
+
+/* FORM GROUP */
+.form-group {
+    margin-bottom: 18px;
+}
+
+    /* LABEL */
+    .form-group label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #374151;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+/* INPUT */
+.input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+}
+
+    .input:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 2px rgba(99,102,241,0.1);
+    }
+
+/* FILE INPUT */
+.file-input {
+    font-size: 14px;
+}
+
+/* BUTTON PRIMARY */
+.btn-primary {
+    width: 100%;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(79,70,229,0.3);
+    }
+
+/* OUTLINE BUTTON */
+.btn-outline {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    color: #374151;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+    .btn-outline:hover {
+        background: #f3f4f6;
+    }
+
+
+/* CURRENT FILE LINK */
+.current-file a {
+    display: inline-block;
+    padding: 8px 12px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #374151;
+    font-size: 13px;
+}
+
+    .current-file a:hover {
+        background: #e2e8f0;
+    }

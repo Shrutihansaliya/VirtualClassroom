@@ -84,31 +84,9 @@ body {
     justify-content: space-between; /* 🔥 IMPORTANT */
     padding: 0 20px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    position: relative;
-    z-index: 1000;
 }
 
-    .navbar h4 {
-        margin: 0;
-    }
-.nav-right {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-}
-.page-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #0f172a;
-    letter-spacing: 0.5px;
-}
-
-    /* Optional: highlight "Faculty Panel" part */
-    .page-title span {
-        color: #2563eb;
-        font-weight: 700;
-    }
-/* ================= CONTENT ================= */
+/* CONTENT */
 .content {
     padding: 20px;
 }
@@ -126,34 +104,24 @@ body {
     border-radius: 14px;
     overflow: hidden;
     background: white;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-    transition: 0.3s;
 }
 
-    .class-card:hover {
-        transform: translateY(-5px);
-    }
-
-/* HEADER */
 .class-header {
     background: linear-gradient(135deg, #2563eb, #1e3a8a);
     color: white;
     padding: 15px;
-    font-weight: 600;
 }
 
-/* BODY */
-.class-body {
-    padding: 15px;
+.class-body img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
 }
 
-/* ================= FOOTER ================= */
-.card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px;
-    background: #0f172a;
+/* PROFILE MENU */
+.profile-menu {
+    margin-left: auto;
+    position: relative;
 }
 
 /* LINKS */
@@ -163,81 +131,53 @@ body {
     font-size: 13px;
     display: flex;
     align-items: center;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: white;
+    padding: 10px;
+}
+
+/* FOOTER */
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #0f172a;
+}
+
+/* LINKS INSIDE CARD */
+.card-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
     gap: 5px;
-    padding: 6px 8px;
+    padding: 6px 10px;
     border-radius: 6px;
     transition: 0.3s;
 }
 
+    .card-link i {
+        font-size: 16px;
+    }
+
+    /* HOVER EFFECT */
     .card-link:hover {
-        background: #1e293b;
+        background: #334155;
         color: #38bdf8;
     }
-
-
-/* ================= TABLE ================= */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-th {
-    background: #0f172a;
-    color: white;
-    padding: 10px;
-}
-
-td {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-}
-
-/* STATUS COLORS */
-.green {
-    color: green;
-    font-weight: bold;
-}
-
-.red {
-    color: red;
-    font-weight: bold;
-}
-
-/* ================= BUTTON ================= */
-.btn {
-    background: #2563eb;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 6px;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-}
-
-    .btn:hover {
-        background: #1e40af;
+    .dropdown.show {
+        display: block;
     }
-/* ================= LOGO ================= */
-.logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 15px 10px;
-}
-
-    /* LOGO IMAGE */
-    .logo img {
-        width: 100%;
-        max-width: 150px; /* controls size */
-        height: auto;
-        object-fit: contain;
-        transition: 0.3s;
-    }
-
-/* COLLAPSED SIDEBAR */
-.sidebar:not(:hover) .logo img {
-    max-width: 40px; /* small icon when collapsed */
-}

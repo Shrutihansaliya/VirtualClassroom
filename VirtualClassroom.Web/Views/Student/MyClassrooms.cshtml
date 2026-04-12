@@ -1,16 +1,61 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    Layout = "~/Views/Student/_StudentLayout.cshtml";
 }
 @model List<VirtualClassroom.Core.TblClassroom>
 
-<h2>My Classrooms</h2>
+<div class="container mt-4">
 
-@foreach (var item in Model)
-{
-    <div>
-        <h3>@item.ClassName</h3>
-        <p>@item.Description</p>
-    </div>
-}
+    <h2 class="mb-4">📚 My Classrooms</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">
+            No classrooms joined yet
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm border-0 rounded-4 h-100">
+
+                        <!-- Header -->
+                        <div class="card-header text-white"
+                             style="background: linear-gradient(135deg, #11998e, #38ef7d); border-radius: 16px 16px 0 0;">
+
+                            <h5 class="mb-0">@item.ClassName</h5>
+                        </div>
+
+                        <!-- Body -->
+                        <div class="card-body">
+                            <p class="text-muted">
+                                @item.Description
+                            </p>
+
+                            <p class="small text-secondary">
+                                📅 Joined Classroom
+                            </p>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="card-footer bg-white border-0 d-flex justify-content-between">
+
+                            <button class="btn btn-outline-primary btn-sm px-3">
+                                📂 Open
+                            </button>
+
+                            <button class="btn btn-outline-secondary btn-sm px-3">
+                                ⋮
+                            </button>
+
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+</div>

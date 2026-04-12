@@ -61,6 +61,8 @@ namespace VirtualClassroom.Web.Controllers.Faculty
             };
 
             return View(model);
+            ViewBag.ClassroomId = classroomId;
+            return View();
         }
 
         //[HttpPost]
@@ -188,32 +190,64 @@ namespace VirtualClassroom.Web.Controllers.Faculty
             {
                 // ✅ REMOVE ALL VALIDATION BLOCKING
                 ModelState.Clear();
+            if (!ModelState.IsValid)
+                return View(model);
 
                 // 🔥 FIX DUE DATE (AUTO CORRECT)
-                if (model.DueDate <= DateTime.Now)
-                {
+            // ✅ Due date validation
+            if (model.DueDate <= DateTime.Now)
+            {
+                TempData["error"] = "Due date must be in future!";
+                return View(model);
                     model.DueDate = DateTime.Now.AddHours(1); // ✅ AUTO FIX
                     Console.WriteLine("⚠ DueDate corrected to +1 hour");
-                }
+            }
 
+            // ✅ Duplicate assignment check (same title in same classroom)
+            bool exists = _context.TblAssignments.Any(a =>
+                a.ClassroomId == model.ClassroomId &&
+                a.Title.ToLower() == model.Title.ToLower()
+            );
+
+            if (exists)
+            {
+                TempData["error"] = "Assignment with same title already exists!";
+                return View(model);
+            }
+
+            // ✅ File validation
                 // 🔥 FILE VALIDATION (SAFE)
-                if (file == null || file.Length == 0)
-                {
-                    TempData["error"] = "File is required!";
+            if (file == null || file.Length == 0)
+            {
+                TempData["error"] = "File is required!";
                     return RedirectToAction("Create", new { classroomId = model.ClassroomId });
-                }
+                return View(model);
+            }
 
-                var ext = Path.GetExtension(file.FileName).ToLower();
+            // ✅ File size (1MB)
+            if (file.Length > 1048576)
+            {
+                TempData["error"] = "File must be less than 1 MB!";
+                return View(model);
+            }
+
+            // ✅ File type
+            var allowed = new[] { ".pdf", ".doc", ".docx", ".jpg", ".jpeg" };
+            var ext = Path.GetExtension(file.FileName).ToLower();
                 var allowed = new[] { ".pdf", ".doc", ".docx", ".jpg", ".jpeg" };
 
-                if (!allowed.Contains(ext))
-                {
+            if (!allowed.Contains(ext))
+            {
+                TempData["error"] = "Only PDF, Word, JPG allowed!";
+                return View(model);
                     TempData["error"] = "Invalid file type!";
                     return RedirectToAction("Create", new { classroomId = model.ClassroomId });
-                }
+            }
 
+            // 🔥 GET DATA
                 // 🔹 GET FACULTY + CLASSROOM
-                var faculty = _context.TblUsers.First(x => x.UserId == facultyId.Value);
+            var faculty = _context.TblUsers.First(x => x.UserId == facultyId.Value);
+            var classroom = _context.TblClassrooms.First(x => x.ClassroomId == model.ClassroomId);
 
                 var classroom = _context.TblClassrooms
                     .FirstOrDefault(x => x.ClassroomId == model.ClassroomId);
@@ -225,55 +259,90 @@ namespace VirtualClassroom.Web.Controllers.Faculty
                 }
 
                 // 🔹 FILE UPLOAD
-                string Clean(string value)
-                {
-                    return new string(value.Where(char.IsLetterOrDigit).ToArray()).ToLower();
-                }
+            // 🔥 CLEAN FUNCTION
+            string Clean(string value)
+            {
+                return new string(value.Where(char.IsLetterOrDigit).ToArray()).ToLower();
+            }
 
                 string folderPath = $"{Clean(faculty.FullName)}/{Clean(classroom.ClassName)}";
                 string fileName = $"{Guid.NewGuid()}{ext}";
                 string fullPath = $"{folderPath}/{fileName}";
+            string facultyName = Clean(faculty.FullName);
+            string className = Clean(classroom.ClassName);
 
-                model.FilePath = await _blob.UploadFileAsync(file, fullPath);
-                model.FileType = ext;
-                model.CreatedBy = facultyId.Value;
-                model.CreatedAt = DateTime.Now;
+            // 🔥 CREATE FOLDER PATH
+            string folderPath = $"{facultyName}/{className}";
+
+            // 🔥 UNIQUE FILE NAME
+            string uniqueFileName = $"{Guid.NewGuid()}{ext}";
+
+            // 🔥 FINAL PATH
+            string fullPath = $"{folderPath}/{uniqueFileName}";
+
+            // 🔥 UPLOAD TO AZURE
+            model.FilePath = await _blob.UploadFileAsync(file, fullPath);
+            model.FileType = ext;
+            model.CreatedBy = facultyId.Value;
+            model.CreatedAt = DateTime.Now;
 
                 // 🔹 SAVE TO DATABASE
-                _context.TblAssignments.Add(model);
-                await _context.SaveChangesAsync();
+            _context.TblAssignments.Add(model);
+            await _context.SaveChangesAsync();
 
                 Console.WriteLine("✅ SAVED TO DATABASE");
 
                 TempData["success"] = "Assignment created successfully!";
 
                 // 🔥 SEND EMAIL
-                var students = _context.TblClassroomMembers
+            // 🔥 CREATE DEFAULT SUBMISSIONS
+            var students = _context.TblClassroomMembers
       .Include(x => x.User)
-      .Where(x => x.ClassroomId == model.ClassroomId)
+                .Where(x => x.ClassroomId == model.ClassroomId)
       .Select(x => x.User)
-      .ToList();
+                .Select(x => x.UserId)
+                .ToList();
                 Console.WriteLine("Students count: " + students.Count);
                 foreach (var student in students)
-                {
+
+            foreach (var studentId in students)
+            {
                     if (!string.IsNullOrEmpty(student.Email))
-                    {
+                _context.TblSubmissions.Add(new TblSubmissions
+                {
                         await SendAssignmentEmail(student.Email, model.Title, model.DueDate);
                     }
-                }
+                    AssignmentId = model.AssignmentId,
+                    StudentId = studentId,
+                    Status = "Pending"
+                });
+            }
 
                 TempData["success2"] = $"Email sent to {students.Count} students!";
+            await _context.SaveChangesAsync();
+
+            // 🔥 SEND EMAIL
+            var emails = _context.TblUsers
+                .Where(u => students.Contains(u.UserId))
+                .Select(u => u.Email)
+                .ToList();
 
                 return RedirectToAction("Index", new { classroomId = model.ClassroomId });
             }
             catch (Exception ex)
+            foreach (var email in emails)
             {
                 Console.WriteLine("❌ ERROR: " + ex.Message);
 
                 TempData["error"] = ex.Message;
                 return RedirectToAction("Create", new { classroomId = model.ClassroomId });
+                await SendAssignmentEmail(email, model.Title, model.DueDate);
             }
+
+            TempData["success"] = "Assignment created successfully!";
+            return RedirectToAction("Index", new { classroomId = model.ClassroomId });
         }
+        // 📌 DETAILS
         public IActionResult Details(int id)
         {
             ViewData["Title"] = "Assignments";
@@ -293,6 +362,8 @@ namespace VirtualClassroom.Web.Controllers.Faculty
                 .ToList();
 
             var submissions = _context.TblSubmissions
+            var data = _context.TblSubmissions
+                .Include(x => x.Student)
                 .Where(x => x.AssignmentId == id)
                 .ToList();
 
@@ -311,16 +382,20 @@ namespace VirtualClassroom.Web.Controllers.Faculty
             }).ToList();
 
             return View(result);
+            return View(data);
         }
 
         // 📌 DELETE
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
             var assignment = _context.TblAssignments
                 .FirstOrDefault(x => x.AssignmentId == id);
+            var data = _context.TblAssignments.Find(id);
 
             if (assignment == null)
+            if (data == null)
                 return NotFound();
 
             try
@@ -357,8 +432,12 @@ namespace VirtualClassroom.Web.Controllers.Faculty
             {
                 TempData["error"] = ex.Message;
             }
+            _context.TblAssignments.Remove(data);
+            _context.SaveChanges();
 
             return RedirectToAction("Index", new { classroomId = assignment.ClassroomId });
+            TempData["success"] = "Assignment deleted!";
+            return RedirectToAction("Index", new { classroomId = data.ClassroomId });
         }
 
         // 📧 EMAIL METHOD
@@ -419,6 +498,7 @@ namespace VirtualClassroom.Web.Controllers.Faculty
             {
                 Console.WriteLine("✅ Email sent");
             }
+            await client.SendEmailAsync(msg);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using VirtualClassroom.Infrastructure;
 using VirtualClassroom.Core;
 using Microsoft.AspNetCore.Authentication;
@@ -8,7 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using BCrypt.Net;
 using System.Text.RegularExpressions;
-using VirtualClassroom.Web.Services.Blob;
+using Microsoft.EntityFrameworkCore;
 
 namespace VirtualClassroom.Web.Controllers
 {
@@ -19,25 +18,9 @@ namespace VirtualClassroom.Web.Controllers
         private readonly IDataProtector _protector;
         private readonly EmailService _emailService;
 
-        //public AccountController(ApplicationDbContext context, IDataProtectionProvider provider, EmailService emailService);
-        private readonly BlobService _blobService;
-        //public AccountController(ApplicationDbContext context, BlobService blobService)
-        //{
-        //    _context = context;
-        //    _protector = provider.CreateProtector("ResetPassword");
-        //    _emailService = emailService;
-        //    _blobService = blobService;
-        //}
-        public AccountController(
-    ApplicationDbContext context,
-    IDataProtectionProvider provider,
-    EmailService emailService,
-    BlobService blobService)
+        public AccountController(ApplicationDbContext context)
         {
             _context = context;
-            _protector = provider.CreateProtector("ResetPassword");
-            _emailService = emailService;
-            _blobService = blobService;
         }
 
         //public AccountController(ApplicationDbContext context)
@@ -72,6 +55,7 @@ namespace VirtualClassroom.Web.Controllers
                 {
                     // ✅ SESSION
                     HttpContext.Session.SetInt32("UserId", user.UserId);
+                    HttpContext.Session.SetString("UserEmail", user.Email);
                     HttpContext.Session.SetString("UserName", user.FullName);
                     HttpContext.Session.SetString("UserEmail", user.Email);
                     HttpContext.Session.SetString("UserRole", user.Role.ToString());
@@ -227,148 +211,26 @@ namespace VirtualClassroom.Web.Controllers
             _context.TblUsers.Add(user);
             _context.SaveChanges();
 
+            var invites = await _context.TblClassroomInvites
+        .Where(x => x.Email == user.Email)
+        .ToListAsync();
+
+            foreach (var invite in invites)
+            {
+                _context.TblClassroomMembers.Add(new TblClassroomMembers
+                {
+                    ClassroomId = invite.ClassroomId,
+                    UserId = user.UserId,
+                    JoinedAt = DateTime.Now
+                });
+
+                invite.IsAccepted = true;
+            }
+
+            await _context.SaveChangesAsync();
+
             // ✅ AUTO LOGIN (SESSION SET)
             HttpContext.Session.SetInt32("UserId", user.UserId);
-            HttpContext.Session.SetString("UserName", user.FullName);
-            HttpContext.Session.SetString("UserEmail", user.Email);
-            HttpContext.Session.SetString("UserRole", user.Role.ToString());
-
-            // ✅ REDIRECT BASED ON ROLE
-            return RedirectToRoleDashboard(user.Role);
-        }
-
-
-        // ================= CHANGE PASSWORD =================
-        [HttpGet]
-        public IActionResult ChangePassword()
-        {
-            ViewData["Title"] = "Change Password";
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult ChangePassword(string currentPassword, string newPassword, string confirmPassword)
-        {
-            var email = HttpContext.Session.GetString("UserEmail");
-
-            var user = _context.TblUsers.FirstOrDefault(x => x.Email == email);
-
-            if (user == null)
-                return RedirectToAction("Login");
-
-            // 🚫 Google user restriction
-            if (user.AuthProvider == "Google")
-            {
-                TempData["Error"] = "Google users cannot change password.";
-                return View();
-            }
-
-            // 🔐 Verify current password
-            if (!BCrypt.Net.BCrypt.Verify(currentPassword, user.PasswordHash))
-            {
-                TempData["Error"] = "Current password is incorrect!";
-                return View();
-            }
-
-            // 🚫 Prevent same password reuse
-            if (BCrypt.Net.BCrypt.Verify(newPassword, user.PasswordHash))
-            {
-                TempData["Error"] = "New password cannot be same as old password!";
-                return View();
-            }
-
-            // ✅ Match check
-            if (newPassword != confirmPassword)
-            {
-                TempData["Error"] = "Passwords do not match!";
-                return View();
-            }
-
-            // 🔥 STRONG PASSWORD VALIDATION (YOUR PATTERN)
-            var passwordPattern = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$");
-
-            if (!passwordPattern.IsMatch(newPassword))
-            {
-                TempData["Error"] = "Password must be at least 6 characters and include uppercase, lowercase, number, and special character.";
-                return View();
-            }
-
-            // ✅ Save
-            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
-            _context.SaveChanges();
-
-            TempData["Success"] = "Password updated successfully!";
-            return View();
-        }
-
-
-        // ================= PROFILE =================
-        [HttpGet]
-        public IActionResult Profile()
-        {
-            ViewData["Title"] = "My Profile";
-            var email = HttpContext.Session.GetString("UserEmail");
-
-            var user = _context.TblUsers.FirstOrDefault(x => x.Email == email);
-
-            return View(user);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Profile(TblUsers model, IFormFile file)
-        {
-            var email = HttpContext.Session.GetString("UserEmail");
-
-            var user = _context.TblUsers.FirstOrDefault(x => x.Email == email);
-
-            if (user == null)
-                return RedirectToAction("Login");
-
-            // 🔥 VALIDATION
-            if (string.IsNullOrWhiteSpace(model.FullName))
-            {
-                TempData["error"] = "Username is required!";
-                return View(user);
-            }
-
-            // UPDATE NAME
-            user.FullName = model.FullName;
-
-            // IMAGE UPLOAD
-            // IMAGE UPLOAD
-            if (file != null)
-            {
-                // ✅ TYPE VALIDATION (JPG, PNG)
-                var allowedTypes = new[] { "image/jpeg", "image/png" };
-
-                if (!allowedTypes.Contains(file.ContentType))
-                {
-                    TempData["error"] = "Only JPG and PNG images are allowed!";
-                    return View(user);
-                }
-
-                // ✅ SIZE VALIDATION (1MB)
-                if (file.Length > 1 * 1024 * 1024)
-                {
-                    TempData["error"] = "Image must be less than 1 MB!";
-                    return View(user);
-                }
-
-                // ✅ DELETE OLD IMAGE
-                if (!string.IsNullOrEmpty(user.ProfilePicture))
-                {
-                    await _blobService.DeleteImageAsync(user.ProfilePicture);
-                }
-
-                // ✅ UPLOAD NEW IMAGE
-                var url = await _blobService.UploadProfileImageAsync(file);
-                user.ProfilePicture = url;
-
-                HttpContext.Session.SetString("ProfilePic", url);
-            }
-
-            _context.SaveChanges();
-
             HttpContext.Session.SetString("UserName", user.FullName);
 
             TempData["success"] = "Profile updated successfully!";
@@ -382,130 +244,33 @@ namespace VirtualClassroom.Web.Controllers
             return RedirectToAction("Login");
         }
 
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
+        }
+
         //public IActionResult Logout()
         //{
         //    // Clear your app session
         //    HttpContext.Session.Clear();
-
-        //    // 🔥 Redirect to Google logout
-        //    return Redirect("https://accounts.google.com/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost:5001/Account/Login");
+        //    return RedirectToAction("Login");
         //}
 
-
-
-
-        [HttpGet]
-        public IActionResult ForgotPassword()
+        public IActionResult Logout()
         {
-            return View();
-        }
-     
+            // Clear your app session
+            HttpContext.Session.Clear();
 
-
-        [HttpPost]
-        public async Task<IActionResult> ForgotPassword(string email)
-        {
-            var user = _context.TblUsers.FirstOrDefault(x => x.Email == email);
-
-            if (user == null)
-            {
-                ViewBag.Message = "Email not found";
-                return View();
-            }
-
-            var otp = new Random().Next(100000, 999999).ToString();
-
-            HttpContext.Session.SetString("ResetEmail", email);
-            HttpContext.Session.SetString("OTP", otp);
-
-            await _emailService.SendEmailAsync(
-     email,
-     "OTP Code",
-     $"Your OTP for password reset is: {otp}. It will expire in 2 minutes."
- );
-
-            return RedirectToAction("VerifyOtp");
+            // 🔥 Redirect to Google logout
+            return Redirect("https://accounts.google.com/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost:5001/Account/Login");
         }
 
-
-        [HttpGet]
-        public IActionResult VerifyOtp()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult VerifyOtp(string otp)
-        {
-            var sessionOtp = HttpContext.Session.GetString("OTP");
-
-            if (otp == sessionOtp)
-            {
-                return RedirectToAction("ResetPassword");
-            }
-
-            ViewBag.Error = "Invalid OTP";
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult ResetPassword()
-        {
-            return View();
-        }
-
-        
-
-[HttpPost]
-    public IActionResult ResetPassword(string newPassword, string confirmPassword)
-    {
-        // ✅ 1. Match check
-        if (newPassword != confirmPassword)
-        {
-            ViewBag.Error = "Passwords do not match";
-            return View();
-        }
-
-        // ✅ 2. Password pattern (same as Register)
-        var passwordPattern = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$");
-
-        if (!passwordPattern.IsMatch(newPassword))
-        {
-            ViewBag.Error = "Password must be at least 6 characters and include uppercase, lowercase, number, and special character.";
-            return View();
-        }
-
-        // ✅ 3. Session check (important)
-        var email = HttpContext.Session.GetString("ResetEmail");
-
-        if (email == null)
-        {
-            return RedirectToAction("Login");
-        }
-
-        // ✅ 4. User check (important)
-        var user = _context.TblUsers.FirstOrDefault(x => x.Email == email);
-
-        if (user == null)
-        {
-            ViewBag.Error = "User not found";
-            return View();
-        }
-
-        // 🔐 5. Hash password
-        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
-
-        _context.SaveChanges();
-
-        // ✅ 6. Clear session
-        HttpContext.Session.Clear();
-
-        return RedirectToAction("Login");
     }
 
 
 
-}
 
+    }
 
-}
+   

@@ -1,0 +1,96 @@
+﻿@* @{ *@
+@*     Layout = "~/Views/Student/_StudentLayout.cshtml"; *@
+@* } *@
+@* @model List<VirtualClassroom.Core.TblClassroomInvites> *@
+
+@* <h2>Pending Invitations</h2> *@
+
+@* @if (Model == null || !Model.Any()) *@
+@* { *@
+@*     <p>No pending invites</p> *@
+@* } *@
+@* else *@
+@* { *@
+@*     @foreach (var item in Model) *@
+@*     { *@
+@*         <div style="border:1px solid #ccc; padding:10px; margin:10px; border-radius:8px;"> *@
+
+@*             <h3>@(item.Classroom?.ClassName ?? "No Class Name")</h3> *@
+@*             <p>@(item.Classroom?.Description ?? "No Description")</p> *@
+
+@*             <a asp-action="AcceptInvite" *@
+@*                asp-route-classroomId="@item.ClassroomId" *@
+@*                style="background:green;color:white;padding:5px 10px;border-radius:5px;"> *@
+@*                 Accept *@
+@*             </a> *@
+@*         </div> *@
+@*     } *@
+@* } *@
+
+
+@{
+    Layout = "~/Views/Student/_StudentLayout.cshtml";
+}
+@model List<VirtualClassroom.Core.TblClassroomInvites>
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">📩 Pending Invitations</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">
+            No pending invites
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm border-0 rounded-4 h-100">
+
+                        <!-- Header -->
+                        <div class="card-header bg-gradient text-white"
+                             style="background: linear-gradient(135deg, #6a11cb, #2575fc); border-radius: 16px 16px 0 0;">
+
+                            <h5 class="mb-0">
+                                @(item.Classroom?.ClassName ?? "Classroom")
+                            </h5>
+                        </div>
+
+                        <!-- Body -->
+                        <div class="card-body">
+                            <p class="text-muted">
+                                @(item.Classroom?.Description ?? "No description available")
+                            </p>
+
+                            <p class="small text-secondary">
+                                📅 Sent: @item.SentAt.ToString("dd MMM yyyy, hh:mm tt")
+                            </p>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="card-footer bg-white border-0 d-flex justify-content-between">
+
+                            <a asp-action="AcceptInvite"
+                               asp-route-classroomId="@item.ClassroomId"
+                               class="btn btn-success btn-sm px-3">
+                                ✅ Accept
+                            </a>
+
+                            <a asp-action="DeleteInvite"
+                               asp-route-classroomId="@item.ClassroomId"
+                               class="btn btn-outline-danger btn-sm px-3">
+                                ❌ Reject
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+</div>
