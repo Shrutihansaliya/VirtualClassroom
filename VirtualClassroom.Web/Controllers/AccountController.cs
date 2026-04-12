@@ -19,12 +19,20 @@ namespace VirtualClassroom.Web.Controllers
         private readonly IDataProtector _protector;
         private readonly EmailService _emailService;
 
+        //public AccountController(ApplicationDbContext context, IDataProtectionProvider provider, EmailService emailService);
+        private readonly BlobService _blobService;
+        //public AccountController(ApplicationDbContext context, BlobService blobService)
+        //{
+        //    _context = context;
+        //    _protector = provider.CreateProtector("ResetPassword");
+        //    _emailService = emailService;
+        //    _blobService = blobService;
+        //}
         public AccountController(
     ApplicationDbContext context,
     IDataProtectionProvider provider,
-    EmailService emailService)
-        private readonly BlobService _blobService;
-        public AccountController(ApplicationDbContext context, BlobService blobService)
+    EmailService emailService,
+    BlobService blobService)
         {
             _context = context;
             _protector = provider.CreateProtector("ResetPassword");
