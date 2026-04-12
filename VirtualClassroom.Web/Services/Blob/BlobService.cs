@@ -74,17 +74,63 @@ namespace VirtualClassroom.Web.Services.Blob
             Console.WriteLine("Container: " + _container);
             Console.WriteLine("FilePath: " + filePath);
 
+            var containerClient = new BlobContainerClient(_connection, _container);
 
+            await containerClient.CreateIfNotExistsAsync();
+            Console.WriteLine("Container ready");
 
+            var blobClient = containerClient.GetBlobClient(filePath);
+            Console.WriteLine("Blob client created");
 
+            var options = new BlobUploadOptions
+            {
+                HttpHeaders = new BlobHttpHeaders
+                {
+                    ContentType = file.ContentType
+                }
+            };
 
+            using var stream = file.OpenReadStream();
+            Console.WriteLine("Uploading file...");
+
+            await blobClient.UploadAsync(stream, options);
+
+            Console.WriteLine("✅ Upload completed");
+
+            return blobClient.Uri.ToString();
+        }
+        public async Task DeleteFileAsync(string fileUrl)
         {
             if (string.IsNullOrEmpty(fileUrl))
                 return;
 
             var containerClient = new BlobContainerClient(_connection, _container);
 
+            var uri = new Uri(fileUrl);
 
+            // 🔥 FULL PATH (REMOVE container name)
+            var blobName = string.Join("", uri.Segments.Skip(2));
+
+            Console.WriteLine("Deleting blob: " + blobName);
+
+            var blobClient = containerClient.GetBlobClient(blobName);
+
+            await blobClient.DeleteIfExistsAsync();
+        }
+        public async Task<string> UploadProfileImageAsync(IFormFile file)
+        {
+            var blobContainer = new BlobContainerClient(_connection, _container);
+            await blobContainer.CreateIfNotExistsAsync();
+
+            // UNIQUE FILE NAME
+            var fileName = $"profiles/{Guid.NewGuid()}_{file.FileName}";
+
+            var blobClient = blobContainer.GetBlobClient(fileName);
+
+            using (var stream = file.OpenReadStream())
+            {
+                await blobClient.UploadAsync(stream, overwrite: true);
+            }
 
             return blobClient.Uri.ToString();
         }

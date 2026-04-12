@@ -8,6 +8,7 @@ using System.Security.Claims;
 using BCrypt.Net;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace VirtualClassroom.Web.Controllers
 {
@@ -175,7 +176,7 @@ namespace VirtualClassroom.Web.Controllers
 
 
         [HttpPost]
-        public IActionResult Register(TblUsers user)
+        public async Task<IActionResult> RegisterAsync(TblUsers user)
         {
             if (!ModelState.IsValid)
                 return View(user);
@@ -244,11 +245,11 @@ namespace VirtualClassroom.Web.Controllers
             return RedirectToAction("Login");
         }
 
-        public IActionResult Logout()
-        {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Login");
-        }
+        //public IActionResult Logout()
+        //{
+        //    HttpContext.Session.Clear();
+        //    return RedirectToAction("Login");
+        //}
 
         //public IActionResult Logout()
         //{
@@ -257,14 +258,14 @@ namespace VirtualClassroom.Web.Controllers
         //    return RedirectToAction("Login");
         //}
 
-        public IActionResult Logout()
-        {
-            // Clear your app session
-            HttpContext.Session.Clear();
+        //public IActionResult Logout()
+        //{
+        //    // Clear your app session
+        //    HttpContext.Session.Clear();
 
-            // 🔥 Redirect to Google logout
-            return Redirect("https://accounts.google.com/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost:5001/Account/Login");
-        }
+        //    // 🔥 Redirect to Google logout
+        //    return Redirect("https://accounts.google.com/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost:5001/Account/Login");
+        //}
 
     }
 
