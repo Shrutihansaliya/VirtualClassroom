@@ -1,0 +1,21 @@
+﻿@{
+    Layout = "~/Views/Student/_StudentLayout.cshtml";
+    int assignmentId = ViewBag.AssignmentId;
+}
+
+<h2>Submit Assignment</h2>
+
+<form asp-action="Submit" method="post" enctype="multipart/form-data">
+
+    <input type="hidden" name="AssignmentId" value="@assignmentId" />
+
+    <div class="mb-3">
+        <label>Upload File</label>
+        <input type="file" name="file" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Submit
+    </button>
+
+</form>

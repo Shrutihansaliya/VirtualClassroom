@@ -29,6 +29,7 @@ public class AssignmentController : BaseController
 
         // 🔥 Get student's enrolled classes
         var assignments = _context.TblAssignments
+            .Include(a => a.Submissions)
             .Include(a => a.Classroom)
             .Where(a => a.Classroom.Members.Any(m => m.UserId == userId))
             .ToList();
@@ -42,6 +43,7 @@ public class AssignmentController : BaseController
         var userId = HttpContext.Session.GetInt32("UserId");
 
         var assignments = _context.TblAssignments
+            .Include(a => a.Submissions)
             .Include(a => a.Classroom)
             .Where(a => a.ClassroomId == classId &&
                         a.Classroom.Members.Any(m => m.UserId == userId))

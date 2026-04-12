@@ -57,6 +57,9 @@ builder.Services.AddAuthentication(options =>
 //blob storage 
 builder.Services.AddScoped<BlobService>();
 
+//builder.Services.AddSingleton<BlobSubmissionService>();
+builder.Services.AddScoped<BlobSubmissionService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

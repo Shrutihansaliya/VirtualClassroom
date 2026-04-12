@@ -178,9 +178,13 @@ namespace VirtualClassroom.Web.Controllers.Student
                 return RedirectToAction("Login", "Account");
             }
 
+            //var invites = _context.TblClassroomInvites
+            //    .Where(x => x.Email.ToLower() == email.ToLower() && x.IsAccepted == false)
+            //    .Include(x => x.Classroom)
+            //    .ToList();
             var invites = _context.TblClassroomInvites
-                .Where(x => x.Email.ToLower() == email.ToLower() && x.IsAccepted == false)
                 .Include(x => x.Classroom)
+                .Where(x => x.Email.ToLower() == email.ToLower() && x.IsAccepted == false)
                 .ToList();
 
             return View(invites);
