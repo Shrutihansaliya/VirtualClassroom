@@ -1,0 +1,90 @@
+﻿
+
+@* @{ *@
+@*     Layout = "~/Views/Faculty/_FacultyLayout.cshtml"; *@
+@*     ViewData["Title"] = "Material Classrooms"; *@
+@* } *@
+@* <div style="margin-bottom:15px;"> *@
+@*     <a href="/Material/Classrooms" class="btn btn-outline"> *@
+@*         ← Back to Materials *@
+@*     </a> *@
+@* </div> *@
+@* @model AddMaterialViewModel *@
+
+@* <h2>Add Material</h2> *@
+
+@* <form asp-controller="Material" asp-action="Add" method="post" enctype="multipart/form-data"> *@
+
+@*     <!-- Hidden ClassroomId --> *@
+@*     <input asp-for="ClassroomId" type="hidden" /> *@
+
+@*     <div> *@
+@*         <label>Title</label> *@
+@*         <input asp-for="Title" class="form-control" /> *@
+@*     </div> *@
+
+@*     <div> *@
+@*         <label>Description</label> *@
+@*         <textarea asp-for="Description" class="form-control"></textarea> *@
+@*     </div> *@
+
+@*     <div> *@
+@*         <label>Upload File</label> *@
+@*         <input asp-for="File" type="file" class="form-control" /> *@
+@*     </div> *@
+
+@*     <br /> *@
+@*     <button type="submit" class="btn btn-primary">Upload</button> *@
+
+@* </form> *@
+
+
+@model AddMaterialViewModel
+
+@{
+    Layout = "~/Views/Faculty/_FacultyLayout.cshtml";
+    ViewData["Title"] = "Add Material";
+}
+<link rel="stylesheet" href="~/css/material.css" />
+<div class="material-container">
+
+    <!-- BACK BUTTON -->
+    <div class="back-btn">
+        <a href="/Material/Classrooms" class="btn-outline">
+            ← Back to Materials
+        </a>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="material-card">
+
+        <h2 class="form-title">📂 Add Material</h2>
+
+        <form asp-controller="Material" asp-action="Add" method="post" enctype="multipart/form-data">
+
+            <input asp-for="ClassroomId" type="hidden" />
+
+            <div class="form-group">
+                <label>Title</label>
+                <input asp-for="Title" class="input" placeholder="Enter material title" />
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea asp-for="Description" class="input" placeholder="Enter description"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Upload File</label>
+                <input asp-for="File" type="file" class="file-input" />
+            </div>
+
+            <button type="submit" class="btn-primary">
+                Upload Material
+            </button>
+
+        </form>
+
+    </div>
+
+</div>

@@ -1,7 +1,9 @@
 ﻿
-//using MailKit.Net.Smtp;
+
+
 //using Microsoft.Extensions.Configuration;
-//using MimeKit;
+//using SendGrid;
+//using SendGrid.Helpers.Mail;
 
 //public class EmailService
 //{
@@ -12,37 +14,32 @@
 //        _config = config;
 //    }
 
-//    public async Task SendEmailAsync(string toEmail, string subject, string body)
+//    public async Task SendEmailAsync(string toEmail, string subject, string htmlContent)
 //    {
-//        var message = new MimeMessage();
+//        var apiKey = _config["SendGrid:ApiKey"];
+//        var client = new SendGridClient(apiKey);
 
-//        message.From.Add(new MailboxAddress("Virtual Classroom",
-//            _config["EmailSettings:Email"]));
+//        var from = new EmailAddress("jaillymaniya07@gmail.com", "Virtual Classroom");
 
-//        message.To.Add(MailboxAddress.Parse(toEmail));
-//        message.Subject = subject;
+//        var msg = MailHelper.CreateSingleEmail(
+//            from,
+//            new EmailAddress(toEmail),
+//            subject,
+//            "",
+//            htmlContent
+//        );
 
-//        message.Body = new TextPart("plain")
+//        var response = await client.SendEmailAsync(msg);
+
+//        // 🔥 DEBUG (VERY IMPORTANT)
+//        if (!response.IsSuccessStatusCode)
 //        {
-//            Text = body
-//        };
-
-//        using (var client = new SmtpClient())
-//        {
-//            await client.ConnectAsync(
-//                _config["EmailSettings:Host"],
-//                int.Parse(_config["EmailSettings:Port"]),
-//                MailKit.Security.SecureSocketOptions.StartTls);
-
-//            await client.AuthenticateAsync(
-//                _config["EmailSettings:Email"],
-//                _config["EmailSettings:Password"]);
-
-//            await client.SendAsync(message);
-//            await client.DisconnectAsync(true);
+//            var error = await response.Body.ReadAsStringAsync();
+//            Console.WriteLine("SendGrid Error: " + error);
 //        }
 //    }
 //}
+
 
 
 

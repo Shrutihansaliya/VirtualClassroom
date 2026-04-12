@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VirtualClassroom.Infrastructure;
 
@@ -11,9 +12,11 @@ using VirtualClassroom.Infrastructure;
 namespace VirtualClassroom.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260411082447_AddRoleOnly")]
+    partial class AddRoleOnly
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,7 +53,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
                     b.HasIndex("ClassroomId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("TblClassroomMembers", (string)null);
+                    b.ToTable("TblClassroomMembers");
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblAssignments", b =>
@@ -95,7 +98,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.ToTable("TblAssignments", (string)null);
+                    b.ToTable("TblAssignments");
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblClassroom", b =>
@@ -124,7 +127,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.ToTable("TblClassrooms", (string)null);
+                    b.ToTable("TblClassrooms");
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblClassroomInvites", b =>
@@ -152,7 +155,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("ClassroomId");
 
-                    b.ToTable("TblClassroomInvites", (string)null);
+                    b.ToTable("TblClassroomInvites");
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblLectures", b =>
@@ -208,7 +211,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.ToTable("TblLectures", (string)null);
+                    b.ToTable("TblLectures");
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblMaterials", b =>
@@ -253,7 +256,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("UploadedBy");
 
-                    b.ToTable("TblMaterials", (string)null);
+                    b.ToTable("TblMaterials");
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblNotifications", b =>
@@ -285,7 +288,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TblNotifications", (string)null);
+                    b.ToTable("TblNotifications");
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblSubmissions", b =>
@@ -322,7 +325,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("TblSubmissions", (string)null);
+                    b.ToTable("TblSubmissions");
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblUserLogins", b =>
@@ -348,7 +351,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TblUserLogins", (string)null);
+                    b.ToTable("TblUserLogins");
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblUsers", b =>
@@ -393,7 +396,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("TblUsers", (string)null);
+                    b.ToTable("TblUsers");
                 });
 
             modelBuilder.Entity("TblClassroomMembers", b =>

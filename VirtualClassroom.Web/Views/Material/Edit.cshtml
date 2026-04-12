@@ -1,0 +1,68 @@
+﻿
+@model VirtualClassroom.Core.TblMaterials
+
+@{
+    Layout = "~/Views/Faculty/_FacultyLayout.cshtml";
+    ViewData["Title"] = "Edit Material";
+}
+
+<link rel="stylesheet" href="~/css/material.css" asp-append-version="true" />
+
+<div class="material-container">
+
+    <!-- BACK BUTTON -->
+    <div class="back-btn">
+        <a href="/Material/Classrooms" class="btn-outline">
+            ← Back to Materials
+        </a>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="material-card">
+
+        <h2 class="form-title">✏️ Edit Material</h2>
+
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+
+            <!-- Hidden IDs -->
+            <input type="hidden" asp-for="MaterialId" />
+            <input type="hidden" asp-for="ClassroomId" />
+
+            <!-- TITLE -->
+            <div class="form-group">
+                <label>Title</label>
+                <input asp-for="Title" class="input" />
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div class="form-group">
+                <label>Description</label>
+                <textarea asp-for="Description" class="input"></textarea>
+            </div>
+
+            <!-- CURRENT FILE -->
+            <div class="form-group">
+                <label>Current File</label>
+                <div class="current-file">
+                    <a href="@Model.FilePath" target="_blank">
+                        📄 View Current File
+                    </a>
+                </div>
+            </div>
+
+            <!-- CHANGE FILE -->
+            <div class="form-group">
+                <label>Change File (optional)</label>
+                <input type="file" name="file" class="file-input" />
+            </div>
+
+            <!-- BUTTON -->
+            <button type="submit" class="btn-primary">
+                Update Material
+            </button>
+
+        </form>
+
+    </div>
+
+</div>

@@ -24,4 +24,8 @@
     <ProjectReference Include="..\VirtualClassroom.Infrastructure\VirtualClassroom.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\materials\" />
+  </ItemGroup>
+
 </Project>
