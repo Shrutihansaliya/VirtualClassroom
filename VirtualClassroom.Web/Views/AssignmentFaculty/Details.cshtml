@@ -54,54 +54,24 @@
 
     <table>
         <thead>
-            <tr>
-                <th>Student Name</th>
-                <th>Status</th>
-                <th>File</th>
-                <th>Date</th>
-            </tr>
+        <tr>
+            <th>Status</th>
+            <th>File</th>
+            <th>Date</th>
+        </tr>
         </thead>
 
         <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <!-- SAFE NULL CHECK -->
-                    <td>@(item.Student?.FullName ?? "N/A")</td>
-
-                    <td>
-                        @if (item.Status == "Submitted")
-                        {
-                            <span class="green">✔ Submitted</span>
-                        }
-                        else
-                        {
-                            <span class="red">✘ Pending</span>
-                        }
-                    </td>
-
-                    <td>
-                        @if (!string.IsNullOrEmpty(item.FilePath))
-                        {
-                            <a href="@item.FilePath" target="_blank" class="btn small">
-                                View File
-                            </a>
-                        }
-                        else
-                        {
-                            <span>-</span>
-                        }
-                    </td>
-
-                    <!-- ✅ FIXED DATE -->
-                    <td>
-                        @(item.SubmittedAt.HasValue
-                            ? item.SubmittedAt.Value.ToString("dd MMM yyyy hh:mm tt")
-                            : "-")
-                    </td>
-
-                </tr>
-            }
+        @foreach (var item in Model)
+        {
+            <tr>
+                
+                <td>
+                    {
+                    }
+                </td>
+            </tr>
+        }
         </tbody>
     </table>
 </div>

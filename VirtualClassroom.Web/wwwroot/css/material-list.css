@@ -1,0 +1,127 @@
+﻿/* CONTAINER */
+.material-table-container {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+    max-width: 900px; /* 🔥 control width */
+    margin: 0 auto; /* 🔥 center */
+}
+
+/* HEADER */
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+    .header-row h2 {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+/* ADD BUTTON */
+.btn-add {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 7px;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+/* TABLE */
+.material-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* 🔥 IMPORTANT */
+}
+
+    /* HEADER */
+    .material-table thead {
+        background: #f9fafb;
+    }
+
+    .material-table th {
+        text-align: left;
+        padding: 10px;
+        font-size: 13px;
+        color: #6b7280;
+        font-weight: 600;
+    }
+
+    /* BODY */
+    .material-table td {
+        padding: 10px;
+        font-size: 13px;
+        color: #374151;
+        border-top: 1px solid #eef2f7;
+    }
+
+        /* COLUMN WIDTH CONTROL */
+        .material-table th:nth-child(1),
+        .material-table td:nth-child(1) {
+            width: 20%;
+        }
+
+        .material-table th:nth-child(2),
+        .material-table td:nth-child(2) {
+            width: 35%;
+        }
+
+        .material-table th:nth-child(3),
+        .material-table td:nth-child(3) {
+            width: 20%;
+        }
+
+        .material-table th:nth-child(4),
+        .material-table td:nth-child(4) {
+            width: 25%;
+        }
+
+    /* ROW HOVER */
+    .material-table tbody tr:hover {
+        background: #f9fafb;
+    }
+
+/* DOWNLOAD */
+.download-link {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+/* ACTIONS */
+.action-group {
+    display: flex;
+    gap: 5px; /* 🔥 reduced gap */
+}
+
+/* EDIT */
+.btn-edit {
+    background: #e0e7ff;
+    color: #3730a3;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+/* DELETE */
+.btn-delete {
+    background: #fee2e2;
+    color: #b91c1c;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+/* NO DATA */
+.no-data {
+    text-align: center;
+    padding: 15px;
+    color: #9ca3af;
+}

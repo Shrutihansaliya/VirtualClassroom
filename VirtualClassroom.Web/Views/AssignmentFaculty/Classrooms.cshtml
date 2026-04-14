@@ -19,12 +19,12 @@
     }
     else
     {
-        <div class="grid">
-            @foreach (var item in Model)
-            {
-                <div class="card">
-                    <h3>@item.ClassName</h3>
-                    <p>@item.Description</p>
+    <div class="grid">
+        @foreach (var item in Model)
+        {
+            <div class="card">
+                <h3>@item.ClassName</h3>
+                <p>@item.Description</p>
 
                     <div class="card-footer">
                         <a asp-action="Create"
@@ -37,11 +37,14 @@
                            asp-route-classroomId="@item.ClassroomId"
                            class="btn">
                             📄 View Assignments
-                        </a>
-                    </div>
+                            </a>
+                <a asp-action="Index" asp-route-classroomId="@item.ClassroomId" class="btn">
+                    View Assignments
+                </a>
+            </div>
                 </div>
             }
         </div>
-    }
-</div>
+        }
+    </div>
 </div>

@@ -1,6 +1,8 @@
 ﻿
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 using MimeKit;
 
 public class EmailService
@@ -19,8 +21,6 @@ public class EmailService
         message.From.Add(new MailboxAddress("Virtual Classroom",
             _config["EmailSettings:Email"]));
 
-        message.To.Add(MailboxAddress.Parse(toEmail));
-        message.Subject = subject;
 
         message.Body = new TextPart("plain")
         {

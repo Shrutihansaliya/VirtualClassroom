@@ -2,66 +2,118 @@
     Layout = "~/Views/Student/_StudentLayout.cshtml";
 }
 
+@* <h2>My Classes</h2> *@
+@* <div class="container-fluid"> *@
+@*     <div class="row g-4"> *@
+
+@*         <!-- Card 1 --> *@
+@*         <div class="col-lg-4 col-md-6"> *@
+@*             <div class="card course-card"> *@
+@*                 <div class="card-header bg-dark text-white"> *@
+@*                     Machine Learning - Sem 8 *@
+@*                     <div class="small">Rakesh Savant</div> *@
+@*                 </div> *@
+
+@*                 <div class="card-body text-center"> *@
+@*                     <img src="/images/profile.png" class="profile-img" /> *@
+@*                 </div> *@
+
+@*                 <div class="card-footer d-flex justify-content-between"> *@
+@*                     <i class="bi bi-folder"></i> *@
+@*                     <i class="bi bi-three-dots-vertical"></i> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+
+@*         <!-- Card 2 --> *@
+@*         <div class="col-lg-4 col-md-6"> *@
+@*             <div class="card course-card"> *@
+@*                 <div class="card-header bg-secondary text-white"> *@
+@*                     IT5013 - Introduction *@
+@*                     <div class="small">Rakesh Savant</div> *@
+@*                 </div> *@
+
+@*                 <div class="card-body text-center"> *@
+@*                     <img src="/images/profile.png" class="profile-img" /> *@
+@*                 </div> *@
+
+@*                 <div class="card-footer d-flex justify-content-between"> *@
+@*                     <i class="bi bi-folder"></i> *@
+@*                     <i class="bi bi-three-dots-vertical"></i> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+
+@*         <!-- Card 3 --> *@
+@*         <div class="col-lg-4 col-md-6"> *@
+@*             <div class="card course-card"> *@
+@*                 <div class="card-header bg-success text-white"> *@
+@*                     Python - Sem 5 *@
+@*                     <div class="small">Unknown user</div> *@
+@*                 </div> *@
+
+@*                 <div class="card-body text-center"> *@
+@*                     <img src="/images/profile.png" class="profile-img" /> *@
+@*                 </div> *@
+
+@*                 <div class="card-footer d-flex justify-content-between"> *@
+@*                     <i class="bi bi-folder"></i> *@
+@*                     <i class="bi bi-three-dots-vertical"></i> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+
+@*     </div> *@
+@* </div> *@
+
+
+
+@model List<VirtualClassroom.Core.TblClassroom>
+
 <h2>My Classes</h2>
-<div class="container-fluid">
-    <div class="row g-4">
 
-        <!-- Card 1 -->
-        <div class="col-lg-4 col-md-6">
-            <div class="card course-card">
-                <div class="card-header bg-dark text-white">
-                    Machine Learning - Sem 8
-                    <div class="small">Rakesh Savant</div>
-                </div>
+@if (Model == null || !Model.Any())
+{
+    <p>No classes joined yet</p>
+}
+else
+{
+    
+   @*  <div style="display:flex; gap:20px; flex-wrap:wrap;"> *@
+   @*      @foreach (var item in Model) *@
+   @*      { *@
+   @*          <a asp-controller="Assignment" *@
+   @* asp-action="ByClass" *@
+   @* asp-route-classId="@item.ClassroomId" *@
+   @* style="text-decoration:none; color:inherit;"> *@
+   @*          <div style="width:250px; border-radius:10px; padding:15px; background:#f5f5f5; box-shadow:0 2px 5px rgba(0,0,0,0.2);"> *@
 
-                <div class="card-body text-center">
-                    <img src="/images/profile.png" class="profile-img" />
-                </div>
+   @*              <h3>@item.ClassName</h3> *@
+   @*              <p>@item.Description</p> *@
+   @*              </div> *@
+   @*          </a> *@
 
-                <div class="card-footer d-flex justify-content-between">
-                    <i class="bi bi-folder"></i>
-                    <i class="bi bi-three-dots-vertical"></i>
-                </div>
+   @*      } *@
+
+    @foreach (var item in Model)
+    {
+        <a asp-controller="Assignment"
+           asp-action="ByClass"
+           asp-route-classId="@item.ClassroomId"
+           style="text-decoration:none; color:inherit; display:block;">
+
+            <div style="width:250px; border-radius:10px; padding:15px;
+                    background:#f5f5f5; box-shadow:0 2px 5px rgba(0,0,0,0.2);
+                    cursor:pointer; transition:0.2s;">
+
+                <h3>@item.ClassName</h3>
+                <p>@item.Description</p>
+
+                <small style="color:gray;">Click to view assignments →</small>
+
             </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="col-lg-4 col-md-6">
-            <div class="card course-card">
-                <div class="card-header bg-secondary text-white">
-                    IT5013 - Introduction
-                    <div class="small">Rakesh Savant</div>
-                </div>
-
-                <div class="card-body text-center">
-                    <img src="/images/profile.png" class="profile-img" />
-                </div>
-
-                <div class="card-footer d-flex justify-content-between">
-                    <i class="bi bi-folder"></i>
-                    <i class="bi bi-three-dots-vertical"></i>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="col-lg-4 col-md-6">
-            <div class="card course-card">
-                <div class="card-header bg-success text-white">
-                    Python - Sem 5
-                    <div class="small">Unknown user</div>
-                </div>
-
-                <div class="card-body text-center">
-                    <img src="/images/profile.png" class="profile-img" />
-                </div>
-
-                <div class="card-footer d-flex justify-content-between">
-                    <i class="bi bi-folder"></i>
-                    <i class="bi bi-three-dots-vertical"></i>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
+        </a>
+    }
+    @* </div> *@
+}
+@* </div> *@

@@ -1,0 +1,85 @@
+﻿/* CARD */
+.classroom-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 18px;
+    height: 150px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    transition: all 0.25s ease;
+    border: 1px solid #f1f5f9;
+}
+
+    .classroom-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+    }
+
+/* HEADER */
+.card-header h4 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.card-header p {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+/* FOOTER (REMOVE BLACK 😎) */
+.card-footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-start; /* ❌ remove space-between */
+    align-items: center;
+    gap: 20px; /* ✅ control spacing manually */
+
+    background: #f8fafc;
+    padding: 8px 10px;
+    border-radius: 10px;
+}
+
+/* BUTTON BASE */
+.btn {
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* ADD BUTTON (SOFT BLUE) */
+.btn-primary {
+    background: #e0e7ff;
+    color: #3730a3;
+    border: none;
+}
+
+    .btn-primary:hover {
+        background: #c7d2fe;
+    }
+
+/* VIEW BUTTON (SOFT GRAY) */
+.btn-outline {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+    .btn-outline:hover {
+        background: #f3f4f6;
+    }
+
+/* GRID IMPROVEMENT */
+.classroom-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+
+
+/*for add*/
+
