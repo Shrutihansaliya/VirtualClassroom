@@ -42,6 +42,8 @@
     Layout = "~/Views/Faculty/_FacultyLayout.cshtml";
 }
 
+@* <link rel="stylesheet" href="~/css/assignment.css" /> *@
+<link rel="stylesheet" href="~/css/assignment/list.css" />
 
 <div class="assignment-page">
     <!-- 🔙 BACK BUTTON -->
@@ -51,36 +53,79 @@
             ← Back to Classrooms
         </a>
     </div>
-<div class="container">
+    <div class="container">
 
-    <div class="header">
-        <h2>Assignments</h2>
-            + Add Assignment
-        </a>
-    </div>
+        <div class="header">
+            <h2>Assignments</h2>
+
+            <a asp-action="Create"
+               asp-route-classroomId="@ViewBag.ClassroomId"
+               class="btn">
+                + Add Assignment
+            </a>
+        </div>
 
         <!-- ⏳ GLOBAL COUNTDOWN -->
        
 
-    @if (!Model.Any())
-    {
-    }
-
-    <div class="grid">
-        @foreach (var item in Model)
+        @if (!Model.Any())
         {
-            <div class="card">
-
-                <h3>@item.Title</h3>
-
-                <p>@item.Description</p>
-
-                <div class="card-footer">
-                </div>
-
-            </div>
+            <p class="empty">No assignments found.</p>
         }
-    </div>
+
+        <div class="grid">
+            @foreach (var item in Model)
+            {
+                <div class="card">
+
+                    <h3>@item.Title</h3>
+
+                    <p>@item.Description</p>
+
+                    <p><b>Due:</b> @item.DueDate.ToString("dd MMM yyyy hh:mm tt")</p>
+                    <p class="countdown"
+                       data-date="@item.DueDate.ToString("yyyy-MM-ddTHH:mm:ss")">
+                    </p>
+                    <!-- 📁 FILE PREVIEW -->
+                    <a href="@item.FilePath" target="_blank" class="file-preview">
+                        @{
+                            var ext = item.FileType;
+                        }
+
+                        @if (ext == ".pdf")
+                        {
+                            <span>📄 PDF File</span>
+                        }
+                        else if (ext == ".doc" || ext == ".docx")
+                        {
+                            <span>📝 Word File</span>
+                        }
+                        else if (ext == ".jpg" || ext == ".jpeg")
+                        {
+                            <span>🖼️ Image File</span>
+                        }
+                        else
+                        {
+                            <span>📁 File</span>
+                        }
+                    </a>
+
+                    <div class="card-footer">
+                        <a asp-action="Details"
+                           asp-route-id="@item.AssignmentId"
+                           class="btn">
+                            View
+                        </a>
+
+                        <form asp-action="Delete" method="post" onsubmit="return confirmDelete(event)">
+                            <input type="hidden" name="id" value="@item.AssignmentId" />
+                            <button type="submit">Delete</button>
+                        </form>
+                    </div>
+
+                </div>
+            }
+        </div>
     </div>
 
 </div>
