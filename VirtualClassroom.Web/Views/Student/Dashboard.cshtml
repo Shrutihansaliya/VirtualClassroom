@@ -1,76 +1,9 @@
 ﻿@{
     Layout = "~/Views/Student/_StudentLayout.cshtml";
 }
-
-@* <h2>My Classes</h2> *@
-@* <div class="container-fluid"> *@
-@*     <div class="row g-4"> *@
-
-@*         <!-- Card 1 --> *@
-@*         <div class="col-lg-4 col-md-6"> *@
-@*             <div class="card course-card"> *@
-@*                 <div class="card-header bg-dark text-white"> *@
-@*                     Machine Learning - Sem 8 *@
-@*                     <div class="small">Rakesh Savant</div> *@
-@*                 </div> *@
-
-@*                 <div class="card-body text-center"> *@
-@*                     <img src="/images/profile.png" class="profile-img" /> *@
-@*                 </div> *@
-
-@*                 <div class="card-footer d-flex justify-content-between"> *@
-@*                     <i class="bi bi-folder"></i> *@
-@*                     <i class="bi bi-three-dots-vertical"></i> *@
-@*                 </div> *@
-@*             </div> *@
-@*         </div> *@
-
-@*         <!-- Card 2 --> *@
-@*         <div class="col-lg-4 col-md-6"> *@
-@*             <div class="card course-card"> *@
-@*                 <div class="card-header bg-secondary text-white"> *@
-@*                     IT5013 - Introduction *@
-@*                     <div class="small">Rakesh Savant</div> *@
-@*                 </div> *@
-
-@*                 <div class="card-body text-center"> *@
-@*                     <img src="/images/profile.png" class="profile-img" /> *@
-@*                 </div> *@
-
-@*                 <div class="card-footer d-flex justify-content-between"> *@
-@*                     <i class="bi bi-folder"></i> *@
-@*                     <i class="bi bi-three-dots-vertical"></i> *@
-@*                 </div> *@
-@*             </div> *@
-@*         </div> *@
-
-@*         <!-- Card 3 --> *@
-@*         <div class="col-lg-4 col-md-6"> *@
-@*             <div class="card course-card"> *@
-@*                 <div class="card-header bg-success text-white"> *@
-@*                     Python - Sem 5 *@
-@*                     <div class="small">Unknown user</div> *@
-@*                 </div> *@
-
-@*                 <div class="card-body text-center"> *@
-@*                     <img src="/images/profile.png" class="profile-img" /> *@
-@*                 </div> *@
-
-@*                 <div class="card-footer d-flex justify-content-between"> *@
-@*                     <i class="bi bi-folder"></i> *@
-@*                     <i class="bi bi-three-dots-vertical"></i> *@
-@*                 </div> *@
-@*             </div> *@
-@*         </div> *@
-
-@*     </div> *@
-@* </div> *@
-
-
-
 @model List<VirtualClassroom.Core.TblClassroom>
 
-<h2>My Classes</h2>
+<h2 class="page-title">My Classes</h2>
 
 @if (Model == null || !Model.Any())
 {
@@ -78,42 +11,33 @@
 }
 else
 {
-    
-   @*  <div style="display:flex; gap:20px; flex-wrap:wrap;"> *@
-   @*      @foreach (var item in Model) *@
-   @*      { *@
-   @*          <a asp-controller="Assignment" *@
-   @* asp-action="ByClass" *@
-   @* asp-route-classId="@item.ClassroomId" *@
-   @* style="text-decoration:none; color:inherit;"> *@
-   @*          <div style="width:250px; border-radius:10px; padding:15px; background:#f5f5f5; box-shadow:0 2px 5px rgba(0,0,0,0.2);"> *@
+    <div class="class-grid">
 
-   @*              <h3>@item.ClassName</h3> *@
-   @*              <p>@item.Description</p> *@
-   @*              </div> *@
-   @*          </a> *@
+        @foreach (var item in Model)
+        {
+            <a asp-controller="Assignment"
+               asp-action="ByClass"
+               asp-route-classId="@item.ClassroomId"
+               style="text-decoration:none; color:inherit;">
 
-   @*      } *@
+                <div class="class-card">
 
-    @foreach (var item in Model)
-    {
-        <a asp-controller="Assignment"
-           asp-action="ByClass"
-           asp-route-classId="@item.ClassroomId"
-           style="text-decoration:none; color:inherit; display:block;">
+                    <div class="class-card-header">
+                        @item.ClassName
+                    </div>
 
-            <div style="width:250px; border-radius:10px; padding:15px;
-                    background:#f5f5f5; box-shadow:0 2px 5px rgba(0,0,0,0.2);
-                    cursor:pointer; transition:0.2s;">
+                    <div class="class-card-body">
+                        <p>@item.Description</p>
+                    </div>
 
-                <h3>@item.ClassName</h3>
-                <p>@item.Description</p>
+                    <div class="class-card-footer">
+                        View Assignments
+                    </div>
 
-                <small style="color:gray;">Click to view assignments →</small>
+                </div>
 
-            </div>
-        </a>
-    }
-    @* </div> *@
+            </a>
+        }
+
+    </div>
 }
-@* </div> *@
