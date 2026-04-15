@@ -1,0 +1,109 @@
+﻿/* =========================================================
+   🎯 FACULTY DASHBOARD (ISOLATED – NO OVERLAP)
+   ========================================================= */
+
+.faculty-dashboard .class-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* ================= CARD ================= */
+.faculty-dashboard .class-card {
+    border-radius: 16px;
+    overflow: hidden;
+    background: #0f172a;
+    color: #cbd5f5;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    transition: 0.3s;
+    position: relative;
+    border: 1px solid #1e293b;
+}
+
+    .faculty-dashboard .class-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.35);
+    }
+
+/* ================= HEADER ================= */
+.faculty-dashboard .card-header.dark {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 18px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-bottom: 1px solid #1e293b;
+}
+
+    .faculty-dashboard .card-header.dark h5 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .faculty-dashboard .card-header.dark p {
+        margin: 0;
+        font-size: 13px;
+        color: #94a3b8;
+    }
+
+/* ================= TOP COLOR STRIP ================= */
+.faculty-dashboard .class-card::before {
+    content: "";
+    height: 4px;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(90deg, #38bdf8, #22c55e);
+}
+
+/* ================= FOOTER ================= */
+.faculty-dashboard .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    background: #020617;
+    border-top: 1px solid #1e293b;
+}
+
+    .faculty-dashboard .card-footer i.bi-folder {
+        color: #94a3b8;
+        font-size: 18px;
+    }
+
+    /* KEEP LINKS SAME */
+    .faculty-dashboard .card-footer a {
+        color: #38bdf8;
+        font-size: 13px;
+        text-decoration: none;
+        position: relative;
+    }
+
+        .faculty-dashboard .card-footer a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0%;
+            height: 2px;
+            background: #38bdf8;
+            transition: 0.3s;
+        }
+
+        .faculty-dashboard .card-footer a:hover::after {
+            width: 100%;
+        }
+
+    .faculty-dashboard .card-footer i.bi-three-dots-vertical {
+        cursor: pointer;
+        color: #94a3b8;
+    }
+
+.faculty-dashboard h2 {
+    font-weight: 600;
+    margin-bottom: 20px;
+}

@@ -17,6 +17,7 @@
         margin-bottom: 20px;
     }
 
+
     .assignment-page h2 {
         font-size: 26px;
         font-weight: 700;
@@ -25,6 +26,9 @@
 
     /* Add Assignment button */
     .assignment-page .header .btn {
+        text-decoration: none !important;
+        display: inline-block;
+        font-weight: 500;
         background: #2563eb;
         color: white;
         padding: 10px 16px;
@@ -32,7 +36,11 @@
         font-size: 14px;
         transition: 0.25s;
     }
-
+    .assignment-page .header a.btn {
+        display: inline-block;
+        text-decoration: none !important;
+        border: none;
+    }
         .assignment-page .header .btn:hover {
             background: #1d4ed8;
         }
@@ -219,6 +227,7 @@
 @media (max-width: 600px) {
     .assignment-page {
         padding: 20px;
+
     }
 
         .assignment-page .header {
@@ -227,3 +236,16 @@
             gap: 10px;
         }
 }
+
+/* 🔥 FINAL FIX – FORCE REMOVE UNDERLINE */
+.assignment-page .header a.btn,
+.assignment-page .header a.btn * {
+    text-decoration: none !important;
+}
+
+    .assignment-page .header a.btn:hover,
+    .assignment-page .header a.btn:focus,
+    .assignment-page .header a.btn:active,
+    .assignment-page .header a.btn:visited {
+        text-decoration: none !important;
+    }
