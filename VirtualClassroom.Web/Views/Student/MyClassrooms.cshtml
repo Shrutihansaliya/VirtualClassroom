@@ -3,6 +3,7 @@
 }
 @model List<VirtualClassroom.Core.TblClassroom>
 
+@* //working code *@
 <div class="container mt-4">
 
     <h2 class="mb-4">📚 My Classrooms</h2>
@@ -42,9 +43,16 @@
                         <!-- Footer -->
                         <div class="card-footer bg-white border-0 d-flex justify-content-between">
 
-                            <button class="btn btn-outline-primary btn-sm px-3">
+                            @* <button class="btn btn-outline-primary btn-sm px-3"> *@
+                            @*     📂 Open *@
+                            @* </button> *@
+
+                            <a asp-controller="Assignment"
+                               asp-action="ByClass"
+                               asp-route-classId="@item.ClassroomId"
+                               class="btn btn-outline-primary btn-sm px-3">
                                 📂 Open
-                            </button>
+                            </a>
 
                             <button class="btn btn-outline-secondary btn-sm px-3">
                                 ⋮

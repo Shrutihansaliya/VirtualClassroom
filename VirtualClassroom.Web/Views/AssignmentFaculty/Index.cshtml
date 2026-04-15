@@ -1,37 +1,187 @@
-﻿@model List<VirtualClassroom.Core.TblAssignments>
+﻿@* @model List<VirtualClassroom.Core.TblAssignments> *@
+@* @{ *@
+@*     ViewData["Title"] = "Assignments"; *@
+@*     Layout = "~/Views/Faculty/_FacultyLayout.cshtml"; *@
+@* } *@
+
+@* <link rel="stylesheet" href="~/css/assignment.css" /> *@
+
+@* <div class="container"> *@
+@*     <div class="header"> *@
+@*         <h2>Assignments</h2> *@
+@*         <a asp-action="Create" asp-route-classroomId="@ViewBag.ClassroomId" class="btn"> *@
+@*             + Add Assignment *@
+@*         </a> *@
+@*     </div> *@
+
+@*     @if (!Model.Any()) *@
+@*     { *@
+@*         <p>No assignments found.</p> *@
+@*     } *@
+
+@*     <div class="grid"> *@
+@*         @foreach (var item in Model) *@
+@*         { *@
+@*             <div class="card"> *@
+@*                 <h3>@item.Title</h3> *@
+@*                 <p>@item.Description</p> *@
+@*                 <p><b>Due:</b> @item.DueDate.ToString("dd MMM yyyy")</p> *@
+
+@*                 <div class="card-footer"> *@
+@*                     <a asp-action="Details" asp-route-id="@item.AssignmentId">View</a> *@
+@*                     <a asp-action="Delete" asp-route-id="@item.AssignmentId" onclick="return confirm('Delete?')">Delete</a> *@
+@*                 </div> *@
+@*             </div> *@
+@*         } *@
+@*     </div> *@
+@* </div> *@
+
+@model List<VirtualClassroom.Core.TblAssignments>
 @{
     ViewData["Title"] = "Assignments";
     Layout = "~/Views/Faculty/_FacultyLayout.cshtml";
 }
 
-<link rel="stylesheet" href="~/css/assignment.css" />
+@* <link rel="stylesheet" href="~/css/assignment.css" /> *@
+<link rel="stylesheet" href="~/css/assignment/list.css" />
 
-<div class="container">
-    <div class="header">
-        <h2>Assignments</h2>
-        <a asp-action="Create" asp-route-classroomId="@ViewBag.ClassroomId" class="btn">
-            + Add Assignment
+<div class="assignment-page">
+    <!-- 🔙 BACK BUTTON -->
+    <div class="top-bar">
+        <a asp-controller="AssignmentFaculty" asp-action="Classrooms" class="back-btn">
+
+            ← Back to Classrooms
         </a>
     </div>
+    <div class="container">
 
-    @if (!Model.Any())
-    {
-        <p>No assignments found.</p>
+        <div class="header">
+            <h2>Assignments</h2>
+
+            <a asp-action="Create"
+               asp-route-classroomId="@ViewBag.ClassroomId"
+               class="btn">
+                + Add Assignment
+            </a>
+        </div>
+
+        <!-- ⏳ GLOBAL COUNTDOWN -->
+       
+
+        @if (!Model.Any())
+        {
+            <p class="empty">No assignments found.</p>
+        }
+
+        <div class="grid">
+            @foreach (var item in Model)
+            {
+                <div class="card">
+
+                    <h3>@item.Title</h3>
+
+                    <p>@item.Description</p>
+
+                    <p><b>Due:</b> @item.DueDate.ToString("dd MMM yyyy hh:mm tt")</p>
+                    <p class="countdown"
+                       data-date="@item.DueDate.ToString("yyyy-MM-ddTHH:mm:ss")">
+                    </p>
+                    <!-- 📁 FILE PREVIEW -->
+                    <a href="@item.FilePath" target="_blank" class="file-preview">
+                        @{
+                            var ext = item.FileType;
+                        }
+
+                        @if (ext == ".pdf")
+                        {
+                            <span>📄 PDF File</span>
+                        }
+                        else if (ext == ".doc" || ext == ".docx")
+                        {
+                            <span>📝 Word File</span>
+                        }
+                        else if (ext == ".jpg" || ext == ".jpeg")
+                        {
+                            <span>🖼️ Image File</span>
+                        }
+                        else
+                        {
+                            <span>📁 File</span>
+                        }
+                    </a>
+
+                    <div class="card-footer">
+                        <a asp-action="Details"
+                           asp-route-id="@item.AssignmentId"
+                           class="btn">
+                            View
+                        </a>
+
+                        <form asp-action="Delete" method="post" onsubmit="return confirmDelete(event)">
+                            <input type="hidden" name="id" value="@item.AssignmentId" />
+                            <button type="submit">Delete</button>
+                        </form>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
+<script>
+    function confirmDelete(e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'This will delete assignment, all student submissions, and files permanently!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                e.target.submit();
+            }
+        });
+
+        return false;
+    }
+</script>
+
+<script>
+    function updateCountdowns() {
+
+        document.querySelectorAll(".countdown").forEach(el => {
+
+            const dueDate = new Date(el.getAttribute("data-date"));
+            const now = new Date();
+            const diff = dueDate - now;
+
+            if (diff <= 0) {
+                el.innerHTML = "❌ Expired";
+                el.style.color = "#ef4444";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const mins = Math.floor((diff / (1000 * 60)) % 60);
+
+            el.innerHTML = `⏳ ${days}d ${hours}h ${mins}m left`;
+
+            // 🔥 Color warning
+            if (days === 0 && hours < 6) {
+                el.style.color = "#ef4444"; // red
+            } else if (days === 0) {
+                el.style.color = "#f59e0b"; // orange
+            } else {
+                el.style.color = "#22c55e"; // green
+            }
+        });
     }
 
-    <div class="grid">
-        @foreach (var item in Model)
-        {
-            <div class="card">
-                <h3>@item.Title</h3>
-                <p>@item.Description</p>
-                <p><b>Due:</b> @item.DueDate.ToString("dd MMM yyyy")</p>
-
-                <div class="card-footer">
-                    <a asp-action="Details" asp-route-id="@item.AssignmentId">View</a>
-                    <a asp-action="Delete" asp-route-id="@item.AssignmentId" onclick="return confirm('Delete?')">Delete</a>
-                </div>
-            </div>
-        }
-    </div>
-</div>
+    setInterval(updateCountdowns, 1000);
+    updateCountdowns();
+</script>

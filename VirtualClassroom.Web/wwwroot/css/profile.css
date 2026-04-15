@@ -1,0 +1,137 @@
+﻿/* PAGE BACKGROUND */
+.pf-wrapper {
+    min-height: 100vh;
+    background: #f8fafc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+/* CARD */
+.pf-card {
+    background: #ffffff;
+    padding: 40px;
+    width: 420px;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border: 1px solid #e2e8f0;
+    transition: 0.3s;
+}
+
+    .pf-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .pf-card h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #1e293b;
+    }
+
+/* IMAGE */
+.pf-img-box {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.pf-img-wrapper {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    margin: auto;
+}
+
+    .pf-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #3b82f6;
+    }
+
+/* HOVER EDIT */
+.pf-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.pf-img-wrapper:hover .pf-overlay {
+    opacity: 1;
+}
+
+.pf-overlay i {
+    color: white;
+    font-size: 20px;
+}
+
+/* INPUT */
+.pf-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+    .pf-group input {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #cbd5e1;
+        outline: none;
+        background: #f9fafb;
+        transition: 0.2s;
+    }
+
+        .pf-group input:focus {
+            border-color: #3b82f6;
+            background: #fff;
+        }
+
+    /* FLOAT LABEL */
+    .pf-group label {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        font-size: 14px;
+        color: #64748b;
+        transition: 0.3s;
+        background: white;
+        padding: 0 5px;
+    }
+
+    .pf-group input:focus + label,
+    .pf-group input:not(:placeholder-shown) + label {
+        top: -8px;
+        font-size: 11px;
+        color: #3b82f6;
+    }
+
+/* BUTTON */
+.pf-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .pf-btn:hover {
+        transform: translateY(-2px);
+    }
+
+/* ERROR */
+small {
+    color: red;
+    font-size: 12px;
+}

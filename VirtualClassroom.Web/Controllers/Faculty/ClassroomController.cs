@@ -23,6 +23,7 @@ public class ClassroomController : Controller
     [HttpGet]
     public IActionResult Create()
     {
+        ViewData["Title"] = "Create Classroom";
         return View();
     }
 
@@ -90,6 +91,7 @@ public class ClassroomController : Controller
     [HttpGet]
     public IActionResult InviteMembers(int classroomId)
     {
+
         ViewBag.ClassroomId = classroomId;
         return View();
     }

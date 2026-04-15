@@ -1,0 +1,113 @@
+﻿@model VirtualClassroom.Core.TblUsers
+
+@{
+    var role = Context.Session.GetString("UserRole");
+
+    Layout = role == "Faculty"
+        ? "~/Views/Faculty/_FacultyLayout.cshtml"
+        : "~/Views/Student/_StudentLayout.cshtml";
+}
+
+<link href="~/css/profile.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="pf-wrapper">
+
+    <div class="pf-card">
+
+        <h2>👤 My Profile</h2>
+
+        <form method="post" enctype="multipart/form-data" id="profileForm">
+
+            <!-- IMAGE -->
+            <div class="pf-img-box">
+
+                <div class="pf-img-wrapper">
+                    <img id="previewImage"
+                         src="@(string.IsNullOrEmpty(Model.ProfilePicture) ? "/images/default.png" : Model.ProfilePicture)" />
+
+                    <div class="pf-overlay" onclick="fileInput.click()">
+                        <i class="bi bi-camera"></i>
+                    </div>
+                </div>
+
+                <input type="file" name="file" id="fileInput" accept=".jpg,.jpeg,.png" hidden />
+                <small id="imgError"></small>
+
+            </div>
+
+            <!-- NAME -->
+            <div class="pf-group">
+                <input type="text" id="name" name="FullName" value="@Model.FullName" required />
+                <label>Username</label>
+                <small id="nameError"></small>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="pf-group">
+                <input type="email" value="@Model.Email" readonly />
+                <label>Email</label>
+            </div>
+
+            <button type="submit" class="pf-btn">Update Profile</button>
+
+        </form>
+    </div>
+
+</div>
+
+<!-- TOAST -->
+@if (TempData["success"] != null)
+{
+    <script>
+        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: '@TempData["success"]', timer: 3000, showConfirmButton: false });
+    </script>
+}
+@if (TempData["error"] != null)
+{
+    <script>
+        Swal.fire({ icon: 'error', title: 'Error', text: '@TempData["error"]' });
+    </script>
+}
+
+<script>
+    const fileInput = document.getElementById("fileInput");
+    const preview = document.getElementById("previewImage");
+    const nameInput = document.getElementById("name");
+
+    fileInput.addEventListener("change", function () {
+        const file = this.files[0];
+        const imgError = document.getElementById("imgError");
+
+        if (!file) return;
+
+        const allowed = ["image/jpeg", "image/png"];
+
+        if (!allowed.includes(file.type)) {
+            imgError.innerText = "Only JPG/PNG allowed";
+            this.value = "";
+            return;
+        }
+
+        if (file.size > 1024 * 1024) {
+            imgError.innerText = "Max size 1MB";
+            this.value = "";
+            return;
+        }
+
+        imgError.innerText = "";
+
+        const reader = new FileReader();
+        reader.onload = e => preview.src = e.target.result;
+        reader.readAsDataURL(file);
+    });
+
+    nameInput.addEventListener("keyup", function () {
+        const error = document.getElementById("nameError");
+        if (this.value.trim().length < 3) {
+            error.innerText = "Minimum 3 characters required";
+        } else {
+            error.innerText = "";
+        }
+    });
+</script>
