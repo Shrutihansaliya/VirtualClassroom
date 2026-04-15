@@ -303,7 +303,7 @@ namespace VirtualClassroom.Web.Controllers.Student
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("MyClassrooms");
+            return RedirectToAction("Dashboard");
         }
     }
 }
