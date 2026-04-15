@@ -174,12 +174,14 @@
             border: none;
             text-align: center;
             transition: 0.25s;
+            text-decoration: none;
         }
 
         /* View button */
         .assignment-page .card-footer .btn {
             background: #22c55e;
             color: white;
+            text-decoration: none;
         }
 
             .assignment-page .card-footer .btn:hover {

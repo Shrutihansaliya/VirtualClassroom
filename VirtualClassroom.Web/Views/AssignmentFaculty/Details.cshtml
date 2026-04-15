@@ -1,77 +1,83 @@
-﻿@* Show student submission status *@
-@* @model List<VirtualClassroom.Core.TblSubmissions> *@
-@* @{ *@
-@*     ViewData["Title"] = "Submissions"; *@
-@*     Layout = "~/Views/Faculty/_FacultyLayout.cshtml"; *@
-@* } *@
-
-@* <link rel="stylesheet" href="~/css/assignment.css" /> *@
-
-@* <div class="container"> *@
-@*     <h2>Student Submissions</h2> *@
-
-@*     <table> *@
-@*         <tr> *@
-@*             <th>Name</th> *@
-@*             <th>Status</th> *@
-@*             <th>File</th> *@
-@*             <th>Date</th> *@
-@*         </tr> *@
-
-@*         @foreach (var item in Model) *@
-@*         { *@
-@*             <tr> *@
-@*                 <td>@item.Student.FullName</td> *@
-@*                 <td class="@(item.Status == "Submitted" ? "green" : "red")"> *@
-@*                     @item.Status *@
-@*                 </td> *@
-@*                 <td> *@
-@*                     @if (item.FilePath != null) *@
-@*                     { *@
-@*                         <a href="@item.FilePath" target="_blank">View</a> *@
-@*                     } *@
-@*                 </td> *@
-@*                 <td>@item.SubmittedAt</td> *@
-@*             </tr> *@
-@*         } *@
-@*     </table> *@
-@* </div> *@
+﻿
 @model List<VirtualClassroom.Core.TblSubmissions>
+
 @{
     ViewData["Title"] = "Submissions";
     Layout = "~/Views/Faculty/_FacultyLayout.cshtml";
 }
 
-<link rel="stylesheet" href="~/css/assignment.css" />
+<link rel="stylesheet" href="~/css/assignment/submissions.css" asp-append-version="true" />
 
-<div class="container">
-    <h2>Student Submissions</h2>
+<div class="submission-page">
+    <div class="top-bar">
+        <a asp-controller="AssignmentFaculty" asp-action="Classrooms" class="back-btn">
+
+            ← Back to Classrooms
+        </a>
+    </div>
+    <div class="submission-header">
+        <h2>📄 Student Submissions</h2>
+    </div>
 
     @if (!Model.Any())
     {
-        <p>No submissions yet.</p>
+        <div class="empty-state">
+            No submissions available yet.
+        </div>
+    }
+    else
+    {
+        <div class="submission-card">
+
+            <table class="submission-table">
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Status</th>
+                        <th>File</th>
+                        <th>Submitted On</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@(item.Student?.FullName ?? "N/A")</td>
+
+                            <td>
+                                @if (item.Status == "Submitted")
+                                {
+                                    <span class="status submitted">Submitted</span>
+                                }
+                                else
+                                {
+                                    <span class="status pending">Pending</span>
+                                }
+                            </td>
+
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.FilePath))
+                                {
+                                    <a href="@item.FilePath" target="_blank" class="view-btn">View</a>
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </td>
+
+                            <td>
+                                @(item.SubmittedAt.HasValue
+                                    ? item.SubmittedAt.Value.ToString("dd MMM yyyy, hh:mm tt")
+                                    : "-")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
     }
 
-    <table>
-        <thead>
-        <tr>
-            <th>Status</th>
-            <th>File</th>
-            <th>Date</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                
-                <td>
-                    {
-                    }
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
 </div>
