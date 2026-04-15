@@ -9,6 +9,7 @@ using BCrypt.Net;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity.Data;
 
 namespace VirtualClassroom.Web.Controllers
 {
@@ -236,6 +237,153 @@ namespace VirtualClassroom.Web.Controllers
 
             TempData["success"] = "Profile updated successfully!";
             return RedirectToAction("Profile");
+        }
+
+
+        //ForgotPasswordRequest password 
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var user = _context.TblUsers.FirstOrDefault(x => x.Email == email);
+
+            if (user == null)
+            {
+                ViewBag.Message = "Email not found";
+                return View();
+            }
+
+            var otp = new Random().Next(100000, 999999).ToString();
+
+            HttpContext.Session.SetString("ResetEmail", email);
+
+            HttpContext.Session.SetString("OTP", otp);
+            HttpContext.Session.SetString("OTPTime", DateTime.Now.ToString());
+
+            await _emailService.SendEmailAsync(
+        email,
+        "Virtual Classroom - OTP Verification",
+        $@"
+    <div style='font-family:Arial;padding:20px'>
+        <h2 style='color:#2a5298'>Virtual Classroom</h2>
+        <p>Your OTP is:</p>
+        <h1 style='background:#f2f2f2;padding:10px'>{otp}</h1>
+        <p>This OTP is valid for 2 minutes.</p>
+    </div>"
+    );
+            return RedirectToAction("VerifyOtp");
+        }
+
+
+        [HttpGet]
+        public IActionResult VerifyOtp()
+        {
+            return View();
+        }
+
+        //[HttpPost]
+        //public IActionResult VerifyOtp(string otp)
+        //{
+        //    var sessionOtp = HttpContext.Session.GetString("OTP");
+
+        //    if (otp == sessionOtp)
+        //    {
+        //        return RedirectToAction("ResetPassword");
+        //    }
+
+        //    ViewBag.Error = "Invalid OTP";
+        //    return View();
+        //}
+
+
+        [HttpPost]
+        public IActionResult VerifyOtp(string otp)
+        {
+            var sessionOtp = HttpContext.Session.GetString("OTP");
+            var otpTimeStr = HttpContext.Session.GetString("OTPTime");
+
+            // 🔥 Check expiry
+            if (otpTimeStr != null)
+            {
+                var otpTime = DateTime.Parse(otpTimeStr);
+
+                if ((DateTime.Now - otpTime).TotalMinutes > 5) // 👉 change here
+                {
+                    ViewBag.Error = "OTP expired";
+                    return View();
+                }
+            }
+
+            // 🔥 Check match
+            if (otp == sessionOtp)
+            {
+                return RedirectToAction("ResetPassword");
+            }
+
+            ViewBag.Error = "Invalid OTP";
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+
+
+        [HttpPost]
+        public IActionResult ResetPassword(string newPassword, string confirmPassword)
+        {
+            // ✅ 1. Match check
+            if (newPassword != confirmPassword)
+            {
+                ViewBag.Error = "Passwords do not match";
+                return View();
+            }
+
+            // ✅ 2. Password pattern (same as Register)
+            var passwordPattern = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$");
+
+            if (!passwordPattern.IsMatch(newPassword))
+            {
+                ViewBag.Error = "Password must be at least 6 characters and include uppercase, lowercase, number, and special character.";
+                return View();
+            }
+
+            // ✅ 3. Session check (important)
+            var email = HttpContext.Session.GetString("ResetEmail");
+
+            if (email == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            // ✅ 4. User check (important)
+            var user = _context.TblUsers.FirstOrDefault(x => x.Email == email);
+
+            if (user == null)
+            {
+                ViewBag.Error = "User not found";
+                return View();
+            }
+
+            // 🔐 5. Hash password
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+
+            _context.SaveChanges();
+
+            // ✅ 6. Clear session
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("Login");
         }
 
 

@@ -133,8 +133,14 @@
                 </a>
             </li>
             <li><i class="bi bi-journal"></i><span>My Classes</span></li>
-            <li><i class="bi bi-person-plus"></i><span>Invite Students</span></li>
+            @* <li><i class="bi bi-person-plus"></i><span>Invite Students</span></li> *@
             <li><i class="bi bi-file-text"></i><span>Assignments</span></li>
+            <li>
+                <a asp-controller="Material" asp-action="Classrooms">
+                    <i class="bi bi-upload"></i>
+                    <span>Materials</span>
+                </a>
+            </li>
             <li><i class="bi bi-camera-video"></i><span>Sessions</span></li>
         </ul>
     </div>
