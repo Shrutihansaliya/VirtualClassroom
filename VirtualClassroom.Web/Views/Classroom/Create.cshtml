@@ -1,30 +1,78 @@
-﻿@model VirtualClassroom.Core.TblClassroom
+﻿@* @model VirtualClassroom.Core.TblClassroom *@
+@* @{ *@
+@*     ViewData["Title"] = "Create Classroom"; *@
+@*     Layout = "~/Views/Faculty/_FacultyLayout.cshtml"; *@
+@* } *@
+
+@* @if (TempData["Error"] != null) *@
+@* { *@
+@*     <div class="alert alert-danger"> *@
+@*         @TempData["Error"] *@
+@*     </div> *@
+@* } *@
+
+@* <div class="container"> *@
+@*     <h2>Create Classroom</h2> *@
+
+@*     @Html.ValidationSummary(true, "", new { @class = "text-danger" }) *@
+
+@*     <form method="post"> *@
+@*         <label>Class Name</label> *@
+@*         <input type="text" name="className" required /> *@
+
+@*         <label>Description</label> *@
+@*         <textarea name="description"></textarea> *@
+
+        
+
+@*         <button type="submit">Create</button> *@
+@*     </form> *@
+@* </div> *@
+
+
+
+@model VirtualClassroom.Core.TblClassroom
 @{
     ViewData["Title"] = "Create Classroom";
     Layout = "~/Views/Faculty/_FacultyLayout.cshtml";
 }
 
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["Error"]
+<link rel="stylesheet" href="~/css/create-classroom.css" />
+
+<div class="page-wrapper">
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert-box">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Create Classroom</h2>
+            <p>Add a new classroom for your students</p>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "validation-text" })
+
+        <form method="post" class="form">
+
+            <div class="form-group">
+                <label>Class Name</label>
+                <input type="text" name="className" placeholder="Enter class name" required />
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" rows="4" placeholder="Enter description"></textarea>
+            </div>
+
+            <button type="submit" class="btn-create">
+                + Create Classroom
+            </button>
+
+        </form>
     </div>
-}
 
-<div class="container">
-    <h2>Create Classroom</h2>
-
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-    <form method="post">
-        <label>Class Name</label>
-        <input type="text" name="className" required />
-
-        <label>Description</label>
-        <textarea name="description"></textarea>
-
-        
-
-        <button type="submit">Create</button>
-    </form>
 </div>

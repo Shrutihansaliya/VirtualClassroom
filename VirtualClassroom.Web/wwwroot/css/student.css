@@ -541,9 +541,3 @@ h2 {
         background: linear-gradient(90deg, #7c3aed, #c084fc);
         border-radius: 3px;
     }
-
-/* Container fluid adjustments */
-.container-fluid {
-    padding-left: 0;
-    padding-right: 0;
-}

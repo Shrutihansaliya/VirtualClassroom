@@ -1,0 +1,118 @@
+﻿/* Page Background */
+.page-wrapper {
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* Card Design */
+.card {
+    width: 100%;
+    max-width: 600px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Header */
+.card-header h2 {
+    margin: 0;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.card-header p {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #7f8c8d;
+}
+
+/* Form */
+.form {
+    margin-top: 20px;
+}
+
+/* Form Group */
+.form-group {
+    margin-bottom: 20px;
+}
+
+    /* Labels */
+    .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 500;
+        color: #34495e;
+    }
+
+    /* Inputs */
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #dcdde1;
+        font-size: 14px;
+        transition: all 0.25s ease;
+    }
+
+        /* Focus Effect */
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 6px rgba(74, 144, 226, 0.3);
+            outline: none;
+        }
+
+/* Button */
+.btn-create {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    /* Button Hover */
+    .btn-create:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(74, 144, 226, 0.3);
+    }
+
+/* Alert */
+.alert-box {
+    background: #ffe6e6;
+    color: #c0392b;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border-left: 5px solid #e74c3c;
+}
+
+/* Validation */
+.validation-text {
+    color: #e74c3c;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
