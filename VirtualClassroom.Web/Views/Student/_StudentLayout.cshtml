@@ -1,133 +1,4 @@
-﻿@* <!DOCTYPE html> *@
-@* <html> *@
-@* <head> *@
-@*     <title>Student Dashboard</title> *@
-
-@*     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" /> *@
-@*     <link href="~/css/student.css" rel="stylesheet" asp-append-version="true" /> *@
-@*     <link href="~/css/profile-dropdown.css" rel="stylesheet" /> *@
-@*     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"> *@
-@* </head> *@
-
-@* <body> *@
-
-@*     <!-- SIDEBAR --> *@
-@*     @* <div class="std-sidebar"> *@ 
-@*     @*     <ul> *@ 
-@*     @*         <li><a asp-controller="Student" asp-action="Dashboard"><i class="bi bi-house"></i><span>Dashboard</span></a></li> *@ 
-@*     @*         <li><i class="bi bi-journal"></i><span>My Classes</span></li> *@ 
-@*     @*         <li><i class="bi bi-file-text"></i><span>Assignments</span></li> *@ 
-@*     @*         <li><i class="bi bi-upload"></i><span>Submissions</span></li> *@ 
-@*     @*         <li><i class="bi bi-camera-video"></i><span>Live Sessions</span></li> *@ 
-@*     @*     </ul> *@ 
-@*     @* </div> *@ 
-
-
-@*     <div class="std-sidebar"> *@
-@*         <ul> *@
-@*             <li> *@
-@*                 <a asp-controller="Student" asp-action="Dashboard"> *@
-@*                     <i class="bi bi-house"></i> *@
-@*                     <span>Dashboard</span> *@
-@*                 </a> *@
-@*             </li> *@
-
-@*             <li> *@
-@*                 <a asp-controller="Student" asp-action="MyClassrooms"> *@
-@*                     <i class="bi bi-journal"></i> *@
-@*                     <span>My Classes</span> *@
-@*                 </a> *@
-@*             </li> *@
-@*             @* <li><i class="bi bi-file-text"></i><span>Assignments</span></li> *@ 
-@*             <li> *@
-@*                 <a asp-controller="Assignment" asp-action="Index"> *@
-@*                     <i class="bi bi-file-text"></i><span>Assignments</span> *@
-@*                 </a> *@
-@*             </li> *@
-@*             <li><i class="bi bi-upload"></i><span>Submissions</span></li> *@
-@*             <li><i class="bi bi-camera-video"></i><span>Live Sessions</span></li> *@
-@*         </ul> *@
-@*     </div> *@
-
-@*     <div class="std-main"> *@
-
-@*     <!-- MAIN --> *@
-   
-
-@*         <!-- NAVBAR --> *@
-@*         <div class="student-navbar"> *@
-
-@*             <!-- LEFT --> *@
-@*             <div class="nav-left"> *@
-@*                 <h4>Student Classroom</h4> *@
-@*             </div> *@
-
-@*             <!-- RIGHT --> *@
-@*             <div class="nav-right"> *@
-
-@*                 <!-- ICONS --> *@
-@*                 <div class="nav-icons"> *@
-@*                     <i class="bi bi-plus-lg"></i> *@
-@*                     <i class="bi bi-grid-3x3-gap"></i> *@
-@*                 </div> *@
-
-@*                 <!-- PROFILE --> *@
-@*                 <div class="nav-profile"> *@
-@*                     @await Html.PartialAsync("_ProfileDropdown") *@
-@*                 </div> *@
-
-@*             </div> *@
-
-@*         </div> *@
-
-@*         <!-- CONTENT --> *@
-@*         <div class="student-content"> *@
-@*             @RenderBody() *@
-@*         </div> *@
-
-@*     </div> *@
-
-@* </body> *@
-
-@* </html> *@
-@* <script> *@
-@*     function pd_toggleDropdown() { *@
-@*         document.getElementById("pdDropdown").classList.toggle("show"); *@
-@*     } *@
-
-@*     window.addEventListener("click", function (e) { *@
-@*         if (!e.target.closest('.pd-avatar')) { *@
-@*             let dd = document.getElementById("pdDropdown"); *@
-@*             if (dd && dd.classList.contains("show")) { *@
-@*                 dd.classList.remove("show"); *@
-@*             } *@
-@*         } *@
-@*     }); *@
-
-@*     function pd_confirmLogout() { *@
-@*         Swal.fire({ *@
-@*             title: 'Are you sure?', *@
-@*             text: "You will be logged out!", *@
-@*             icon: 'warning', *@
-@*             showCancelButton: true, *@
-@*             confirmButtonColor: '#2563eb', *@
-@*             cancelButtonColor: '#d33', *@
-@*             confirmButtonText: 'Yes, Logout' *@
-@*         }).then((result) => { *@
-@*             if (result.isConfirmed) { *@
-@*                 window.location.href = '/Account/Logout'; *@
-@*             } *@
-@*         }); *@
-@*     } *@
-@* </script> *@
-
-
-
-
-
-
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>Student Dashboard</title>
@@ -135,24 +6,134 @@
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/css/student.css" rel="stylesheet" asp-append-version="true" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- ✅ ADD THIS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        /* ================= GLOBAL COLOR ================= */
+        :root {
+            --main-gradient: linear-gradient(180deg, #1e1b4b 0%, #2e1065 100%);
+        }
+
+        /* ================= SIDEBAR ================= */
+        .std-sidebar {
+            background: var(--main-gradient);
+        }
+
+        /* ================= PROFILE ================= */
+        .profile-circle {
+            width: 38px;
+            height: 38px;
+            background: var(--main-gradient);
+            color: white;
+            font-weight: 600;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 55px;
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            width: 200px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+            .dropdown-menu a {
+                display: block;
+                padding: 8px 0;
+                color: #1e293b;
+                text-decoration: none;
+            }
+
+                .dropdown-menu a:hover {
+                    color: #4f46e5;
+                }
+
+        /* ================= GRID ================= */
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        /* ================= CARD ================= */
+        .class-card {
+            border-radius: 18px;
+            background: #fff;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        }
+
+            .class-card:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+            }
+
+        /* 🔥 SAME AS SIDEBAR */
+        .class-card-header {
+            padding: 18px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            background: var(--main-gradient);
+            position: relative;
+        }
+
+            /* CURVE EFFECT */
+            .class-card-header::after {
+                content: "";
+                position: absolute;
+                bottom: -18px;
+                left: 0;
+                width: 100%;
+                height: 30px;
+                background: white;
+                border-top-left-radius: 40px;
+                border-top-right-radius: 40px;
+            }
+
+        .class-card-body {
+            padding: 30px 20px 20px 20px;
+        }
+
+            .class-card-body p {
+                color: #64748b;
+                font-size: 14px;
+            }
+
+        .class-card-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            font-size: 13px;
+            color: #4f46e5;
+            font-weight: 500;
+        }
+
+            .class-card-footer::after {
+                content: "→";
+                float: right;
+            }
+
+        .page-title {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+    </style>
 </head>
 
 <body>
 
     <!-- SIDEBAR -->
-    @* <div class="std-sidebar"> *@
-    @*     <ul> *@
-    @*         <li><a asp-controller="Student" asp-action="Dashboard"><i class="bi bi-house"></i><span>Dashboard</span></a></li> *@
-    @*         <li><i class="bi bi-journal"></i><span>My Classes</span></li> *@
-    @*         <li><i class="bi bi-file-text"></i><span>Assignments</span></li> *@
-    @*         <li><i class="bi bi-upload"></i><span>Submissions</span></li> *@
-    @*         <li><i class="bi bi-camera-video"></i><span>Live Sessions</span></li> *@
-    @*     </ul> *@
-    @* </div> *@
-
-
     <div class="std-sidebar">
         <ul>
 
@@ -179,52 +160,49 @@
 
             <li>
                 <a asp-controller="Assignment" asp-action="Index">
-                    <i class="bi bi-file-text"></i><span>Assignments</span>
+                    <i class="bi bi-file-text"></i>
+                    <span>Assignments</span>
                 </a>
             </li>
 
-            <li>
-                <a asp-controller="Student" asp-action="Submissions">
-                    <i class="bi bi-upload"></i>
-                    <span>Submissions</span>
-                </a>
-            </li>
 
-            <li>
-                <a asp-controller="Student" asp-action="LiveSessions">
-                    <i class="bi bi-camera-video"></i>
-                    <span>Live Sessions</span>
-                </a>
-            </li>
 
         </ul>
     </div>
 
+    <!-- MAIN -->
     <div class="std-main">
 
-        <!-- MAIN -->
         <!-- NAVBAR -->
         <div class="student-navbar">
-            <h4>Student Classroom</h4>
 
-            <div class="right">
-                <i class="bi bi-plus-lg"></i>
-                <i class="bi bi-grid-3x3-gap"></i>
+            <div class="nav-left">
+                <h4>Student Classroom</h4>
+            </div>
 
-                <!-- PROFILE DROPDOWN -->
+            <div class="nav-right">
+
+                <div class="nav-icons">
+                    <i class="bi bi-plus-lg"></i>
+                    <i class="bi bi-grid-3x3-gap"></i>
+                </div>
+
                 <div class="dropdown">
                     <div class="profile-circle" onclick="toggleDropdown()">
                         @Context.Session.GetString("UserName")?.Substring(0, 1)
                     </div>
 
                     <div id="profileMenu" class="dropdown-menu">
-                        <p>@Context.Session.GetString("UserName")</p>
-                        <p>@Context.Session.GetString("UserEmail")</p>
+                        <p><strong>@Context.Session.GetString("UserName")</strong></p>
+                        <p style="font-size:13px; color:gray;">
+                            @Context.Session.GetString("UserEmail")
+                        </p>
 
                         <a href="/Account/Profile">My Profile</a>
                         <a href="/Account/Logout">Logout</a>
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -238,15 +216,15 @@
 </body>
 
 </html>
+
 <script>
     function toggleDropdown() {
         var menu = document.getElementById("profileMenu");
         menu.style.display = menu.style.display === "block" ? "none" : "block";
     }
 
-    // Close when clicking outside
     window.onclick = function (e) {
-        if (!e.target.matches('.profile-circle')) {
+        if (!e.target.closest('.profile-circle')) {
             var dropdown = document.getElementById("profileMenu");
             if (dropdown) dropdown.style.display = "none";
         }
