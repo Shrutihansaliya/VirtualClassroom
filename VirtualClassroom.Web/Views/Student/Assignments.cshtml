@@ -1,9 +1,101 @@
 ﻿@model List<VirtualClassroom.Core.TblAssignments>
 
 @{
-    Layout = "~/Views/Student/_StudentLayout.cshtml"; // your layout file
+    Layout = "~/Views/Student/_StudentLayout.cshtml";
     var userId = Context.Session.GetInt32("UserId");
 }
+
+<style>
+    /* ===== PAGE TITLE ===== */
+    h3 {
+        font-weight: 700;
+        letter-spacing: 0.3px;
+    }
+
+    /* ===== CARD ===== */
+    .assignment-card {
+        border: none;
+        border-radius: 16px;
+        background: #fff;
+        transition: all 0.2s ease-in-out;
+        overflow: hidden;
+    }
+
+        .assignment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 35px rgba(0,0,0,0.10);
+        }
+
+    /* ===== HEADER ===== */
+    .card-header-custom {
+        padding: 12px 14px;
+        font-weight: 600;
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* ===== BODY ===== */
+    .card-body {
+        padding: 14px 16px;
+    }
+
+    .assignment-title {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .meta-text {
+        font-size: 12.5px;
+        color: #6c757d;
+        margin-bottom: 5px;
+    }
+
+    /* ===== FILE CHIP ===== */
+    .file-chip {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 8px;
+        background: #eef3ff;
+        font-size: 12px;
+        margin-top: 6px;
+        text-decoration: none;
+        color: #2f5cff;
+    }
+
+        .file-chip:hover {
+            background: #e0e9ff;
+        }
+
+    /* ===== FOOTER ===== */
+    .card-footer-custom {
+        padding: 12px 14px;
+        background: #fafafa;
+        border-top: 1px solid #eee;
+    }
+
+    /* ===== BUTTONS (SMALL PROFESSIONAL) ===== */
+    .btn {
+        border-radius: 7px;
+        font-size: 12px;
+        padding: 4px 10px;
+    }
+
+    .form-control-sm {
+        height: 30px;
+        font-size: 12px;
+    }
+
+    /* spacing fix */
+    .action-row {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+</style>
 
 @if (TempData["Success"] != null)
 {
@@ -19,11 +111,13 @@
     </div>
 }
 
-<h3>My Assignments</h3>
+<h3 class="mb-3">📚 My Assignments</h3>
 
 @if (!Model.Any())
 {
-    <p>No assignments found.</p>
+    <div class="alert alert-info">
+        No assignments found.
+    </div>
 }
 else
 {
@@ -32,83 +126,127 @@ else
         {
             var submission = item.Submissions?
             .FirstOrDefault(s => s.StudentId == userId);
-            <div class="col-md-4 mb-3">
-                <div class="card p-3 shadow-sm">
-                    <h5>@item.Title</h5>
-                    <p>@item.Description</p>
 
-                    <small><b>Class:</b> @item.Classroom.ClassName</small><br />
-                    <small><b>Due:</b> @item.DueDate.ToShortDateString()</small>
+            <div class="col-md-4 mb-4">
+                <div class="assignment-card shadow-sm h-100">
 
-                    @if (!string.IsNullOrEmpty(item.FilePath))
-                    {
-                        <br />
-                        <a href="@item.FilePath" target="_blank" class="btn btn-sm btn-primary mt-2">
-                            View File
-                        </a>
-                    }
+                    <!-- HEADER -->
+                    <div class="card-header-custom bg-dark text-white">
+                        <span>@item.Title</span>
 
-                    @* <a asp-controller="Submission" *@
-                    @*    asp-action="Submit" *@
-                    @*    asp-route-assignmentId="@item.AssignmentId" *@
-                    @*    class="btn btn-success btn-sm mt-2"> *@
-                    @*     📤 Submit *@
-                    @* </a> *@
-
-                    @if (DateTime.Now <= item.DueDate)
-                    {
-                        if (submission != null)
+                        @if (DateTime.Now <= item.DueDate)
                         {
-                            <form asp-controller="Submission" asp-action="EditSubmission" method="post" enctype="multipart/form-data" class="mt-2">
-                                <input type="hidden" name="submissionId" value="@submission.SubmissionId" />
-                                <input type="file" name="file" class="form-control form-control-sm" required />
-                                <button type="submit" class="btn btn-warning btn-sm mt-1">✏ Update</button>
-                            </form>
-
-                            <a asp-controller="Submission"
-                               asp-action="DeleteSubmission"
-                               asp-route-submissionId="@submission.SubmissionId"
-                               class="btn btn-danger btn-sm mt-1">
-                                🗑 Delete
-                            </a>
+                            <span class="badge bg-success">Active</span>
                         }
                         else
                         {
-                            <a asp-controller="Submission"
-                               asp-action="Submit"
-                               asp-route-assignmentId="@item.AssignmentId"
-                               class="btn btn-success btn-sm mt-2">
-                                📤 Submit
+                            <span class="badge bg-danger">Closed</span>
+                        }
+                    </div>
+
+                    <!-- BODY -->
+                    <div class="card-body">
+
+                        <div class="assignment-title">
+                            @item.Title
+                        </div>
+
+                        <div class="meta-text">
+                            @item.Description
+                        </div>
+
+                        <div class="meta-text">
+                            <b>Class:</b> @item.Classroom.ClassName
+                        </div>
+
+                        <div class="meta-text">
+                            <b>Due:</b> @item.DueDate.ToString("dd MMM yyyy")
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(item.FilePath))
+                        {
+                            <a href="@item.FilePath" target="_blank" class="file-chip">
+                                📎 View Assignment File
                             </a>
                         }
-                    }
-                    else
-                    {
-                        <span class="text-danger fw-bold">⛔ Deadline Passed</span>
-                    }
+                    </div>
 
+                    <!-- FOOTER -->
+                    <div class="card-footer-custom">
+
+                        @if (DateTime.Now <= item.DueDate)
+                        {
+                            <div class="action-row">
+
+                                @if (submission != null)
+                                {
+                                    <form asp-controller="Submission"
+                                          asp-action="EditSubmission"
+                                          method="post"
+                                          enctype="multipart/form-data"
+                                          class="d-flex gap-2 align-items-center">
+
+                                        <input type="hidden" name="submissionId" value="@submission.SubmissionId" />
+
+                                        <input type="file"
+                                               name="file"
+                                               class="form-control form-control-sm"
+                                               style="width:140px;" />
+
+                                        <button class="btn btn-warning">
+                                            ✏ Update
+                                        </button>
+                                    </form>
+
+                                    @if (!string.IsNullOrEmpty(submission.FilePath))
+                                    {
+                                        <a asp-controller="Submission"
+                                           asp-action="ViewSubmissionFile"
+                                           asp-route-submissionId="@submission.SubmissionId"
+                                           class="btn btn-info">
+                                            👁 View
+                                        </a>
+                                    }
+
+                                    <a asp-controller="Submission"
+                                       asp-action="DeleteSubmission"
+                                       asp-route-submissionId="@submission.SubmissionId"
+                                       class="btn btn-outline-danger">
+                                        🗑
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Submission"
+                                       asp-action="Submit"
+                                       asp-route-assignmentId="@item.AssignmentId"
+                                       class="btn btn-success">
+                                        📤 Submit
+                                    </a>
+                                }
+
+                            </div>
+                        }
+                        else
+                        {
+                            <span class="text-danger fw-semibold small d-block mb-2">
+                                ⛔ Deadline Passed
+                            </span>
+
+                            @if (submission != null && !string.IsNullOrEmpty(submission.FilePath))
+                            {
+                                <a asp-controller="Submission"
+                                   asp-action="ViewSubmissionFile"
+                                   asp-route-submissionId="@submission.SubmissionId"
+                                   class="btn btn-info">
+                                    👁 View
+                                </a>
+                            }
+                        }
+
+                    </div>
                 </div>
             </div>
         }
     </div>
-
-    @* <h3>All Assignments</h3> *@
-
-    @* @foreach (var group in Model.GroupBy(a => a.Classroom.ClassName)) *@
-    @* { *@
-    @*     <h4 class="mt-4">@group.Key</h4> *@
-
-    @*     <div class="row"> *@
-    @*         @foreach (var item in group) *@
-    @*         { *@
-    @*             <div class="col-md-4"> *@
-    @*                 <div class="card p-3 mb-3"> *@
-    @*                     <h5>@item.Title</h5> *@
-    @*                     <p>@item.Description</p> *@
-    @*                     <small>Due: @item.DueDate</small> *@
-    @*                 </div> *@
-    @*             </div> *@
-    @*         } *@
-    @*     </div> *@
-    @* } *@
 }

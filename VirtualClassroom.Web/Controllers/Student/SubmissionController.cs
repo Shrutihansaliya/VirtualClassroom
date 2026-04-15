@@ -181,4 +181,31 @@ public class SubmissionController : BaseController
         TempData["Success"] = "🗑 Submission deleted!";
         return RedirectToAction("ByClass", "Assignment", new { classId = submission.Assignment.ClassroomId });
     }
+    [HttpGet("submission/view/{submissionId}")]
+    public async Task<IActionResult> ViewSubmissionFile(int submissionId)
+    {
+        var submission = await _context.TblSubmissions
+            .FirstOrDefaultAsync(x => x.SubmissionId == submissionId);
+
+        if (submission == null || string.IsNullOrEmpty(submission.FilePath))
+            return NotFound();
+
+        using var httpClient = new HttpClient();
+        var fileBytes = await httpClient.GetByteArrayAsync(submission.FilePath);
+
+        var ext = Path.GetExtension(submission.FilePath).ToLower();
+
+        var contentType = ext switch
+        {
+            ".pdf" => "application/pdf",
+            ".png" => "image/png",
+            ".jpg" or ".jpeg" => "image/jpeg",
+            ".txt" => "text/plain",
+            _ => "application/octet-stream"
+        };
+
+        Response.Headers["Content-Disposition"] = "inline";
+
+        return File(fileBytes, contentType);
+    }
 }

@@ -37,8 +37,17 @@ public class BlobSubmissionService
 
         using (var stream = file.OpenReadStream())
         {
-            await blobClient.UploadAsync(stream, true);
+            await blobClient.UploadAsync(stream, overwrite: true);
         }
+
+        // ⭐ IMPORTANT FIX: Set headers for browser preview
+        var httpHeaders = new Azure.Storage.Blobs.Models.BlobHttpHeaders
+        {
+            ContentType = file.ContentType,
+            ContentDisposition = "inline"
+        };
+
+        await blobClient.SetHttpHeadersAsync(httpHeaders);
 
         return blobClient.Uri.ToString();
     }
