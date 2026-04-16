@@ -15,33 +15,27 @@
 
     <!-- LEFT SIDE (Branding + Info) -->
     <div class="left-panel">
-        <div class="brand">
-            <h1>Virtual Classroom</h1>
-            <p>Learn • Teach • Collaborate</p>
-        </div>
-
-        <div class="features">
-            @* <h3>What you can do?</h3> *@
-            <ul>
-                <li>📚 Manage Classrooms</li>
-                <li>📝 Assignments & Submissions</li>
-                <li>🎥 Live Online Sessions</li>
-                <li>👨‍🏫 Faculty & Student Portal</li>
-                <li>🔐 Secure Login with Google</li>
-            </ul>
-        </div>
+        
     </div>
 
     <!-- RIGHT SIDE (LOGIN FORM) -->
     <div class="right-panel">
         <div class="login-container">
+            <div class="logo">
+                <img src="~/images/vclass.png" alt="vClass Logo" />
+                <p class="logo-text">Smart learning platform for students & faculty</p>
+            </div>
             <h2>Welcome Back 👋</h2>
             <p class="subtitle">Login to continue</p>
 
             <form method="post">
                 <input type="email" name="email" placeholder="Email Address" required />
-                <input type="password" name="password" placeholder="Password" required />
-
+               
+                <!-- 🔥 PASSWORD WITH TOGGLE -->
+                <div class="password-wrapper">
+                    <input type="password" id="password" name="password" placeholder="Password" required />
+                    <span class="toggle-password" onclick="togglePassword()">👁</span>
+                </div>
 
 
                 <div class="forgot-container">
@@ -66,11 +60,7 @@
                     <a href="/Account/Register">Create Account</a>
                 </p>
 
-                @* <div class="forgot-password"> *@
-                @*     <a href="@Url.Action("ForgotPassword", "Account")"> *@
-                @*         Forgot Password? *@
-                @*     </a> *@
-                @* </div> *@
+
 
             </form>
 
@@ -82,3 +72,10 @@
     </div>
 
 </div>
+<!-- 🔥 PASSWORD SCRIPT -->
+<script>
+    function togglePassword() {
+        const pass = document.getElementById("password");
+        pass.type = pass.type === "password" ? "text" : "password";
+    }
+</script>

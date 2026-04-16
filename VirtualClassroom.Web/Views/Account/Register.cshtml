@@ -1,46 +1,47 @@
-﻿
-
-@* new one *@
-
-@model VirtualClassroom.Core.TblUsers
+﻿@model VirtualClassroom.Core.TblUsers
 
 @{
     Layout = null;
 }
 
-<link rel="stylesheet" href="~/css/register.css" />
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Register</title>
+
+    <link rel="stylesheet" href="~/css/register.css" asp-append-version="true" />
+    <!-- ✅ Validation Scripts (move here) -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</head>
+
+<body>
 
 <div class="main-container">
 
     <!-- LEFT PANEL -->
     <div class="left-panel">
-        <div class="brand">
-            <h1>Virtual Classroom</h1>
-            <p>Learn • Teach • Collaborate</p>
-        </div>
-
-        <div class="features">
-            @* <h3>Why Join?</h3> *@
-            <ul>
-                <li>📚 Create & Join Classrooms</li>
-                <li>📝 Submit & Manage Assignments</li>
-                <li>🎥 Attend Live Sessions</li>
-                <li>👨‍🏫 Faculty & Student Roles</li>
-                <li>🔐 Secure Google Login</li>
-            </ul>
-        </div>
+       
     </div>
 
     <!-- RIGHT PANEL -->
     <div class="right-panel">
         <div class="login-container">
+                <div class="logo">
+                    <img src="~/images/vclass.png" />
+                </div>
             <h2>Create Account 🚀</h2>
             <p class="subtitle">Register to get started</p>
 
             <form asp-action="Register" method="post">
 
                 <!-- Validation -->
-                <div asp-validation-summary="All" class="text-danger"></div>
+                    <!-- REMOVE THIS -->
+                    <div asp-validation-summary="ModelOnly"></div>
 
                 <!-- Full Name -->
                 <input asp-for="FullName" placeholder="Username" required />
@@ -51,7 +52,11 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
 
                 <!-- Password -->
-                <input asp-for="PasswordHash" type="password" placeholder="Password" required />
+                <div class="password-wrapper">
+                    <input asp-for="PasswordHash" type="password" id="password" placeholder="Password" required />
+                    <span class="toggle-password" onclick="togglePassword()">👁</span>
+                </div>
+                
                 <span asp-validation-for="PasswordHash" class="text-danger"></span>
 
                 <!-- Role -->
@@ -89,7 +94,15 @@
     </div>
 
 </div>
+</body>
+<script>
+    function togglePassword() {
+        const pass = document.getElementById("password");
+        pass.type = pass.type === "password" ? "text" : "password";
+    }
+</script>
+</html>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+@* @section Scripts { *@
+@*     <partial name="_ValidationScriptsPartial" /> *@
+@* } *@
