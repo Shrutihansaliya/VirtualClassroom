@@ -1,4 +1,48 @@
-﻿@{
+﻿@* @{ *@
+@*     Layout = "~/Views/Student/_StudentLayout.cshtml"; *@
+@* } *@
+@* @model List<VirtualClassroom.Core.TblClassroom> *@
+
+@* <h2 class="page-title">My Classes</h2> *@
+
+@* @if (Model == null || !Model.Any()) *@
+@* { *@
+@*     <p>No classes joined yet</p> *@
+@* } *@
+@* else *@
+@* { *@
+@*     <div class="class-grid"> *@
+
+@*         @foreach (var item in Model) *@
+@*         { *@
+@*             <a asp-controller="Assignment" *@
+@*                asp-action="ByClass" *@
+@*                asp-route-classId="@item.ClassroomId" *@
+@*                style="text-decoration:none; color:inherit;"> *@
+
+@*                 <div class="class-card"> *@
+
+@*                     <div class="class-card-header"> *@
+@*                         @item.ClassName *@
+@*                     </div> *@
+
+@*                     <div class="class-card-body"> *@
+@*                         <p>@item.Description</p> *@
+@*                     </div> *@
+
+@*                     <div class="class-card-footer"> *@
+@*                         View Assignments *@
+@*                     </div> *@
+
+@*                 </div> *@
+
+@*             </a> *@
+@*         } *@
+
+@*     </div> *@
+@* } *@
+
+@{
     Layout = "~/Views/Student/_StudentLayout.cshtml";
 }
 @model List<VirtualClassroom.Core.TblClassroom>
@@ -15,28 +59,38 @@ else
 
         @foreach (var item in Model)
         {
-            <a asp-controller="Assignment"
-               asp-action="ByClass"
-               asp-route-classId="@item.ClassroomId"
-               style="text-decoration:none; color:inherit;">
+            <div class="class-card">
 
-                <div class="class-card">
+                <div class="class-card-header">
+                    @item.ClassName
+                </div>
 
-                    <div class="class-card-header">
-                        @item.ClassName
-                    </div>
+                <div class="class-card-body">
+                    <p>@item.Description</p>
+                </div>
 
-                    <div class="class-card-body">
-                        <p>@item.Description</p>
-                    </div>
+                <div class="class-card-footer"
+                     style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
 
-                    <div class="class-card-footer">
-                        View Assignments
-                    </div>
+                    <!-- Assignments Button -->
+                    <a asp-controller="Assignment"
+                       asp-action="ByClass"
+                       asp-route-classId="@item.ClassroomId"
+                       class="btn btn-sm btn-primary">
+                        Assignments
+                    </a>
+
+                    <!-- Materials Button -->
+                    <a asp-controller="Material"
+                       asp-action="ByClass"
+                       asp-route-classId="@item.ClassroomId"
+                       class="btn btn-sm btn-outline-primary">
+                        Materials
+                    </a>
 
                 </div>
 
-            </a>
+            </div>
         }
 
     </div>

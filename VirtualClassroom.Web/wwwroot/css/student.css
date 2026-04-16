@@ -90,10 +90,26 @@ body {
     z-index: 100;
 }
 
-/* LEFT */
+/* LEFT TITLE DESIGN */
 .nav-left h4 {
-    font-weight: 700;
+    font-weight: 600;
+    font-size: 18px;
+    color: #0f172a;
+    letter-spacing: 0.4px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
+
+    /* HIGHLIGHT "Faculty Panel" PART */
+    .nav-left h4 span {
+        color: #2563eb;
+        font-weight: 700;
+    }
+
+    
+
 
 /* RIGHT SIDE FIX */
 .nav-right {

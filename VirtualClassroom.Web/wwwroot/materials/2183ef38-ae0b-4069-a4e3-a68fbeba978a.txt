@@ -1,0 +1,48 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+a = pd.read_csv('meet.csv')
+
+a['TotalAbsent']=(120 - a['NumberOfLecturePresent'])
+
+
+
+a['AbsentPer']=(a['TotalAbsent']*100)/120
+
+ 
+def get_result(AbsentPer):
+    if AbsentPer > 20:
+         return 'allowd'
+    else:
+         return 'not allowed'
+
+
+
+a['Eligiable'] = a['AbsentPer'].apply(get_result)
+
+a['Eligiable123'] = a['AbsentPer'].apply(get_result)
+
+a = a.drop(columns=['Eligiable123'])
+a.nlargest(5,'AbsentPer')
+
+co=a[a['Eligiable']== 'not allowed'].shape[0]
+print(co)
+result_counts = a['Eligiable'].value_counts()
+grd = result_counts.index  
+res = result_counts.values 
+print(grd)
+print(res)
+
+plt.pie(res, labels=grd, autopct='%1.1f%%', colors=plt.cm.Paired.colors)
+
+
+plt.axis('equal')  # Ensures that pie chart is drawn as a circle
+plt.title("Result Class Distribution (Pie Chart)")
+plt.show()
+
+
+plt.bar(grd, res, color='skyblue')
+plt.title("Result Class Distribution (Bar Chart)")
+plt.xlabel('Result Class')
+plt.ylabel('Number of Students')
+plt.show()

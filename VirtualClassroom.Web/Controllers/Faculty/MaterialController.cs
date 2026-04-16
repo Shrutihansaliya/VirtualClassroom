@@ -235,12 +235,25 @@ public class MaterialController : Controller
         _context = context;
         _emailService = emailService;
     }
-
     public IActionResult Classrooms()
     {
-        var classrooms = _context.TblClassrooms.ToList();
+        var userId = HttpContext.Session.GetInt32("UserId");
+
+        if (userId == null)
+            return RedirectToAction("Login", "Account");
+
+        var classrooms = _context.TblClassrooms
+            .Where(x => x.CreatedBy == userId.Value)
+            .ToList();
+
         return View(classrooms);
     }
+
+    //public IActionResult Classrooms()
+    //{
+    //    var classrooms = _context.TblClassrooms.ToList();
+    //    return View(classrooms);
+    //}
     // GET
     public IActionResult Add(int classroomId)
     {

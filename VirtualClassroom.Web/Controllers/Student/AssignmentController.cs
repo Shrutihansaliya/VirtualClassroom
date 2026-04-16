@@ -25,6 +25,7 @@ public class AssignmentController : BaseController
 
     public IActionResult Index()
     {
+        ViewData["Title"] = "View Assignments";
         var userId = HttpContext.Session.GetInt32("UserId");
 
         // 🔥 Get student's enrolled classes
