@@ -1,0 +1,173 @@
+DATASET 1: Original Dataset (No Change)
+🔹 Deep Learning Models
+| Model       | Test Accuracy |
+| ----------- | ------------- |
+| Custom CNN  | 0.1118        |
+| MobileNetV2 | 0.1118        |
+| ResNet18    | 0.0118        |
+
+
+🔹 SIFT + ML Models
+| Model               | Accuracy |
+| ------------------- | -------- |
+| SVM                 | 0.1235   |
+| Random Forest       | 0.1294   |
+| KNN                 | 0.1059   |
+| Logistic Regression | 0.0882   |
+
+
+🔹 ORB + ML Models
+| Model               | Accuracy |
+| ------------------- | -------- |
+| SVM                 | 0.1765   |
+| Random Forest       | 0.1706   |
+| KNN                 | 0.1353   |
+| Logistic Regression | 0.1588   |
+
+
+
+
+✅ DATASET 2: 30–60 Images Per Class
+🔹 Deep Learning (With Online Augmentation)
+| Model       | Accuracy |
+| ----------- | -------- |
+| Custom CNN  | 0.0155   |
+| ResNet18    | 0.3575   |
+| MobileNetV2 | 0.1554   |
+
+
+🔹 Deep Learning (Without Online Augmentation)
+| Model       | Accuracy |
+| ----------- | -------- |
+| Custom CNN  | 0.0225   |
+| MobileNetV2 | 0.2003   |
+| ResNet18    | 0.1036   |
+
+
+🔹 ORB + ML
+| Model               | Accuracy |
+| ------------------- | -------- |
+| SVM                 | 0.4940   |
+| Random Forest       | 0.5769   |
+| KNN                 | 0.7029   |
+| Logistic Regression | 0.6788   |
+
+
+🔹 SIFT + ML
+| Model               | Accuracy |
+| ------------------- | -------- |
+| SVM                 | 0.5613   |
+| Random Forest       | 0.7081   |
+| KNN                 | 0.7444   |
+| Logistic Regression | 0.6028   |
+
+
+
+✅ DATASET 3: 110 Images Per Class
+🔹 Deep Learning (Without Online Augmentation)
+| Model       | Accuracy |
+| ----------- | -------- |
+| Custom CNN  | 0.0103   |
+| MobileNetV2 | 0.5377   |
+| ResNet18    | 0.6935   |
+
+
+🔹 ORB + ML
+| Model               | Accuracy |
+| ------------------- | -------- |
+| SVM                 | 0.8437   |
+| Random Forest       | 0.6971   |
+| KNN                 | 0.8375   |
+| Logistic Regression | 0.7456   |
+
+
+🔹 SIFT + ML
+| Model               | Accuracy |
+| ------------------- | -------- |
+| SVM                 | 0.8844   |
+| Random Forest       | 0.8277   |
+| KNN                 | 0.8947   |
+| Logistic Regression | 0.6414   |
+
+
+✅ DATASET 4: Average 55 Images Per Class
+🔹 Deep Learning
+| Model       | Accuracy |
+| ----------- | -------- |
+| Custom CNN  | 0.0088   |
+| MobileNetV2 | 0.2573   |
+| ResNet18    | 0.4113   |
+
+
+🔹 SIFT + ML
+| Model               | Accuracy |
+| ------------------- | -------- |
+| SVM                 | 0.4951   |
+| Random Forest       | 0.4211   |
+| KNN                 | 0.5536   |
+| Logistic Regression | 0.2895   |
+
+
+🔹 ORB + ML
+| Model               | Accuracy |
+| ------------------- | -------- |
+| SVM                 | 0.5575   |
+| Random Forest       | 0.4425   |
+| KNN                 | 0.6170   |
+| Logistic Regression | 0.4786   |
+
+
+
+✅ DATASET 3: 110 Images Per Class with split 80_10_10
+
+
+🔹 ORB + ML
+SVM: 0.8581
+RandomForest: 0.7073
+KNN: 0.8325
+LogisticRegression: 0.7249
+
+
+🔹 SIFT + ML
+SVM: 0.8955
+RandomForest: 0.8421
+KNN: 0.9035
+LogisticRegression: 0.6188
+
+
+🏆 FINAL OVERALL OBSERVATION
+| Dataset Type  | Best Model | Best Accuracy |
+| ------------- | ---------- | ------------- |
+| Original      | ORB + SVM  | 0.1765        |
+| 30–60 Images  | SIFT + KNN | 0.7444        |
+| 55 Avg Images | ORB + KNN  | 0.6170        |
+| 110 Images    | SIFT + KNN | ⭐ **0.8947**  |
+
+
+
+
+
+machine learning : ORB , SIFT
+deep learning : CNN (custom), MobileNetV2 , ResNet18 
+
+resize image : 224*224
+
+augmentation
+- ImageDataGenerator
+
+
+orb
+- extract keypoint
+- make description 
+
+- that pass to bovw
+
+bovm - convert many descriptor to single fixed length vector
+
+
+classifier :
+SVM
+RendomForest
+KNN
+logistic Regression
+

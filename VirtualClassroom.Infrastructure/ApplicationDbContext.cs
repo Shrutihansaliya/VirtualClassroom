@@ -26,15 +26,15 @@ namespace VirtualClassroom.Infrastructure
 
         // DbSets
         public DbSet<TblUsers> TblUsers { get; set; }
-        public DbSet<TblUserLogins> TblUserLogins { get; set; }
+        //public DbSet<TblUserLogins> TblUserLogins { get; set; }
         public DbSet<TblClassroom> TblClassrooms { get; set; }
         public DbSet<TblClassroomMembers> TblClassroomMembers { get; set; }
         public DbSet<TblClassroomInvites> TblClassroomInvites { get; set; }
-        public DbSet<TblLectures> TblLectures { get; set; }
+        //public DbSet<TblLectures> TblLectures { get; set; }
         public DbSet<TblAssignments> TblAssignments { get; set; }
         public DbSet<TblSubmissions> TblSubmissions { get; set; }
         public DbSet<TblMaterials> TblMaterials { get; set; }
-        public DbSet<TblNotifications> TblNotifications { get; set; }
+        //public DbSet<TblNotifications> TblNotifications { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -53,11 +53,11 @@ namespace VirtualClassroom.Infrastructure
     .Property(u => u.CreatedAt)
     .HasDefaultValueSql("GETDATE()");
 
-            modelBuilder.Entity<TblUserLogins>()
-    .HasOne(ul => ul.User)
-    .WithMany()
-    .HasForeignKey(ul => ul.UserId)
-    .OnDelete(DeleteBehavior.Cascade);
+    //        modelBuilder.Entity<TblUserLogins>()
+    //.HasOne(ul => ul.User)
+    //.WithMany()
+    //.HasForeignKey(ul => ul.UserId)
+    //.OnDelete(DeleteBehavior.Cascade);
 
             // TblClassroom → TblUsers (Faculty)
             modelBuilder.Entity<TblClassroom>()
@@ -81,10 +81,10 @@ namespace VirtualClassroom.Infrastructure
 
           
             // TblLectures
-            modelBuilder.Entity<TblLectures>()
-                .HasOne(l => l.Classroom)
-                .WithMany(c => c.Lectures)
-                .HasForeignKey(l => l.ClassroomId);
+            //modelBuilder.Entity<TblLectures>()
+            //    .HasOne(l => l.Classroom)
+            //    .WithMany(c => c.Lectures)
+            //    .HasForeignKey(l => l.ClassroomId);
 
             // TblAssignments
             modelBuilder.Entity<TblAssignments>()
@@ -112,10 +112,10 @@ namespace VirtualClassroom.Infrastructure
 
 
             // TblNotifications
-            modelBuilder.Entity<TblNotifications>()
-                .HasOne(n => n.User)
-                .WithMany()
-                .HasForeignKey(n => n.UserId);
+            //modelBuilder.Entity<TblNotifications>()
+            //    .HasOne(n => n.User)
+            //    .WithMany()
+            //    .HasForeignKey(n => n.UserId);
 
             modelBuilder.Entity<TblAssignments>()
         .HasKey(a => a.AssignmentId);
@@ -124,11 +124,11 @@ namespace VirtualClassroom.Infrastructure
     .HasIndex(cm => new { cm.ClassroomId, cm.UserId })
     .IsUnique();
 
-            modelBuilder.Entity<TblLectures>()
-    .HasOne(l => l.Faculty)
-    .WithMany()
-    .HasForeignKey(l => l.CreatedBy)
-    .OnDelete(DeleteBehavior.Restrict);
+    //        modelBuilder.Entity<TblLectures>()
+    //.HasOne(l => l.Faculty)
+    //.WithMany()
+    //.HasForeignKey(l => l.CreatedBy)
+    //.OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<TblAssignments>()
     .HasOne(a => a.Faculty)

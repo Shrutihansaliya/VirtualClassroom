@@ -21,7 +21,7 @@ namespace VirtualClassroom.Core
             // Navigation
             public TblUsers Faculty { get; set; }
             public ICollection<TblClassroomMembers> Members { get; set; }
-            public ICollection<TblLectures> Lectures { get; set; }
+            //public ICollection<TblLectures> Lectures { get; set; }
             public ICollection<TblAssignments> Assignments { get; set; }
             public ICollection<TblMaterials> Materials { get; set; }
         

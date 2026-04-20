@@ -1,118 +1,4 @@
-﻿////using Microsoft.AspNetCore.Mvc;
-////using Microsoft.EntityFrameworkCore;
-////using VirtualClassroom.Core;
-////using VirtualClassroom.Infrastructure;
-////using VirtualClassroom.Web.Models;
-
-////public class MaterialController : Controller
-////{
-////    private readonly ApplicationDbContext _context;
-////    private readonly EmailService _emailService;
-
-////    public MaterialController(ApplicationDbContext context, EmailService emailService)
-////    {
-////        _context = context;
-////        _emailService = emailService;
-////    }
-
-////    // GET: Add Page
-////    public IActionResult Add()
-////    {
-////        return View();
-////    }
-
-////    // POST: Add Material
-////    [HttpPost]
-////    public async Task<IActionResult> Add(AddMaterialViewModel model)
-////    {
-////        if (!ModelState.IsValid)
-////            return View(model);
-
-////        // 🔥 STEP 1: Get Logged-in UserId
-////        var userIdStr = HttpContext.Session.GetString("UserId");
-
-////        if (string.IsNullOrEmpty(userIdStr))
-////        {
-////            return RedirectToAction("Login", "Account");
-////        }
-
-////        int userId = int.Parse(userIdStr);
-
-////        // 🔥 STEP 2: File Upload
-////        string? filePath = null;
-
-////        if (model.File != null)
-////        {
-////            string fileName = Guid.NewGuid() + Path.GetExtension(model.File.FileName);
-
-////            string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/materials");
-
-////            // Ensure folder exists
-////            if (!Directory.Exists(folderPath))
-////            {
-////                Directory.CreateDirectory(folderPath);
-////            }
-
-////            string fullPath = Path.Combine(folderPath, fileName);
-
-////            using (var stream = new FileStream(fullPath, FileMode.Create))
-////            {
-////                await model.File.CopyToAsync(stream);
-////            }
-
-////            filePath = "/materials/" + fileName;
-////        }
-
-////        // 🔥 STEP 3: Save Material in DB
-////        var material = new TblMaterials
-////        {
-////            ClassroomId = model.ClassroomId,
-////            Title = model.Title,
-////            Description = model.Description,
-////            FilePath = filePath,
-////            FileType = model.File?.ContentType,
-////            UploadedAt = DateTime.Now,
-////            UploadedBy = userId,
-////            IsVisible = true
-////        };
-
-////        _context.TblMaterials.Add(material);
-////        await _context.SaveChangesAsync();
-
-////        // 🔥 STEP 4: Get Student Emails
-////        var studentEmails = _context.TblClassroomMembers
-////            .Where(x => x.ClassroomId == model.ClassroomId && x.Role == "Student")
-////            .Include(x => x.User)
-////            .Select(x => x.User.Email)
-////            .Where(email => email != null)
-////            .ToList();
-
-////        // 🔥 STEP 5: Send Emails (SendGrid / SMTP)
-////        var tasks = studentEmails.Select(email =>
-////            _emailService.SendEmailAsync(
-////                email,
-////                "📚 New Material Uploaded",
-////                $@"
-////New material has been added!
-
-////Title: {model.Title}
-////Description: {model.Description}
-
-////Please login to your Virtual Classroom to view it.
-////"
-////            ));
-
-////        await Task.WhenAll(tasks);
-
-////        // 🔥 STEP 6: Redirect
-////        return RedirectToAction("Dashboard", "Faculty");
-////    }
-////}
-
-
-
-
-//using Microsoft.AspNetCore.Mvc;
+﻿//using Microsoft.AspNetCore.Mvc;
 //using Microsoft.EntityFrameworkCore;
 //using VirtualClassroom.Core;
 //using VirtualClassroom.Infrastructure;
@@ -236,11 +122,27 @@ public class MaterialController : Controller
         _emailService = emailService;
     }
 
+    //public IActionResult Classrooms()
+    //{
+    //    var classrooms = _context.TblClassrooms.ToList();
+    //    return View(classrooms);
+    //}
+
     public IActionResult Classrooms()
     {
-        var classrooms = _context.TblClassrooms.ToList();
+        var userId = HttpContext.Session.GetInt32("UserId");
+
+        if (userId == null)
+            return RedirectToAction("Login", "Account");
+
+        var classrooms = _context.TblClassrooms
+            .Where(x => x.CreatedBy == userId.Value)
+            .ToList();
+
         return View(classrooms);
     }
+
+
     // GET
     public IActionResult Add(int classroomId)
     {
