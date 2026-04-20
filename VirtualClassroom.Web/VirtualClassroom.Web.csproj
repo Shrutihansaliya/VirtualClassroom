@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Student\MaterialController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.27.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.3.9" />
@@ -27,6 +31,10 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\materials\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Controllers\Student\MaterialController.cs" />
   </ItemGroup>
 
 </Project>

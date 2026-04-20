@@ -17,7 +17,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    max-width: 1000px; /* 🔥 balanced width */
+    max-width: 1150px; /* 🔥 balanced width */
     margin: auto;
     border-radius: 18px;
     overflow: hidden;
@@ -27,7 +27,7 @@ body {
 .left-panel {
     flex: 1;
     background: #ffffff;
-    height: 520px;
+    height: 560px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -53,7 +53,7 @@ body {
 .right-panel {
     flex: 1;
     background: #d9e3f0;
-    height: 520px;
+    height: 560px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -62,7 +62,7 @@ body {
 
 /* LOGIN CARD (FIXED POSITION ISSUE 🔥) */
 .login-container {
-    width: 340px; /* 🔥 reduced so it fits properly */
+    width: 400px; /* 🔥 reduced so it fits properly */
     background: #ffffff;
     padding: 35px 28px; /* balanced padding */
     border-radius: 18px;

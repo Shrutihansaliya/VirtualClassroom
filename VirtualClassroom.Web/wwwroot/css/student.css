@@ -23,7 +23,16 @@ body {
     transition: 0.4s;
     z-index: 1000;
 }
-
+    /* 🔥 CENTER MENU */
+    .std-sidebar ul {
+        margin-top: 70px; /* 🔥 space above menu */
+        flex: 1; /* take remaining space */
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* 🔥 vertical center */
+        padding: 0;
+        transform: translateY(-40px); /* 🔥 SHIFT UP */
+    }
     .std-sidebar ul,
     .std-sidebar li {
         list-style: none;
@@ -90,10 +99,26 @@ body {
     z-index: 100;
 }
 
-/* LEFT */
+/* LEFT TITLE DESIGN */
 .nav-left h4 {
-    font-weight: 700;
+    font-weight: 600;
+    font-size: 18px;
+    color: #0f172a;
+    letter-spacing: 0.4px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
+
+    /* HIGHLIGHT "Faculty Panel" PART */
+    .nav-left h4 span {
+        color: #2563eb;
+        font-weight: 700;
+    }
+
+    
+
 
 /* RIGHT SIDE FIX */
 .nav-right {
@@ -152,3 +177,57 @@ body {
         margin-left: 0;
     }
 }
+
+/* =========================================================
+   🔥 MENU ICON (STUDENT SIDEBAR)
+   ========================================================= */
+.std-menu-icon {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.9);
+}
+
+    .std-menu-icon i {
+        font-size: 22px;
+        cursor: pointer;
+    }
+
+    .std-menu-icon:hover {
+        background: rgba(255,255,255,0.1);
+    }
+
+
+/* =========================================================
+   🔥 NAVBAR LOGO + TITLE (LIKE FACULTY)
+   ========================================================= */
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* LOGO */
+.nav-logo {
+    display: flex;
+    align-items: center;
+    padding-right: 12px;
+    border-right: 2px solid #e2e8f0;
+}
+
+    .nav-logo img {
+        height: 32px;
+        width: auto;
+    }
+
+/* TITLE */
+.page-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+    .page-title span {
+        color: #2563eb;
+    }

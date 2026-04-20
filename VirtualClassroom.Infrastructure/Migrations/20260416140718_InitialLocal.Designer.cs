@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VirtualClassroom.Infrastructure;
 
@@ -11,9 +12,11 @@ using VirtualClassroom.Infrastructure;
 namespace VirtualClassroom.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260416140718_InitialLocal")]
+    partial class InitialLocal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -287,7 +290,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TblNotifications", (string)null);
+                    b.ToTable("TblNotifications");
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblSubmissions", b =>
@@ -350,7 +353,7 @@ namespace VirtualClassroom.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TblUserLogins", (string)null);
+                    b.ToTable("TblUserLogins");
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblUsers", b =>
@@ -458,6 +461,25 @@ namespace VirtualClassroom.Infrastructure.Migrations
                     b.Navigation("Classroom");
                 });
 
+            modelBuilder.Entity("VirtualClassroom.Core.TblLectures", b =>
+                {
+                    b.HasOne("VirtualClassroom.Core.TblClassroom", "Classroom")
+                        .WithMany("Lectures")
+                        .HasForeignKey("ClassroomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VirtualClassroom.Core.TblUsers", "Faculty")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Classroom");
+
+                    b.Navigation("Faculty");
+                });
+
             modelBuilder.Entity("VirtualClassroom.Core.TblMaterials", b =>
                 {
                     b.HasOne("VirtualClassroom.Core.TblClassroom", "Classroom")
@@ -475,6 +497,17 @@ namespace VirtualClassroom.Infrastructure.Migrations
                     b.Navigation("Classroom");
 
                     b.Navigation("Faculty");
+                });
+
+            modelBuilder.Entity("VirtualClassroom.Core.TblNotifications", b =>
+                {
+                    b.HasOne("VirtualClassroom.Core.TblUsers", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("VirtualClassroom.Core.TblSubmissions", b =>
@@ -496,6 +529,17 @@ namespace VirtualClassroom.Infrastructure.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("VirtualClassroom.Core.TblUserLogins", b =>
+                {
+                    b.HasOne("VirtualClassroom.Core.TblUsers", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("VirtualClassroom.Core.TblAssignments", b =>
                 {
                     b.Navigation("Submissions");
@@ -504,6 +548,8 @@ namespace VirtualClassroom.Infrastructure.Migrations
             modelBuilder.Entity("VirtualClassroom.Core.TblClassroom", b =>
                 {
                     b.Navigation("Assignments");
+
+                    b.Navigation("Lectures");
 
                     b.Navigation("Materials");
 

@@ -121,13 +121,6 @@ public class MaterialController : Controller
         _context = context;
         _emailService = emailService;
     }
-
-    //public IActionResult Classrooms()
-    //{
-    //    var classrooms = _context.TblClassrooms.ToList();
-    //    return View(classrooms);
-    //}
-
     public IActionResult Classrooms()
     {
         var userId = HttpContext.Session.GetInt32("UserId");
@@ -141,8 +134,6 @@ public class MaterialController : Controller
 
         return View(classrooms);
     }
-
-
     // GET
     public IActionResult Add(int classroomId)
     {

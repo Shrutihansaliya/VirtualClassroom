@@ -171,6 +171,7 @@ namespace VirtualClassroom.Web.Controllers.Student
         // ✅ SHOW PENDING INVITES
         public IActionResult PendingInvites()
         {
+            ViewData["Title"] = "View Invitation";
             var email = HttpContext.Session.GetString("UserEmail");
 
             if (string.IsNullOrEmpty(email))
@@ -242,6 +243,7 @@ namespace VirtualClassroom.Web.Controllers.Student
 
         public IActionResult Dashboard()
         {
+            ViewData["Title"] = "Dashboard";
             var email = HttpContext.Session.GetString("UserEmail");
 
             var classrooms = _context.TblClassroomInvites
