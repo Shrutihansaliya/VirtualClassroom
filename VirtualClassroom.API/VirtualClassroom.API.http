@@ -1,6 +1,0 @@
-@VirtualClassroom.API_HostAddress = http://localhost:5206
-
-GET {{VirtualClassroom.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
